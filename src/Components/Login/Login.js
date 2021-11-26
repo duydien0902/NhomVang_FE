@@ -1,5 +1,5 @@
-import { Fragment, useState } from 'react'
-import { Form, Input, Button, Checkbox, Modal, Spin } from 'antd'
+import { Fragment } from 'react'
+import { Form, Input, Button } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import '../../Style/Login.css'
@@ -10,12 +10,6 @@ const layout = {
   },
   wrapperCol: {
     span: 14
-  }
-}
-const tailLayout = {
-  wrapperCol: {
-    offset: 6,
-    span: 16
   }
 }
 
@@ -75,9 +69,6 @@ function Login() {
             >
               <Input.Password />
             </Form.Item>
-            {/* <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item> */}
             <Form.Item wrapperCol={{ offset: 7, span: 16 }}>
               <Button
                 type="primary"
