@@ -1,9 +1,9 @@
 import './App.css'
-import Project from './pages/index'
+import Pages from './pages'
 function App() {
   return (
     <div className="App">
-      <Project />
+      <Pages />
     </div>
   )
 }
