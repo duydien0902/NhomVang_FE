@@ -1,10 +1,10 @@
-import { ActionType } from '../contanst/Action-type'
+import { ActionType } from '../constants/Action-type'
 const initialState = {
   token: [
     {
       id: 1,
       username: 'duydien',
-      Emmail: 'duydien552@gmail.com sdssd'
+      email: 'duydien552@gmail.com sdssd'
     }
   ]
 }
