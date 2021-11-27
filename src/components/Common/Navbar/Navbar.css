@@ -21,11 +21,7 @@ header {
   align-items: center;
   padding: 18px 10px;
 }
-.nav-links {
-  width: 70%;
-}
 .nav-links-icon {
-  width: 30%;
   text-align: right;
 }
 .nav-links ul,

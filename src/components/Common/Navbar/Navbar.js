@@ -45,7 +45,8 @@ function Navbar() {
                   <Input
                     className="input-search"
                     style={{
-                      fontSize: '20px'
+                      fontSize: '20px',
+                      maxWidth: '400px'
                     }}
                     placeholder="Search Logo..."
                     prefix={<SearchOutlined />}

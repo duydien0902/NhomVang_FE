@@ -16,6 +16,7 @@ function Newsletter() {
             placeholder="Nhập email của bạn ..."
             enterButton="Đăng ký"
             onSearch={onSearch}
+            size="large"
           />
         </div>
       </div>
