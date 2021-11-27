@@ -1,7 +1,10 @@
 import './App.css'
-
+import Pages from './pages'
 function App() {
-  return <div></div>
+  return (
+    <div className="App">
+      <Pages />
+    </div>
+  )
 }
-
 export default App
