@@ -1,10 +1,7 @@
 import './App.css'
-import Project from './pages/index'
+
 function App() {
-  return (
-    <div className="App">
-      <Project />
-    </div>
-  )
+  return <div></div>
 }
+
 export default App
