@@ -1,5 +1,4 @@
 import { ActionType } from '../constants/ActionType'
-
 const initialState = {
   user: {
     username: 'duydien',
