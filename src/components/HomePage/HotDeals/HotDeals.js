@@ -59,6 +59,7 @@ function HotDeals() {
                       md={24}
                       lg={12}
                       xl={12}
+                      key={item.title}
                     >
                       <div
                         style={{
