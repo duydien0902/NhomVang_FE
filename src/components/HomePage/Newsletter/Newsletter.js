@@ -1,5 +1,5 @@
 import React from 'react'
-import './Newletter.css'
+import './Newsletter.css'
 import { Input } from 'antd'
 function Newsletter() {
   const onSearch = value => console.log(value)
