@@ -1,10 +1,11 @@
-import Navbar from './Common/Navbar'
-import TopSlider from './Home/TopSlider'
-import TopProducts from './Home/TopProducts'
+import Navbar from '../components/common/Navbar/Navbar'
+import TopSlider from '../components/homepage/TopSlider/TopSlider'
+import TopProducts from '../components/homepage/TopProducts/TopProducts'
 import React from 'react'
-import HotDeals from '../Components/Home/HotDeals'
+import HotDeals from '../components/homepage/HotDeals/HotDeals'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-function AppChild() {
+
+function homepage() {
   return (
     <div>
       <Router>
@@ -21,4 +22,4 @@ function AppChild() {
   )
 }
 
-export default AppChild
+export default homepage

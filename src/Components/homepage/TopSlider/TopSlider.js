@@ -2,9 +2,9 @@ import React from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import Img from '../../Components/Imgbackgroud/imgbg.jpg'
+import Img from '../../assets/Imgbackgroud/imgbg.jpg'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
-import '../../Style/TopSlider.css'
+import './TopSlider.css'
 function SampleNextArrow(props) {
   const { onClick } = props
   return (

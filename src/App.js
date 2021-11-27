@@ -1,10 +1,10 @@
 import './App.css'
-import Appchild from './Components/AppChild'
+import Project from './pages/index'
 
 function App() {
   return (
     <div className="App">
-      <Appchild />
+      <Project />
     </div>
   )
 }

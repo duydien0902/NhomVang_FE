@@ -1,5 +1,5 @@
 import React from 'react'
-import '../../Style/Footer.css'
+import '../Footer/Footer.css'
 import { Row, Col } from 'antd'
 
 function Footer() {

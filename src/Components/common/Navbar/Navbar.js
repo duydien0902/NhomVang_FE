@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import '../../Style/Navbar.css'
+import './Navbar.css'
 import 'antd/dist/antd.css'
 import {
   SearchOutlined,
@@ -10,8 +10,8 @@ import {
 } from '@ant-design/icons'
 import { Input } from 'antd'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import Login from '../Login/Login'
-import Register from '../Register/Register'
+import Login from '../../Login/Login'
+import Register from '../../Register/Register'
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
   const style = { fontSize: 22 }
