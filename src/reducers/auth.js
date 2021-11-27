@@ -1,12 +1,9 @@
-import { ActionType } from '../constants/Action-type'
+import { ActionType } from '../constants/ActionType'
 const initialState = {
-  token: [
-    {
-      id: 1,
-      username: 'duydien',
-      email: 'duydien552@gmail.com sdssd'
-    }
-  ]
+  user: {
+    username: 'duydien',
+    email: 'duydien552@gmail.com'
+  }
 }
 
 export default function AuthReducers(state = initialState, action) {
