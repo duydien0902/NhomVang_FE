@@ -1,9 +1,8 @@
 import React from 'react'
-import Img from '../../assets/Imgbackgroud/imgbg.jpg'
+import Img from '../../../assets/imgbg.jpg'
 import { Button, Row, Col } from 'antd'
 import NewsSlider from '../NewsSlider/NewsSlider'
 import Newletter from '../Newsletter/Newsletter'
-import Footer from '../../common/Footer/Footer'
 import './HotDeals.css'
 
 const data = [
@@ -107,7 +106,6 @@ function HotDeals() {
           <div>
             <NewsSlider />
             <Newletter />
-            <Footer />
           </div>
         </div>
       </div>

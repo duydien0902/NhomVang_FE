@@ -1,6 +1,6 @@
 import './TopProducts.css'
 import { Button, Row, Col } from 'antd'
-import Img from '../../assets/Imgbackgroud/imgbg.jpg'
+import Img from '../../../assets/imgbg.jpg'
 import 'antd/dist/antd.css'
 
 const data = [

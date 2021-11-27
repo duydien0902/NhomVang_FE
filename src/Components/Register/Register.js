@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Form, Input, Button } from 'antd'
 import { CloseOutlined, DoubleLeftOutlined } from '@ant-design/icons'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import '../Login/Login.css'
 const layout = {
   labelCol: {
