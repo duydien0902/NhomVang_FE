@@ -2,7 +2,7 @@ import React from 'react'
 import Img from '../../../assets/imgbg.jpg'
 import { Button, Row, Col } from 'antd'
 import NewsSlider from '../NewsSlider/NewsSlider'
-import Newletter from '../Newsletter/Newsletter'
+import NewsLetter from '../NewsLetter/NewsLetter'
 import './HotDeals.css'
 
 const data = [
@@ -106,7 +106,7 @@ function HotDeals() {
 
           <div>
             <NewsSlider />
-            <Newletter />
+            <NewsLetter />
           </div>
         </div>
       </div>
