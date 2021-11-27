@@ -48,7 +48,7 @@ function TopProducts() {
       <h1>SẢN PHẨM NỔI BẬT</h1>
       <Row gutter={[50, 50]}>
         {data.map(item => (
-          <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+          <Col xs={24} sm={24} md={12} lg={8} xl={8} key={item.title}>
             <div
               className="container-item-topproducts"
               style={{
