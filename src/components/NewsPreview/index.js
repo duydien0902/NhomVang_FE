@@ -11,7 +11,7 @@ export default function NewsPreview() {
     <div className="news-preview">
       {news ? (
         news.map(news => (
-          <div className="container-news-preview" style={{ position: 'relative' }}>
+          <div key={news.slug} className="container-news-preview" style={{ position: 'relative' }}>
             <div className="news-thumbnail">{<img src={news.thumbnail || defaultNewsImage} alt="news" />} </div>
             <div className="container-title-button-listnews">
               <h2 className="news-title" style={{ color: 'red', fontWeight: '800' }}>

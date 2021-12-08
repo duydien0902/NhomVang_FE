@@ -6,7 +6,7 @@
   grid-gap: 30px;
   padding: 30px;
 }
-.news-thumbnail {
+.news-preview .news-thumbnail {
   position: absolute;
   transition: 0.5s;
 }
