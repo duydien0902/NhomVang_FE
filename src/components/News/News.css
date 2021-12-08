@@ -7,17 +7,17 @@
 }
 
 .news-detail > * {
-    margin-bottom: 32px;
+  margin-bottom: 32px;
 }
 
 .news-detail .news-title {
-    display: block;
-    overflow: hidden;
-    line-height: 56px;
-    font-size: 48px;
-    color: #333;
-    font-weight: 600;
-    margin: 0 auto 40px;
+  display: block;
+  overflow: hidden;
+  line-height: 56px;
+  font-size: 48px;
+  color: #333;
+  font-weight: 600;
+  margin: 0 auto 40px;
 }
 
 .news-detail figure.image {
