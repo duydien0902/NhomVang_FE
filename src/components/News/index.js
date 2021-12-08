@@ -1,23 +1,70 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './News.css'
-
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import agent from '../../agent'
+import { store } from '../../store'
+import { SELECTED_NEWS } from '../../constants/ActionType'
+import { Spin, Image } from 'antd'
+import defaultNewsImage from '../../assets/defaultNewsImage.png'
+const NewsImage = ({ src }) => {
+  return <Image className="news-thumbnail" src={src} fallback={defaultNewsImage} preview={false} />
+}
 export default function News() {
-  const news = {
-    thumbnail: 'https://assets.digilink.vn/uploads/2021/11/CHECK-IN-DU-THUYEN-e1637723308155.jpg',
-    modifiedDate: '2021-11-24T08:55:42.430Z',
-    title: 'Bắt Trend Check in Du Thuyền Sang Chảnh Bạn Đã Thử ?',
-    description:
-      'Khi trào lưu du lịch trên du thuyền đang hot hơn bao giờ hết, “siêu phẩm” FLC Albatross hứa hẹn những trải nghiệm độc đáo hết mức mà du khách nhất định không thể bỏ…',
-    slug: 'bat-trend-check-in-du-thuyen-sang-chanh-giua-thien-duong-bien-quy-nhon-ban-da-thu',
-    body: `<h1>Bắt Trend Check in Du Thuyền Sang Chảnh Bạn Đã Thử ?</h1><h2><strong>Khi trào lưu du lịch trên du thuyền đang hot hơn bao giờ hết, “siêu phẩm” FLC Albatross hứa hẹn những trải nghiệm độc đáo hết mức mà du khách nhất định không thể bỏ qua.</strong></h2><p>Lướt mạng xã hội dạo gần đây, không khó để tìm thấy hình ảnh sao Việt cùng hội rich kid check in sang chảnh trên du thuyền superyacht đẳng cấp. Bạn sẽ có được những trải nghiệm tương tự giữa thiên đường biển Quy Nhơn trên chiếc superyacht siêu sang FLC Albatross tại quần thể nghỉ dưỡng 5 sao FLC Quy Nhơn.</p><p><span class="text-big"><strong>Thưởng ngoạn biển trời</strong></span></p><p>Trên chiếc du thuyền triệu đô lướt êm ru như cánh chim hải âu, bạn sẽ ngắm trọn vẻ đẹp mê đắm của vùng biển được mệnh danh “Maldives của Việt Nam”.</p><p style="text-align:center;"><img src="https://nld.mediacdn.vn/thumb_w/540/2020/10/16/anh-1-16028598310161188177093.jpg" alt="Bắt trend check in du thuyền sang chảnh giữa thiên đường biển Quy Nhơn, bạn đã thử? - Ảnh 1."></p><p style="text-align:center;"><i>Vẻ đẹp tao nhã, sang trọng của “tuyệt phẩm” FLC Albatross</i></p><p>FLC Albatross được đưa vào vận hành từ tháng 9 với 5 tuyến tham quan kéo dài từ 1-8 giờ, đi qua nhiều điểm du lịch biển nổi tiếng Quy Nhơn như: Eo Gió, Kỳ Co, Hòn Khô, Hòn Sẹo, Bãi Bên Nồm, Cù Lao Xanh. Du khách cũng có thể thay đổi linh hoạt các điểm đến hoặc thuê trọn du thuyền và thiết kế hải trình cho riêng mình.</p><p style="text-align:center;"><img src="https://nld.mediacdn.vn/thumb_w/540/2020/10/16/anh-2-16028598252911172702257.jpg" alt="Bắt trend check in du thuyền sang chảnh giữa thiên đường biển Quy Nhơn, bạn đã thử? - Ảnh 2."></p><p style="text-align:center;"><i>Động cơ 1200 mã lực và hệ thống thủy lực hiện đại đem lại khả năng vận hành êm ái, giúp mỗi giây phút trên FLC Albatros là sự thưởng ngoạn đúng nghĩa</i></p><p>Đứng trên boong tàu, bạn sẽ được bao trọn bởi bầu trời xanh ngắt nối liền một dải với mặt nước biển ngọc ngà của Eo Gió, Kỳ Co, cảm nhận sự thênh thang vô tận của biển trời. Đây cũng là tọa độ đắt giá để du khách cho ra đời những tấm ảnh “xịn xò” bên biển như những travel blogger thứ thiệt.</p><p><span class="text-big"><strong>Bữa sáng trên boong tàu ngập nắng</strong></span></p><p>Thưởng thức bữa sáng khi đắm mình trong làn nước của bể bơi đã “xưa” rồi, bây giờ ăn sáng trên du thuyền ngập nắng mới chuẩn “trend”.</p><p>Với FLC Albatross, du khách sẽ được chiêu đãi bằng một bữa sáng thịnh soạn gồm vài ly champagne, nhâm nhi chút thịt nguội ăn kèm phô mai gợi nhắc đến những món ăn điểm tâm của vùng biển Địa Trung Hải… Đây là sự khởi đầu không thể hoàn hảo hơn để bắt đầu một ngày mới tràn đầy năng lượng, giúp bạn thỏa sức khám phá biển trời Quy Nhơn.</p><p style="text-align:center;"><img src="https://nld.mediacdn.vn/thumb_w/540/2020/10/16/anh-3-1602859822089517246945.jpg" alt="Bắt trend check in du thuyền sang chảnh giữa thiên đường biển Quy Nhơn, bạn đã thử? - Ảnh 3."></p><p style="text-align:center;"><i>Boong tàu trang bị nội thất cao cấp đem đến không gian lý tưởng để bạn vừa thưởng thức bữa sáng, vừa ngồi thư thái giữa không gian khoáng đạt.</i></p><p>Cạnh boong tàu được bài trí bàn ghế sofa êm ái, giúp vị khách của FLC Albatross có thể ngả lưng tận hưởng ánh nắng mai trong lành.</p><p><span class="text-big"><strong>Chinh phục biển khơi qua trò chơi dưới nước</strong></span></p><p>FLC Albatross còn thỏa mãn những du khách ưa khám phá bằng các trò chơi dưới nước cực “ngầu” nhưng không kém phần “sang – xịn” như đua mô tô nước jetski hay chèo thuyền kayak.&nbsp;</p><p>Bạn sẽ được trải nghiệm các mẫu jetski mạnh mẽ nhất đến từ thương hiệu Seadoo – nhà sản xuất mô tô nước danh tiếng thế giới đến từ Canada. Cảm giác “vẽ” những đường chạy thăng hoa trên mặt biển xanh biếc hứa hẹn sẽ mang lại cho người chơi sự phấn khích tột độ.</p><p>Chèo thuyền kayak lại đem đến phút giây thư thái khi rẽ mái chèo qua Bãi Đá Đẻ nhiều màu sắc của Hòn Sẹo hay ghé con đường trên biển tuyệt đẹp tại Hòn Khô khi thủy triều rút.</p><p style="text-align:center;"><img src="https://nld.mediacdn.vn/thumb_w/540/2020/10/16/anh-4-16028598182601843415727.jpg" alt="Bắt trend check in du thuyền sang chảnh giữa thiên đường biển Quy Nhơn, bạn đã thử? - Ảnh 4."></p><p style="text-align:center;"><i>Đua mô tô nước jetski: trải nghiệm bộ môn thể theo đỉnh cao trên biển</i></p><p><span class="text-big"><strong>Bữa tiệc lãng mạn giữa đại dương</strong></span></p><p>Thêm gia vị cho chuyến du ngoạn trên biển là bữa tiệc lãng mạn tại khoang chính của du thuyền.</p><p>Không gian bên trong FLC Albatros tựa như một “phòng khách sang trọng thu nhỏ” với tông màu trắng kết hợp cùng chất liệu gỗ lát cao cấp, tạo nên một cảm giác ấm áp và thân mật. Liền kề là khu vực bếp ăn và quầy bar chuyên dụng, nơi du khách ngẫu hứng tạo ra những món ăn nhanh gọn hay pha chế đồ uống theo sở thích của mình.</p><p>Đặc biệt khi đêm xuống, du khách có thể cùng nhau tận hưởng bữa tối lãng mạn, vừa chiêm ngưỡng vẻ đẹp lung linh của thành phố biển về đêm qua vòm cửa kính trong suốt.</p><p style="text-align:center;"><img src="https://nld.mediacdn.vn/thumb_w/540/2020/10/16/anh-5-16028598149221367215945.jpg" alt="Bắt trend check in du thuyền sang chảnh giữa thiên đường biển Quy Nhơn, bạn đã thử? - Ảnh 5."></p><p style="text-align:center;"><i>Để tận hưởng bữa ăn theo cách hoàn hảo nhất, bạn có thể lựa chọn dịch vụ tiệc tại du thuyền do FLC Biscom cung cấp</i></p><p style="text-align:center;">&nbsp;</p><p style="text-align:center;">&nbsp;</p>`
-  }
+  const { slug } = useParams()
+  const news = useSelector(state => state.newsdetail.newsdetail)
 
-  return (
-    <article className="news-single">
+  const encodeContent = () => {
+    const content = news.content
+    const encode = new DOMParser().parseFromString(content, 'text/html')
+    const rendercontent = encode.documentElement.textContent
+    return { __html: rendercontent }
+  }
+  useEffect(() => {
+    async function fetchNewsDetail() {
+      const result = await agent.News.newsslug(slug)
+      const payload = result.data.news
+      store.dispatch({ type: SELECTED_NEWS, payload })
+    }
+    fetchNewsDetail()
+  }, [slug])
+  return news ? (
+    <article className="news-detail">
       <div className="news-thumbnail">
-        <img src={news.thumbnail} alt="news" />
+        <NewsImage src={news.thumbnail} />
       </div>
-      <div className="news-body" dangerouslySetInnerHTML={{ __html: news.body }}></div>
+      <div className="news-body" dangerouslySetInnerHTML={encodeContent()}></div>
+      <div style={{ float: 'right' }}>
+        {new Date(news.modifiedDate).toLocaleDateString()}, by{' '}
+        <span style={{ fontStyle: 'italic', fontWeight: '700' }}>{news.author}</span>
+      </div>
     </article>
+  ) : (
+    // <div style={{ paddingTop: '160px'}}>
+    //   <div className="container-NewsDetail">
+    //     <div>
+    //       <h1>{news.title}</h1>
+    //     </div>
+    //     <div className="container-img-description">
+    //       <div className="container-NewsDetail-img">
+    //         <img src={news.thumbnail} alt="" />
+    //       </div>
+    //       <div>
+    //         <span>{news.description}</span>
+    //         <hr />
+    //       </div>
+    //     </div>
+    //     <div
+    //       dangerouslySetInnerHTML={encodeContent()}
+    //       style={{
+    //         wordWrap: 'break-word',
+    //         marginTop: '20px',
+    //         paddingBottom: '50px',
+    //       }}
+    //     ></div>
+
+    //   </div>
+    // </div>
+    <Spin style={{ display: 'flex', justifyContent: 'center', paddingTop: '160px' }} />
   )
 }

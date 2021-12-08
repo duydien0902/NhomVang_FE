@@ -1,10 +1,15 @@
-// import React from 'react'
+import React, { useEffect } from 'react'
 import './NewsSlider.css'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import Img from '../../../assets/imgbg.jpg'
+import agent from '../../../agent'
+import { store } from '../../../store'
+import { LIST_NEWS } from '../../../constants/ActionType'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Spin } from 'antd'
 function SampleNextArrow(props) {
   const { onClick } = props
   return (
@@ -66,26 +71,41 @@ const settings = {
   ]
 }
 function NewsSlider() {
+  const newsList = useSelector(state => state.news.listnews)
+  useEffect(() => {
+    async function fetchNewsList() {
+      const result = await agent.News.getnews()
+      const payload = result.data.newsList
+      store.dispatch({ type: LIST_NEWS, payload })
+    }
+    fetchNewsList()
+  }, [])
   return (
     <div className="container-NewsSlider">
       <div className="wrapper-NewsSlider">
         <h1>TIN TỨC </h1>
         <Slider {...settings}>
-          <div className="container-Img-NewsSlider">
-            <img src={Img} alt="" />
-          </div>
-          <div className="container-Img-NewsSlider">
-            <img src={Img} alt="" />
-          </div>
-          <div className="container-Img-NewsSlider">
-            <img src={Img} alt="" />
-          </div>
-          <div className="container-Img-NewsSlider">
-            <img src={Img} alt="" />
-          </div>
-          <div className="container-Img-NewsSlider">
-            <img src={Img} alt="" />
-          </div>
+          {newsList ? (
+            newsList.map(item => (
+              <div className="container-Img-NewsSlider">
+                <Link to={`/blog/${item.slug}`}>
+                  <div className="card-wapper">
+                    <div className="card">
+                      <div className="card-image">
+                        <img src={item.thumbnail} alt="" />
+                      </div>
+                      <div className="details">
+                        <h3> {item.title}</h3>
+                        <p className="job-title">{item.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <Spin />
+          )}
         </Slider>
       </div>
     </div>

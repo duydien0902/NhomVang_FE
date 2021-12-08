@@ -1,3 +1,5 @@
-export const ActionType = {
-  LOGIN: 'LOGIN'
-}
+export const LOGIN = 'LOGIN'
+export const REGISTER = 'REGISTER'
+export const LIST_NEWS = 'LIST_NEWS'
+export const SELECTED_NEWS = 'SELECTED_NEWS'
+export const CURRENT_USER = 'CURRENT_USER'

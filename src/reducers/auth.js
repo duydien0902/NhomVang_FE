@@ -1,17 +1,15 @@
-import { ActionType } from '../constants/ActionType'
+import { LOGIN, REGISTER, CURRENT_USER } from '../constants/ActionType'
 
-const initialState = {
-  user: {
-    username: 'duydien',
-    email: 'duydien552@gmail.com'
-  }
-}
-
-export default function AuthReducers(state = initialState, action) {
+export default function AuthReducers(state = {}, action) {
   switch (action.type) {
-    case ActionType.LOGIN:
-      return state
-
+    case LOGIN:
+    case REGISTER:
+    case CURRENT_USER:
+      return {
+        ...state,
+        user: action.payload,
+        currentUser: action.user
+      }
     default:
       return state
   }

@@ -1,8 +1,10 @@
 import { Fragment } from 'react'
-import { Form, Input, Button } from 'antd'
-import { CloseOutlined, DoubleLeftOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Form, Input, Button, message } from 'antd'
+import { DoubleLeftOutlined } from '@ant-design/icons'
+import agent from '../../agent'
+import { store } from '../../store'
 import '../Login/Login.css'
+import { REGISTER } from '../../constants/ActionType'
 const layout = {
   labelCol: {
     span: 6
@@ -11,9 +13,23 @@ const layout = {
     span: 14
   }
 }
-function Register() {
-  const onFinish = values => {
-    console.log('Success:', values)
+function Register({ visibleLogin, visibleRegister }) {
+  const OpenLogin = () => {
+    visibleRegister(false)
+    visibleLogin(true)
+  }
+  const onFinish = async values => {
+    try {
+      const result = await agent.Auth.register(values)
+      const payload = await result.data.user
+      store.dispatch({ type: REGISTER, payload })
+      localStorage.setItem('token', result.data.token)
+      message.info('đăng ký thành công')
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+      message.info('tài khoản đã được sử dụng')
+    }
   }
 
   const onFinishFailed = errorInfo => {
@@ -22,7 +38,7 @@ function Register() {
   return (
     <div className="Modal-Container">
       <Fragment>
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '80px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Form
             {...layout}
             name="basic"
@@ -30,7 +46,6 @@ function Register() {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             style={{
-              boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',
               width: '700px',
               padding: '10px 0px',
               background: 'white',
@@ -38,36 +53,20 @@ function Register() {
             }}
             className="login mt-5"
           >
-            <div className="absolute-icon icon-close">
-              <Link className="link" to="/">
-                <p>
-                  <CloseOutlined />
-                </p>
-              </Link>
-            </div>
             <div className="absolute-icon icon-back">
-              <Link className="link" to="/login">
-                <p>
-                  <DoubleLeftOutlined />
-                </p>
-              </Link>
+              <p onClick={OpenLogin}>
+                <DoubleLeftOutlined />
+              </p>
             </div>
             <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <p style={{ fontSize: '25px', fontWeight: '500', letterSpacing: '1px', marginTop: '30px' }}>Đăng ký</p>
             </div>
+
             <Form.Item
-              name="email"
-              label="Email"
-              rules={[
-                {
-                  type: 'email',
-                  message: 'The input is not valid E-mail!'
-                },
-                {
-                  required: true,
-                  message: 'Please input your E-mail!'
-                }
-              ]}
+              label="Tài khoản"
+              name="username"
+              rules={[{ required: true, message: 'Please input your username!' }]}
+              className="field"
             >
               <Input />
             </Form.Item>
@@ -81,27 +80,29 @@ function Register() {
             >
               <Input.Password />
             </Form.Item>
-            <Form.Item
-              label="Nhập lại mật khẩu"
-              name="comfimpassword"
-              rules={[{ required: true, message: 'Please input your password!' }]}
-              className="field"
-              style={{ marginTop: '10px' }}
-            >
-              <Input.Password />
-            </Form.Item>
-            {/* <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item> */}
             <Form.Item wrapperCol={{ offset: 7, span: 16 }}>
               <Button
                 type="primary"
                 htmlType="submit"
-                style={{ width: '300px', background: '#FFA500', border: 'none', marginTop: '10px' }}
+                style={{ width: '200px', background: '#FFA500', border: 'none', marginTop: '10px' }}
               >
-                Đăng nhập
+                Đăng ký
               </Button>
             </Form.Item>
+            <div
+              className="bottom-formlogin"
+              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            ></div>
+            <div
+              className="bottom-formlogin"
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: '-12px'
+              }}
+            ></div>
           </Form>
         </div>
       </Fragment>

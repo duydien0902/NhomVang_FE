@@ -62,7 +62,6 @@ header {
 .show-nav-links {
   display: none;
 }
-
 @media only screen and (max-width: 1144px) {
   .header {
     width: 100vw;
@@ -99,6 +98,7 @@ header {
     padding-bottom: 5px;
   }
 }
+
 @media only screen and (max-width: 947px) {
   .reponsive-input {
     width: 50%;
