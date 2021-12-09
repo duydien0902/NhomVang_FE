@@ -1,4 +1,4 @@
-import { CART_PAGE_LOADED, CART_PAGE_UNLOADED } from '../constants/ActionType'
+import { ADD_ITEM, CART_PAGE_LOADED, CART_PAGE_UNLOADED, REMOVE_ITEM, UPDATE_QUANTITY } from '../constants/ActionType'
 
 const initialState = {
   itemList: [
@@ -39,17 +39,91 @@ const initialState = {
       quantity: 1,
       inStock: 100
     }
-  ]
+  ],
+  listedSubtotal: 0,
+  discountSubtotal: 0,
+  vat: 0,
+  total: 0
 }
 
 export default function CartReducer(state = initialState, action) {
   switch (action.type) {
-    case CART_PAGE_LOADED:
+    case CART_PAGE_LOADED: {
+      const listedSubtotal = state.itemList.reduce((total, item) => (total += item.listedPrice * item.quantity), 0)
+      const discountSubtotal = state.itemList.reduce((total, item) => {
+        const amount = item.discountPrice || item.listedPrice
+        return total + amount * item.quantity
+      }, 0)
+      const total = discountSubtotal
+        ? discountSubtotal + discountSubtotal * state.vat
+        : listedSubtotal + listedSubtotal * state.vat
       return {
-        ...state
+        ...state,
+        listedSubtotal,
+        discountSubtotal,
+        total
       }
+    }
+
     case CART_PAGE_UNLOADED:
       return initialState
+
+    case UPDATE_QUANTITY: {
+      state.itemList[state.itemList.findIndex(item => item.slug === action.slug)].quantity = action.value
+      const listedSubtotal = state.itemList.reduce((total, item) => (total += item.listedPrice * item.quantity), 0)
+      const discountSubtotal = state.itemList.reduce((total, item) => {
+        const amount = item.discountPrice || item.listedPrice
+        return total + amount * item.quantity
+      }, 0)
+      const total = discountSubtotal
+        ? discountSubtotal + discountSubtotal * state.vat
+        : listedSubtotal + listedSubtotal * state.vat
+      return {
+        ...state,
+        listedSubtotal,
+        discountSubtotal,
+        total
+      }
+    }
+
+    case ADD_ITEM: {
+      const itemList = state.itemList.push(action.item)
+      const listedSubtotal = itemList.reduce((total, item) => (total += item.listedPrice * item.quantity), 0)
+      const discountSubtotal = itemList.reduce((total, item) => {
+        const amount = item.discountPrice || item.listedPrice
+        return total + amount * item.quantity
+      }, 0)
+      const total = discountSubtotal
+        ? discountSubtotal + discountSubtotal * state.vat
+        : listedSubtotal + listedSubtotal * state.vat
+      return {
+        ...state,
+        itemList,
+        listedSubtotal,
+        discountSubtotal,
+        total
+      }
+    }
+
+    case REMOVE_ITEM: {
+      const itemList = state.itemList.filter(item => item.slug !== action.slug)
+      const listedSubtotal = itemList.reduce((total, item) => (total += item.listedPrice * item.quantity), 0)
+      const discountSubtotal = itemList.reduce((total, item) => {
+        const amount = item.discountPrice || item.listedPrice
+        return total + amount * item.quantity
+      }, 0)
+      const total = discountSubtotal
+        ? discountSubtotal + discountSubtotal * state.vat
+        : listedSubtotal + listedSubtotal * state.vat
+      return {
+        ...state,
+        itemList,
+        listedSubtotal,
+        discountSubtotal,
+        total
+      }
+    }
+
     default:
       return state
   }

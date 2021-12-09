@@ -1,3 +1,20 @@
 .cart-total {
-  margin-top: 1rem;
+  float: right;
+  width: 500px;
+  max-width: 100%;
+}
+
+.cart-total .cart-detail {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-total .cart-detail .title {
+  margin: 0
+}
+
+.cart-total .checkout-btn {
+  width: 100%;
 }
