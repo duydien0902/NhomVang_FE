@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { REMOVE_ITEM, UPDATE_QUANTITY } from '../../../constants/ActionType'
 import { Button, Divider, Image, InputNumber, Space, Table, Typography } from 'antd'
-import { DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons'
 import { toLocaleStringCurrency } from '../../../utils'
 import './CartTable.css'
 
@@ -10,17 +10,10 @@ const { Text, Title } = Typography
 export default function CartTable(props) {
   const dispatch = useDispatch()
   const onRemoveProduct = slug => {
-    dispatch({
-      type: REMOVE_ITEM,
-      slug
-    })
+    dispatch({ type: REMOVE_ITEM, slug })
   }
   const onQuantityChange = (value, slug) => {
-    dispatch({
-      type: UPDATE_QUANTITY,
-      slug,
-      value
-    })
+    dispatch(value === 0 ? { type: REMOVE_ITEM, slug } : { type: UPDATE_QUANTITY, slug, value })
   }
 
   const columns = [
@@ -32,7 +25,7 @@ export default function CartTable(props) {
     {
       dataIndex: 'thumbnail',
       key: 'thumbnail',
-      width: 40,
+      width: 30,
       responsive: ['lg'],
       render: (text, record) => <Image src={record.thumbnail} />
     },
@@ -40,7 +33,15 @@ export default function CartTable(props) {
       title: 'Product',
       dataIndex: 'name',
       key: 'name',
-      width: 80,
+      width: 50,
+      ellipsis: true,
+      textWrap: 'word-break'
+    },
+    {
+      title: 'Supplier',
+      dataIndex: 'supplier',
+      key: 'supplier',
+      width: 30,
       ellipsis: true,
       textWrap: 'word-break'
     },
@@ -48,7 +49,7 @@ export default function CartTable(props) {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
-      width: 25,
+      width: 30,
       align: 'center',
       render: (text, record) => {
         const { listedPrice, discountPrice } = record
@@ -72,20 +73,34 @@ export default function CartTable(props) {
       width: 20,
       align: 'center',
       render: (text, record) => (
-        <InputNumber
-          min={1}
-          max={record.inStock}
-          value={record.quantity}
-          onChange={value => onQuantityChange(value, record.slug)}
-          style={{ maxWidth: '100%', width: '65%' }}
-        />
+        <div className="input-number">
+          <Button
+            className="input-number-control-btn plus-btn"
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => onQuantityChange(record.quantity + 1, record.slug)}
+          />
+          <InputNumber
+            min={0}
+            max={record.inStock}
+            value={record.quantity}
+            onChange={value => onQuantityChange(value, record.slug)}
+            style={{ width: 70 }}
+          />
+          <Button
+            className="input-number-control-btn minus-btn"
+            type="primary"
+            icon={<MinusOutlined />}
+            onClick={() => onQuantityChange(record.quantity - 1, record.slug)}
+          />
+        </div>
       )
     },
     {
       title: 'Subtotal',
       dataIndex: 'subtotal',
       key: 'subtotal',
-      width: 25,
+      width: 30,
       align: 'center',
       render: (text, record) => {
         const { listedPrice, discountPrice, quantity } = record
