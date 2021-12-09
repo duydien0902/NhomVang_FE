@@ -1,0 +1,14 @@
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cart-empty .cart-icon {
+  font-size: 100px;
+}
+
+.cart-empty .cart-empty-text {
+  padding-top: 2rem;
+}

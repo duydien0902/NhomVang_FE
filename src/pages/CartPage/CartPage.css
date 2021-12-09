@@ -1,0 +1,20 @@
+.cart-page {
+  padding: 150px 100px 100px;
+  margin: auto;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+@media (max-width: 1500px) {
+  .cart-page {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .cart-page {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}

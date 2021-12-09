@@ -5,6 +5,7 @@ import Footer from '../components/Common/Footer/Footer'
 import Homepage from './HomePage'
 import NewsPage from './NewsPage'
 import NewsDetail from '../components/News/index'
+import CartPage from './CartPage'
 function Pages() {
   return (
     <div>
@@ -13,6 +14,7 @@ function Pages() {
         <Route exact path="/" component={Homepage} />
         <Route path="/news" component={NewsPage} />
         <Route path="/blog/:slug" component={NewsDetail} />
+        <Route path="/cart" component={CartPage} />
       </Switch>
       <Footer />
     </div>
