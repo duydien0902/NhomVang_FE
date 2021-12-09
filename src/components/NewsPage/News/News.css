@@ -1,9 +1,23 @@
 .news-detail {
   width: 100%;
-  padding: 150px 1rem 100px;
+  padding: 120px 1rem 100px;
   margin-left: auto;
   margin-right: auto;
   font-size: 1rem;
+}
+
+.news-detail > * {
+  margin-bottom: 32px;
+}
+
+.news-detail .news-title {
+  display: block;
+  overflow: hidden;
+  line-height: 56px;
+  font-size: 48px;
+  color: #333;
+  font-weight: 600;
+  margin: 0 auto 40px;
 }
 
 .news-detail figure.image {
@@ -14,7 +28,7 @@
 }
 
 .news-detail figure.image figcaption {
-  font-size: 0.75em;
+  font-size: 0.9rem;
   padding: 0.6em;
 }
 

@@ -74,7 +74,7 @@ function NewsSlider() {
   const newsList = useSelector(state => state.news.listnews)
   useEffect(() => {
     async function fetchNewsList() {
-      const result = await agent.News.getnews()
+      const result = await agent.News.getAll(5)
       const payload = result.data.newsList
       store.dispatch({ type: LIST_NEWS, payload })
     }

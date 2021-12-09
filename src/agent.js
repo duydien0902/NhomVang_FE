@@ -1,15 +1,25 @@
 import axios from 'axios'
 const instance = axios.create({
-  baseURL: 'https://nhomvang-be.herokuapp.com'
+  baseURL: 'https://nhomvang-be.herokuapp.com',
+  timeout: 20000
 })
+const tokenPlugin = req => {
+  const token = localStorage.getItem('token')
+  req.headers['Authorization'] = 'Bearer ' + token
+  return req
+}
+instance.interceptors.request.use(tokenPlugin)
 const Auth = {
   login: values => instance.post('/auth/login', { user: values }),
   register: values => instance.post('/auth/register', { user: values }),
-  currentuser: token => instance.get('/auth/current', { headers: { Authorization: `Bearer ${token}` } })
+  current: () => instance.get('/auth/current')
 }
 const News = {
-  getnews: () => instance.get(`/news?limit=${5}&offset=${2}`),
-  newsslug: slug => instance.get(`/news/${slug}`)
+  getAll: (limit = 10, page = 0) =>
+    instance.get(`/news`, {
+      params: { limit, offset: page * limit || 0 }
+    }),
+  getBySlug: slug => instance.get(`/news/${slug}`)
 }
 const agent = {
   Auth,

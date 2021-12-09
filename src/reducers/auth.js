@@ -8,7 +8,7 @@ export default function AuthReducers(state = {}, action) {
       return {
         ...state,
         user: action.payload,
-        currentUser: action.user
+        current: action.user
       }
     default:
       return state

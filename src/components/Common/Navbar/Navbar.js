@@ -20,7 +20,8 @@ import { CURRENT_USER } from '../../../constants/ActionType'
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
   const style = { fontSize: 22 }
-  const currenUser = useSelector(state => state.auth.currentUser)
+  const currenUser = useSelector(state => state.auth.current)
+  console.log(currenUser)
   const history = useHistory()
   const Logout = () => {
     localStorage.removeItem('token')
@@ -28,14 +29,11 @@ function Navbar() {
     window.location.reload()
   }
   useEffect(() => {
-    var token = localStorage.getItem('token')
     async function fetchCurrentUser() {
       try {
-        if (token) {
-          const result = await agent.Auth.currentuser(token)
-          const user = result.data.user
-          store.dispatch({ type: CURRENT_USER, user })
-        }
+        const result = await agent.Auth.current()
+        const user = result.data.user
+        store.dispatch({ type: CURRENT_USER, user })
       } catch (error) {
         console.log(error)
       }
