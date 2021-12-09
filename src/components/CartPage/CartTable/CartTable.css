@@ -1,1 +1,61 @@
+.cart-table tr th {
+  background: #ededed;
+}
 
+.cart-table .input-number {
+  display: flex;
+  flex-direction: row;
+}
+
+.cart-table .input-number-control-btn {
+  border: none;
+  box-shadow: none;
+  background: gray;
+}
+
+.cart-table .input-number-control-btn:hover {
+  background: rgb(150, 150, 150);
+}
+
+.cart-table .input-number-control-btn:active {
+  background: rgb(95, 95, 95);
+}
+
+.cart-table .input-number-control-btn.plus-btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.cart-table .input-number-control-btn.minus-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.cart-table .ant-input-number {
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+.cart-table .ant-input-number:hover {
+  border-color: gray !important;
+}
+
+.cart-table .ant-input-number-focused {
+  border-color: gray !important;
+  box-shadow: none !important;
+}
+
+.cart-table .ant-input-number-input-wrap {
+  border: none;
+  width: auto;
+}
+
+.cart-table .ant-input-number-input-wrap input {
+  text-align: center;
+  padding: 0 8px;
+}
+
+.cart-table .ant-input-number-handler-wrap {
+  display: none;
+}
