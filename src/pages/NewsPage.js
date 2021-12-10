@@ -7,7 +7,7 @@ import NewBar from '../components/NewsPage/NewsBar'
 export default function NewsPage() {
   useEffect(() => {
     async function fetchData() {
-      const result = await agent.News.getAll()
+      const result = await agent.News.getAll(5)
       const payload = await result.data.newsList
       store.dispatch({ type: LIST_NEWS, payload })
     }

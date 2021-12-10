@@ -87,7 +87,7 @@ function NewsSlider() {
         <Slider {...settings}>
           {newsList ? (
             newsList.map(item => (
-              <div className="container-Img-NewsSlider">
+              <div key={item.slug} className="container-Img-NewsSlider">
                 <Link to={`/blog/${item.slug}`}>
                   <div className="card-wapper">
                     <div className="card">

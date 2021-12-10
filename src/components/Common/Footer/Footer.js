@@ -4,7 +4,7 @@ import { Row, Col } from 'antd'
 
 function Footer() {
   return (
-    <div className="container-Footer" style={{ background: 'white' }}>
+    <div className="container-Footer" style={{ background: '#21BF73' }}>
       <div className="container-Footer-Menu">
         <div className="Footer-Menu">
           <ul>

@@ -1,7 +1,13 @@
 import axios from 'axios'
+import queryString from 'query-string'
+
 const instance = axios.create({
   baseURL: 'https://nhomvang-be.herokuapp.com',
-  timeout: 20000
+  timeout: 20000,
+  headers: {
+    'content-type': 'application/json'
+  },
+  paramsSerializer: params => queryString.stringify(params)
 })
 const tokenPlugin = req => {
   const token = localStorage.getItem('token')

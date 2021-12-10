@@ -39,7 +39,7 @@ function Navbar() {
       }
     }
     fetchCurrentUser()
-  }, [currenUser])
+  }, [])
 
   const menu = currenUser ? (
     <Menu>
@@ -79,13 +79,15 @@ function Navbar() {
           <div className="nav-links">
             <ul>
               <span className=" reponsive-logo ">
-                <li className="cursor " style={{ color: 'red', fontWeight: '700' }}>
+                <li className="cursor " style={{ color: 'white', fontWeight: '700' }}>
                   LOGO
                 </li>
               </span>
               {
                 <span className={showNavLinks ? 'nav-link-mobile' : 'nav-links-reponsive'}>
-                  <li className="cursor">Home</li>
+                  <Link className="link" to="/">
+                    <li className="cursor">Home</li>
+                  </Link>
                   <li className="cursor">Products</li>
                   <Link className="link" to="/news">
                     <li className="cursor">News</li>
