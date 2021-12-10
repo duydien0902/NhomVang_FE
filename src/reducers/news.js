@@ -4,7 +4,8 @@ export default function NewsReducers(state = {}, action) {
     case LIST_NEWS:
       return {
         ...state,
-        listnews: action.payload
+        listnews: action.payload,
+        total: action.total
       }
     default:
       return state

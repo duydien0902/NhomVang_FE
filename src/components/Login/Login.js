@@ -27,7 +27,7 @@ function Login({ visibleLogin, visibleRegister }) {
       message.info('đăng nhập thành công')
       window.location.reload()
     } catch (error) {
-      console.log(error)
+      console.log(error.response)
       message.info('đăng nhập thất bại')
     }
   }

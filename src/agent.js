@@ -11,7 +11,7 @@ const instance = axios.create({
 })
 const tokenPlugin = req => {
   const token = localStorage.getItem('token')
-  req.headers['Authorization'] = 'Bearer' + token
+  req.headers['Authorization'] = 'Bearer ' + token
   return req
 }
 instance.interceptors.request.use(tokenPlugin)

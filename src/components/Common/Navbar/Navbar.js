@@ -20,7 +20,8 @@ import { CURRENT_USER } from '../../../constants/ActionType'
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
   const style = { fontSize: 22 }
-  const currenUser = useSelector(state => state.auth.currentUser)
+  const currenUser = useSelector(state => state.auth.current)
+  console.log(currenUser)
   const history = useHistory()
   const Logout = () => {
     localStorage.removeItem('token')
@@ -28,20 +29,17 @@ function Navbar() {
     window.location.reload()
   }
   useEffect(() => {
-    var token = localStorage.getItem('token')
     async function fetchCurrentUser() {
       try {
-        if (token) {
-          const result = await agent.Auth.currentuser(token)
-          const user = result.data.user
-          store.dispatch({ type: CURRENT_USER, user })
-        }
+        const result = await agent.Auth.current()
+        const user = result.data.user
+        store.dispatch({ type: CURRENT_USER, user })
       } catch (error) {
         console.log(error)
       }
     }
     fetchCurrentUser()
-  }, [currenUser])
+  }, [])
 
   const menu = currenUser ? (
     <Menu>
@@ -81,13 +79,15 @@ function Navbar() {
           <div className="nav-links">
             <ul>
               <span className=" reponsive-logo ">
-                <li className="cursor " style={{ color: 'red', fontWeight: '700' }}>
+                <li className="cursor " style={{ color: 'white', fontWeight: '700' }}>
                   LOGO
                 </li>
               </span>
               {
                 <span className={showNavLinks ? 'nav-link-mobile' : 'nav-links-reponsive'}>
-                  <li className="cursor">Home</li>
+                  <Link className="link" to="/">
+                    <li className="cursor">Home</li>
+                  </Link>
                   <li className="cursor">Products</li>
                   <Link className="link" to="/news">
                     <li className="cursor">News</li>

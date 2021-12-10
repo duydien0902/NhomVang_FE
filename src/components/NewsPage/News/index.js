@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import agent from '../../agent'
-import { store } from '../../store'
-import { SELECTED_NEWS } from '../../constants/ActionType'
+import agent from '../../../agent'
+import { store } from '../../../store'
+import { SELECTED_NEWS } from '../../../constants/ActionType'
 import { Image, Spin } from 'antd'
-import defaultNewsImage from '../../assets/defaultNewsImage.png'
-import { decodeHTMLContent } from '../../utils'
+import defaultNewsImage from '../../../assets/defaultNewsImage.png'
+import { decodeHTMLContent } from '../../../utils'
 import './News.css'
 const NewsImage = ({ src }) => {
   return <Image className="news-thumbnail" src={src} fallback={defaultNewsImage} preview={false} />
