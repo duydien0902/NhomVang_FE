@@ -5,6 +5,14 @@
   min-width: 100%;
 }
 
+.cart-page .cart-page-bottom {
+  margin-top: 2rem;
+}
+
+.cart-page .cart-page-bottom .continue-btn {
+  margin-bottom: 1rem;
+}
+
 @media (max-width: 1500px) {
   .cart-page {
     padding-left: 60px;
