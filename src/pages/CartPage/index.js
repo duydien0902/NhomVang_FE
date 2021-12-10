@@ -1,4 +1,4 @@
-import { Space } from 'antd'
+import { Button, Space } from 'antd'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import CartEmpty from '../../components/CartPage/CartEmpty'
@@ -9,7 +9,7 @@ import { store } from '../../store'
 import './CartPage.css'
 
 export default function CartPage() {
-  const { itemList } = useSelector(state => state.cart)
+  const { itemList, vat, listedSubtotal, discountSubtotal, total } = useSelector(state => state.cart)
 
   const onLoad = () => {
     store.dispatch({ type: CART_PAGE_LOADED })
@@ -30,7 +30,12 @@ export default function CartPage() {
       {itemList.length > 0 ? (
         <>
           <CartTable cart={itemList} />
-          <CartTotal />
+          <div className="cart-page-bottom">
+            <Button className="continue-btn" type="primary" size="large">
+              Continue shopping
+            </Button>
+            <CartTotal vat={vat} listedSubtotal={listedSubtotal} discountSubtotal={discountSubtotal} total={total} />
+          </div>
         </>
       ) : (
         <CartEmpty />
