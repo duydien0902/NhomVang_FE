@@ -1,21 +1,21 @@
 import { Button, Space } from 'antd'
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import CartEmpty from '../../components/CartPage/CartEmpty'
 import CartTable from '../../components/CartPage/CartTable'
 import CartTotal from '../../components/CartPage/CartTotal'
 import { CART_PAGE_LOADED, CART_PAGE_UNLOADED } from '../../constants/ActionType'
-import { store } from '../../store'
 import './CartPage.css'
 
 export default function CartPage() {
+  const dispatch = useDispatch()
   const { itemList, vat, listedSubtotal, discountSubtotal, total } = useSelector(state => state.cart)
 
   const onLoad = () => {
-    store.dispatch({ type: CART_PAGE_LOADED })
+    dispatch({ type: CART_PAGE_LOADED })
   }
   const onUnload = () => {
-    store.dispatch({ type: CART_PAGE_UNLOADED })
+    dispatch({ type: CART_PAGE_UNLOADED })
   }
 
   useEffect(() => {
@@ -23,6 +23,7 @@ export default function CartPage() {
     return () => {
       onUnload()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

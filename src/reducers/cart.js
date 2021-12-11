@@ -1,4 +1,12 @@
-import { ADD_ITEM, CART_PAGE_LOADED, CART_PAGE_UNLOADED, REMOVE_ITEM, UPDATE_QUANTITY } from '../constants/ActionType'
+import {
+  ADD_ITEM,
+  CART_PAGE_LOADED,
+  CART_PAGE_UNLOADED,
+  CLOSE_CART_DRAWER,
+  REMOVE_ITEM,
+  TOGGLE_CART_DRAWER,
+  UPDATE_QUANTITY
+} from '../constants/ActionType'
 
 const initialState = {
   itemList: [
@@ -47,7 +55,8 @@ const initialState = {
   listedSubtotal: 0,
   discountSubtotal: 0,
   vat: 0,
-  total: 0
+  total: 0,
+  cartVisible: false
 }
 
 export default function CartReducer(state = initialState, action) {
@@ -127,6 +136,18 @@ export default function CartReducer(state = initialState, action) {
         total
       }
     }
+
+    case TOGGLE_CART_DRAWER:
+      return {
+        ...state,
+        cartVisible: !state.cartVisible
+      }
+
+    case CLOSE_CART_DRAWER:
+      return {
+        ...state,
+        cartVisible: false
+      }
 
     default:
       return state

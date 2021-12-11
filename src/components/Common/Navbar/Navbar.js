@@ -16,7 +16,8 @@ import Register from '../../Register/Register'
 import { useSelector } from 'react-redux'
 import agent from '../../../agent'
 import { store } from '../../../store'
-import { CURRENT_USER } from '../../../constants/ActionType'
+import { CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
+import CartDrawer from '../../CartDrawer'
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
   const style = { fontSize: 22 }
@@ -27,6 +28,9 @@ function Navbar() {
     localStorage.removeItem('token')
     history.push('/')
     window.location.reload()
+  }
+  const toggleCartDrawer = () => {
+    store.dispatch({ type: TOGGLE_CART_DRAWER })
   }
   useEffect(() => {
     async function fetchCurrentUser() {
@@ -137,7 +141,7 @@ function Navbar() {
                   </Dropdown>
                 </span>
               )}
-              <li className="cursor">
+              <li className="cursor" onClick={toggleCartDrawer}>
                 <ShoppingCartOutlined style={style} />
               </li>
               {showNavLinks ? (
@@ -163,6 +167,7 @@ function Navbar() {
       <Modal visible={isModalRegister} onOk={handleOkRegister} onCancel={handleCancelRegister} footer={null}>
         <Register visibleRegister={setIsModalRegister} visibleLogin={setIsModalLogin} />
       </Modal>
+      <CartDrawer />
     </div>
   )
 }
