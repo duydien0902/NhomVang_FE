@@ -9,7 +9,7 @@ import { toLocaleStringCurrency } from '../../utils'
 const { Text } = Typography
 
 function EmptyCartDrawer() {
-  return
+  return <div>Your cart is empty. Let's find a voucher!</div>
 }
 
 function renderPrice(item) {
