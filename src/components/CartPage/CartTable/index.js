@@ -75,10 +75,10 @@ export default function CartTable(props) {
       render: (text, record) => (
         <div className="input-number">
           <Button
-            className="input-number-control-btn plus-btn"
+            className="input-number-control-btn minus-btn"
             type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => onQuantityChange(record.quantity + 1, record.slug)}
+            icon={<MinusOutlined />}
+            onClick={() => onQuantityChange(record.quantity - 1, record.slug)}
           />
           <InputNumber
             min={0}
@@ -88,10 +88,10 @@ export default function CartTable(props) {
             style={{ width: 70 }}
           />
           <Button
-            className="input-number-control-btn minus-btn"
+            className="input-number-control-btn plus-btn"
             type="primary"
-            icon={<MinusOutlined />}
-            onClick={() => onQuantityChange(record.quantity - 1, record.slug)}
+            icon={<PlusOutlined />}
+            onClick={() => onQuantityChange(record.quantity + 1, record.slug)}
           />
         </div>
       )
