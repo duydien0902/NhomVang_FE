@@ -9,9 +9,9 @@ import './CartPage.css'
 
 export default function CartPage() {
   const dispatch = useDispatch()
-  const { itemList, vat, listedSubtotal, discountSubtotal, total } = useSelector(state => state.cart)
+  const { items, discountTotal, total } = useSelector(state => state.cart)
 
-  const onLoad = () => {
+  const onLoad = async () => {
     dispatch({ type: CART_PAGE_LOADED })
   }
   const onUnload = () => {
@@ -28,14 +28,14 @@ export default function CartPage() {
 
   return (
     <Space className="cart-page" direction="vertical">
-      {itemList.length > 0 ? (
+      {items.length > 0 ? (
         <>
-          <CartTable cart={itemList} />
+          <CartTable cart={items} />
           <div className="cart-page-bottom">
             <Button className="continue-btn" type="primary" size="large">
               Continue shopping
             </Button>
-            <CartTotal vat={vat} listedSubtotal={listedSubtotal} discountSubtotal={discountSubtotal} total={total} />
+            <CartTotal total={total} discountSubtotal={discountTotal} />
           </div>
         </>
       ) : (

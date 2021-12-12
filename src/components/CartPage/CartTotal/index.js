@@ -6,7 +6,7 @@ import './CartTotal.css'
 const { Text, Title } = Typography
 
 export default function CartTotal(props) {
-  const { vat, listedSubtotal, discountSubtotal, total } = props
+  const { total, discountTotal } = props
   const itemList = [
     {
       props: {},
@@ -14,32 +14,15 @@ export default function CartTotal(props) {
     },
     {
       props: {},
-      title: 'Subtotal',
-      content: discountSubtotal ? (
-        <Space size="small" direction="vertical">
-          <Text delete>{toLocaleStringCurrency(listedSubtotal, 'vn', 'VND')}</Text>
-          <Text type="success">{toLocaleStringCurrency(discountSubtotal, 'vn', 'VND')}</Text>
-        </Space>
-      ) : (
-        <Text>{toLocaleStringCurrency(listedSubtotal, 'vn', 'VND')}</Text>
-      )
-    },
-    {
-      props: {},
-      title: 'VAT',
-      content: vat ? (
-        <Space size="small" direction="vertical" style={{ alignItems: 'end' }}>
-          <Text>{vat * 100}%</Text>
-          <Text>{toLocaleStringCurrency((discountSubtotal || listedSubtotal) * vat, 'vn', 'VND')}</Text>
-        </Space>
-      ) : (
-        <Text>{0}%</Text>
-      )
-    },
-    {
-      props: {},
       title: 'Total',
-      content: <Text>{toLocaleStringCurrency(total, 'vn', 'VND')}</Text>
+      content: discountTotal ? (
+        <Space size="small" direction="vertical">
+          <Text delete>{toLocaleStringCurrency(total, 'vn', 'VND')}</Text>
+          <Text type="success">{toLocaleStringCurrency(discountTotal, 'vn', 'VND')}</Text>
+        </Space>
+      ) : (
+        <Text>{toLocaleStringCurrency(total, 'vn', 'VND')}</Text>
+      )
     },
     {
       props: {},

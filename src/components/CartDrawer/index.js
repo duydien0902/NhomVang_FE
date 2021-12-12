@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { CLOSE_CART_DRAWER, REMOVE_ITEM, UPDATE_QUANTITY } from '../../constants/ActionType'
 import './CartDrawer.css'
 import { toLocaleStringCurrency } from '../../utils'
+import agent from '../../agent'
 
 const { Text } = Typography
 
@@ -29,16 +30,24 @@ function renderPrice(item) {
 
 export default function CartDrawer() {
   const dispatch = useDispatch()
-  const { cartVisible, itemList, listedSubtotal, discountSubtotal, vat, total } = useSelector(state => state.cart)
+  const { cartVisible, items, total, discountTotal } = useSelector(state => state.cart)
 
   const onCartDrawerClose = () => {
     dispatch({ type: CLOSE_CART_DRAWER })
   }
-  const onRemoveProduct = slug => {
-    dispatch({ type: REMOVE_ITEM, slug })
+  const onRemoveProduct = async id => {
+    const cart = await agent.Cart.removeItem(id)
+    dispatch({ type: REMOVE_ITEM, cart })
   }
-  const onQuantityChange = (value, slug) => {
-    dispatch(value === 0 ? { type: REMOVE_ITEM, slug } : { type: UPDATE_QUANTITY, slug, value })
+  const onQuantityChange = async (value, id) => {
+    let cart
+    if (value === 0) {
+      cart = await agent.Cart.removeItem(id)
+      dispatch({ type: REMOVE_ITEM, cart })
+    } else {
+      cart = await agent.Cart.updateItem(id, value)
+      dispatch({ type: UPDATE_QUANTITY, cart })
+    }
   }
 
   return (
@@ -55,12 +64,12 @@ export default function CartDrawer() {
         </Space>
       }
     >
-      {itemList.length === 0 ? (
+      {items.length === 0 ? (
         <EmptyCartDrawer />
       ) : (
         <Space className="cart-content" direction="vertical">
           <List itemLayout="vertical">
-            {itemList.map(item => {
+            {items.map(item => {
               return (
                 <List.Item key={item.slug} className="item">
                   <div className="row">
@@ -104,30 +113,15 @@ export default function CartDrawer() {
           </List>
           <div style={{ marginBottom: 16 }}>
             <div className="row">
-              <span className="title">Subtotal</span>
-              {discountSubtotal ? (
+              <span className="title">Total</span>
+              {discountTotal ? (
                 <div>
-                  <Text delete>{toLocaleStringCurrency(listedSubtotal, 'vn', 'VND')}</Text> <br />
-                  <Text type="success">{toLocaleStringCurrency(discountSubtotal, 'vn', 'VND')}</Text>
+                  <Text delete>{toLocaleStringCurrency(total, 'vn', 'VND')}</Text> <br />
+                  <Text type="success">{toLocaleStringCurrency(discountTotal, 'vn', 'VND')}</Text>
                 </div>
               ) : (
-                <Text>{toLocaleStringCurrency(listedSubtotal, 'vn', 'VND')}</Text>
+                <Text>{toLocaleStringCurrency(total, 'vn', 'VND')}</Text>
               )}
-            </div>
-            <div className="row">
-              <span className="title">VAT</span>
-              {vat ? (
-                <Space size="small" direction="vertical" style={{ alignItems: 'end' }}>
-                  <Text>{vat * 100}%</Text>
-                  <Text>{toLocaleStringCurrency((discountSubtotal || listedSubtotal) * vat, 'vn', 'VND')}</Text>
-                </Space>
-              ) : (
-                <Text>{0}%</Text>
-              )}
-            </div>
-            <div className="row">
-              <span className="title">Total</span>
-              <Text>{toLocaleStringCurrency(total, 'vn', 'VND')}</Text>
             </div>
             <Button style={{ width: '100%', marginTop: 8 }} size="large" type="primary">
               Proceed to checkout

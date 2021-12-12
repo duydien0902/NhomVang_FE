@@ -27,8 +27,15 @@ const News = {
     }),
   getBySlug: slug => instance.get(`/news/${slug}`)
 }
+const Cart = {
+  current: () => instance.get('/cart'),
+  addItem: (_id, quantity) => instance.post('/cart/add', { item: { _id, quantity } }),
+  removeItem: _id => instance.post('/cart/remove', { _id }),
+  updateItem: (_id, quantity) => instance.post('/cart/update', { item: { _id, quantity } })
+}
 const agent = {
   Auth,
-  News
+  News,
+  Cart
 }
 export default agent
