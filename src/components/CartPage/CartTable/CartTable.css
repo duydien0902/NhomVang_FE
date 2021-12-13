@@ -80,6 +80,8 @@
 
 .cart-list .item .item-thumbnail {
   max-width: 500px;
+  max-height: 200px;
+  width: auto;
 }
 
 .cart-list .item .item-name {
