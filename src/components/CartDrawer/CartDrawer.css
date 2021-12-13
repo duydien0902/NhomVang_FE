@@ -12,6 +12,10 @@
   flex-direction: column;
 }
 
+.cart-drawer .cart-content .item .item-name {
+  padding-left: 8px;
+}
+
 .cart-drawer .cart-content .row {
   display: flex;
   justify-content: space-between;

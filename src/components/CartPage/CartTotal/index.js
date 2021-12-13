@@ -1,16 +1,39 @@
 import { Button, List, Space, Typography } from 'antd'
+import Checkbox from 'antd/lib/checkbox/Checkbox'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { ADD_ALL_TO_CHECKOUT, REMOVE_ALL_FROM_CHECKOUT } from '../../../constants/ActionType'
 import { toLocaleStringCurrency } from '../../../utils'
 import './CartTotal.css'
 
 const { Text, Title } = Typography
 
-export default function CartTotal(props) {
-  const { total, discountTotal } = props
+export default function CartTotal() {
+  const dispatch = useDispatch()
+  const { items, checkoutItems, total, discountTotal } = useSelector(state => state.cart)
+
+  const onItemAllCheck = e => {
+    dispatch({
+      type: e.target.checked ? ADD_ALL_TO_CHECKOUT : REMOVE_ALL_FROM_CHECKOUT
+    })
+  }
+
   const itemList = [
     {
       props: {},
-      content: <Title level={2}>Cart totals</Title>
+      content: <Title level={2}>Payment</Title>
+    },
+    {
+      props: {},
+      content: (
+        <Checkbox
+          checked={checkoutItems.length === items.length}
+          indeterminate={checkoutItems.length && checkoutItems.length < items.length}
+          onChange={onItemAllCheck}
+        >
+          Select all
+        </Checkbox>
+      )
     },
     {
       props: {},
@@ -28,7 +51,7 @@ export default function CartTotal(props) {
       props: {},
       content: (
         <Button className="checkout-btn" type="primary" size="large">
-          Proceed to checkout
+          Purchase
         </Button>
       )
     }
