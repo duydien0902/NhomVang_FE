@@ -16,13 +16,13 @@ import Register from '../../Register/Register'
 import { useSelector } from 'react-redux'
 import agent from '../../../agent'
 import { store } from '../../../store'
-import { CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
+import { CART_LOADED, CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
 import CartDrawer from '../../CartDrawer'
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
   const style = { fontSize: 22 }
-  const currenUser = useSelector(state => state.auth.current)
-  console.log(currenUser)
+  const currentUser = useSelector(state => state.auth.current)
+
   const history = useHistory()
   const Logout = () => {
     localStorage.removeItem('token')
@@ -45,11 +45,28 @@ function Navbar() {
     fetchCurrentUser()
   }, [])
 
-  const menu = currenUser ? (
+  useEffect(() => {
+    async function fetchCurrentCart() {
+      let cart
+      try {
+        const result = await agent.Cart.current()
+        cart = result.data.cart
+      } catch (error) {
+        console.log(error)
+      } finally {
+        store.dispatch({ type: CART_LOADED, cart })
+      }
+    }
+    if (currentUser) {
+      fetchCurrentCart()
+    }
+  }, [currentUser])
+
+  const menu = currentUser ? (
     <Menu>
       <Menu.Item style={{ width: '200px' }}>
         <li className="cursor" style={{ fontSize: '16px' }}>
-          {currenUser.displayname}
+          {currentUser.displayname}
         </li>
       </Menu.Item>
       <Menu.Item>
@@ -119,7 +136,7 @@ function Navbar() {
                   />
                 </li>
               </span>
-              {!currenUser ? (
+              {!currentUser ? (
                 <li className="cursor" type="primary" onClick={showModal}>
                   <UserOutlined style={style} />
                 </li>
