@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import defaultNewsImage from '../../../assets/defaultNewsImage.png'
+import agent from '../../../agent'
+import { store } from '../../../store'
 import './NewsBar.css'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-function NewsBar() {
-  const listnewsbar = useSelector(state => state.news.listnews)
+import { LIST_NEWS } from '../../../constants/ActionType'
+function NewsSlider() {
+  const newsList = useSelector(state => state.news.listnews)
+  useEffect(() => {
+    async function fetchNewsList() {
+      const payload = await agent.News.getAll(5)
+      store.dispatch({ type: LIST_NEWS, payload })
+    }
+    fetchNewsList()
+  }, [])
   return (
     <div style={{ width: '100%', paddingBottom: '80px' }}>
       <div className="title-news" style={{ marginTop: '120px' }}>
@@ -14,8 +24,8 @@ function NewsBar() {
       </div>
       <div style={{ width: '90%', margin: '0 auto' }}>
         <div className="NewsBar">
-          {listnewsbar
-            ? listnewsbar.map(news => (
+          {newsList
+            ? newsList.map(news => (
                 <div key={news.slug} className="container-NewsBar">
                   <div className="container-NewsBar-img">
                     {<img src={news.thumbnail || defaultNewsImage} alt="news" />}
@@ -40,4 +50,4 @@ function NewsBar() {
   )
 }
 
-export default NewsBar
+export default NewsSlider
