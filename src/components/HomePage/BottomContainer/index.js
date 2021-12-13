@@ -1,6 +1,6 @@
 import React from 'react'
 import HotDeals from '../HotDeals'
-import NewsSlider from '../NewsSlider'
+import NewsBar from '../NewsBar'
 import NewsLetter from '../NewsLetter'
 import Img from '../../../assets/imgbg.jpg'
 function BottomContainer() {
@@ -17,7 +17,7 @@ function BottomContainer() {
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
           <HotDeals />
           <div>
-            <NewsSlider />
+            <NewsBar />
             <NewsLetter />
           </div>
         </div>

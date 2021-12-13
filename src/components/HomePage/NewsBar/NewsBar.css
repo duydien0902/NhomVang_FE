@@ -1,3 +1,14 @@
+.wrapper-NewsSlider {
+  background-color: white;
+  margin-top: 50px;
+  padding-bottom: 50px;
+  padding-top: 60px;
+}
+.wrapper-NewsSlider h1 {
+  color: black;
+  text-align: center;
+  margin-bottom: 30px;
+}
 .NewsBar {
   width: 100%;
   margin: 0 auto;
@@ -16,7 +27,7 @@
   grid-row: 1/5;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 20%;
+  grid-template-rows: 1fr auto;
   padding: 20px;
   background-color: rgb(252, 210, 134);
   border-radius: 10px;
@@ -47,13 +58,10 @@
 .title-news h1 {
   width: 100%;
   text-align: center;
-  border-bottom: 1px solid #000;
-  line-height: 0.1em;
-  margin: 10px 0 20px;
 }
 .title-news h1 span {
-  background: #fff;
-  padding: 0 10px;
+  /* background: #fff; */
+  color: white;
 }
 @media only screen and (max-width: 965px) {
   .container-NewsBar:first-child {

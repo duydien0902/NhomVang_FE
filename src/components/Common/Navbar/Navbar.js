@@ -88,8 +88,10 @@ function Navbar() {
                   <Link className="link" to="/">
                     <li className="cursor">Home</li>
                   </Link>
-                  <li className="cursor">Products</li>
-                  <Link className="link" to="/news">
+                  <Link className="link" to="/products/slug">
+                    <li className="cursor">Products</li>
+                  </Link>
+                  <Link className="link" to="/blog/slug">
                     <li className="cursor">News</li>
                   </Link>
                   <li className="cursor">About us</li>
