@@ -11,7 +11,7 @@ export const decodeHTMLContent = input => {
  * @param {String} currency
  * @returns {String}
  */
-export const toLocaleStringCurrency = (input, locale, currency) => {
+export const toLocaleStringCurrency = (input, locale = 'en-US', currency = 'USD') => {
   return input.toLocaleString(locale, {
     style: 'currency',
     currency
