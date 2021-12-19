@@ -18,10 +18,10 @@ function ProductPricefilterSearch() {
           }}
         >
           <div style={{ width: '120px', textAlign: 'left' }}>
-            <InputNumber min={0} step={1000} placeholder="max" addonAfter="VND" />
+            <InputNumber min={0} step={5} placeholder="max" addonAfter="$" />
           </div>
           <div style={{ width: '120px', marginLeft: '30px' }}>
-            <InputNumber min={0} step={1000} placeholder="min" addonAfter="VND" />
+            <InputNumber min={0} step={5} placeholder="min" addonAfter="$" />
           </div>
         </div>
         <div style={{ width: '250px', margin: '20px auto' }}>

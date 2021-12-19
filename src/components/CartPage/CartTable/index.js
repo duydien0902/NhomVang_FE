@@ -21,9 +21,9 @@ const { Text, Title } = Typography
 
 function renderPrice(item) {
   const { listedPrice, discountPrice, quantity } = item
-  const strListedTotal = toLocaleStringCurrency(listedPrice * quantity, 'vn', 'VND')
+  const strListedTotal = toLocaleStringCurrency(listedPrice * quantity)
   if (discountPrice) {
-    const strDiscountTotal = toLocaleStringCurrency(discountPrice * quantity, 'vn', 'VND')
+    const strDiscountTotal = toLocaleStringCurrency(discountPrice * quantity)
     return (
       <div>
         <Text delete>{strListedTotal}</Text> <br />
@@ -129,9 +129,9 @@ export default function CartTable() {
       align: 'center',
       render: (text, record) => {
         const { listedPrice, discountPrice } = record
-        const strListedPrice = toLocaleStringCurrency(listedPrice, 'vn', 'VND')
+        const strListedPrice = toLocaleStringCurrency(listedPrice)
         if (discountPrice) {
-          const strDiscountPrice = toLocaleStringCurrency(discountPrice, 'vn', 'VND')
+          const strDiscountPrice = toLocaleStringCurrency(discountPrice)
           return (
             <Space size="small" direction="vertical">
               <Text delete>{strListedPrice}</Text>
@@ -183,9 +183,9 @@ export default function CartTable() {
       align: 'center',
       render: (text, record) => {
         const { listedPrice, discountPrice, quantity } = record
-        const strListedTotal = toLocaleStringCurrency(listedPrice * quantity, 'vn', 'VND')
+        const strListedTotal = toLocaleStringCurrency(listedPrice * quantity)
         if (discountPrice) {
-          const strDiscountTotal = toLocaleStringCurrency(discountPrice * quantity, 'vn', 'VND')
+          const strDiscountTotal = toLocaleStringCurrency(discountPrice * quantity)
           return <Text>{strDiscountTotal}</Text>
         }
         return strListedTotal

@@ -40,11 +40,11 @@ export default function CartTotal() {
       title: 'Total',
       content: discountTotal ? (
         <Space size="small" direction="vertical">
-          <Text delete>{toLocaleStringCurrency(total, 'vn', 'VND')}</Text>
-          <Text type="success">{toLocaleStringCurrency(discountTotal, 'vn', 'VND')}</Text>
+          <Text delete>{toLocaleStringCurrency(total)}</Text>
+          <Text type="success">{toLocaleStringCurrency(discountTotal)}</Text>
         </Space>
       ) : (
-        <Text>{toLocaleStringCurrency(total, 'vn', 'VND')}</Text>
+        <Text>{toLocaleStringCurrency(total)}</Text>
       )
     },
     {

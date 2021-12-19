@@ -26,9 +26,9 @@ function EmptyCartDrawer() {
 
 function renderPrice(item) {
   const { listedPrice, discountPrice, quantity } = item
-  const strListedTotal = toLocaleStringCurrency(listedPrice * quantity, 'vn', 'VND')
+  const strListedTotal = toLocaleStringCurrency(listedPrice * quantity)
   if (discountPrice) {
-    const strDiscountTotal = toLocaleStringCurrency(discountPrice * quantity, 'vn', 'VND')
+    const strDiscountTotal = toLocaleStringCurrency(discountPrice * quantity)
     return (
       <div>
         <Text delete>{strListedTotal}</Text> <br />
@@ -165,11 +165,11 @@ export default function CartDrawer() {
                 <span className="title">Total</span>
                 {discountTotal ? (
                   <div>
-                    <Text delete>{toLocaleStringCurrency(total, 'vn', 'VND')}</Text> <br />
-                    <Text type="success">{toLocaleStringCurrency(discountTotal, 'vn', 'VND')}</Text>
+                    <Text delete>{toLocaleStringCurrency(total)}</Text> <br />
+                    <Text type="success">{toLocaleStringCurrency(discountTotal)}</Text>
                   </div>
                 ) : (
-                  <Text>{toLocaleStringCurrency(total, 'vn', 'VND')}</Text>
+                  <Text>{toLocaleStringCurrency(total)}</Text>
                 )}
               </div>
               <div className="row">
