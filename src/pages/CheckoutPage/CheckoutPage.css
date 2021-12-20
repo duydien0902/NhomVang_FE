@@ -1,0 +1,24 @@
+.checkout-page {
+  padding: 150px 100px 100px;
+  margin: auto;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+@media (max-width: 1440px) {
+  .checkout-page {
+    padding: 120px 60px 80px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .checkout-page {
+    padding: 120px 40px 60px;
+  }
+}
+
+@media (max-width: 425px) {
+  .checkout-page {
+    padding: 100px 16px 20px;
+  }
+}

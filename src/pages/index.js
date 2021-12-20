@@ -7,6 +7,7 @@ import NewsDetail from '../components/NewsPage/News'
 import CartPage from './CartPage'
 import NewsPage from './NewsPage'
 import ProductPage from './ProductPage'
+import CheckoutPage from './CheckoutPage'
 function Pages() {
   return (
     <div>
@@ -17,6 +18,7 @@ function Pages() {
         <Route path="/blog/:slug" component={NewsDetail} />
         <Route path="/cart" component={CartPage} />
         <Route path="/products/slug" component={ProductPage} />
+        <Route path="/checkout" component={CheckoutPage} />
       </Switch>
       <Footer />
     </div>

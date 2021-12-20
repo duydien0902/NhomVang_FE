@@ -2,6 +2,8 @@ import { Button, List, Space, Typography } from 'antd'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import agent from '../../../agent'
 import { ADD_ALL_TO_CHECKOUT, REMOVE_ALL_FROM_CHECKOUT } from '../../../constants/ActionType'
 import { toLocaleStringCurrency } from '../../../utils'
 import './CartTotal.css'
@@ -9,6 +11,7 @@ import './CartTotal.css'
 const { Text, Title } = Typography
 
 export default function CartTotal() {
+  const history = useHistory()
   const dispatch = useDispatch()
   const { items, checkoutItems, total, discountTotal } = useSelector(state => state.cart)
 
@@ -16,6 +19,23 @@ export default function CartTotal() {
     dispatch({
       type: e.target.checked ? ADD_ALL_TO_CHECKOUT : REMOVE_ALL_FROM_CHECKOUT
     })
+  }
+
+  const onCheckout = async () => {
+    try {
+      const products = checkoutItems.map(item => ({
+        _id: item._id,
+        name: item.name,
+        listedPrice: item.listedPrice,
+        discountPrice: item.discountPrice,
+        quantity: item.quantity
+      }))
+      const res = await agent.Invoice.createInvoice(products)
+      const invoiceId = res.data.invoice._id
+      history.push(`/checkout/${invoiceId}`)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const itemList = [
@@ -50,8 +70,14 @@ export default function CartTotal() {
     {
       props: {},
       content: (
-        <Button className="checkout-btn" type="primary" size="large">
-          Purchase
+        <Button
+          disabled={checkoutItems.length === 0}
+          className="checkout-btn"
+          type="primary"
+          size="large"
+          onClick={onCheckout}
+        >
+          Checkout
         </Button>
       )
     }
