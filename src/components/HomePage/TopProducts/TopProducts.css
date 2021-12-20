@@ -4,8 +4,9 @@
   /* border: 1px solid black; */
 }
 .container h1 {
-  text-align: center;
+  /* text-align: center; */
   margin-bottom: 50px;
+  font-size: 40px;
 }
 .img-item-topproducts {
   margin-bottom: 10px;

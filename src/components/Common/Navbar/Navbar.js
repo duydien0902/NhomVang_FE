@@ -9,7 +9,7 @@ import {
   UnorderedListOutlined,
   CloseOutlined
 } from '@ant-design/icons'
-import { Input, Dropdown, Menu, Modal } from 'antd'
+import { Input, Dropdown, Menu, Modal, message } from 'antd'
 import { Link, useHistory } from 'react-router-dom'
 import Login from '../../Login/Login'
 import Register from '../../Register/Register'
@@ -17,11 +17,11 @@ import { useSelector } from 'react-redux'
 import agent from '../../../agent'
 import { store } from '../../../store'
 import { CURRENT_USER } from '../../../constants/ActionType'
+import logo from '../../../assets/logo.png'
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
   const style = { fontSize: 22 }
   const currenUser = useSelector(state => state.auth.current)
-  console.log(currenUser)
   const history = useHistory()
   const Logout = () => {
     localStorage.removeItem('token')
@@ -40,13 +40,17 @@ function Navbar() {
     }
     fetchCurrentUser()
   }, [])
-
+  const blockclick = () => {
+    message.info('xin hãy đăng nhập')
+  }
   const menu = currenUser ? (
     <Menu>
       <Menu.Item style={{ width: '200px' }}>
-        <li className="cursor" style={{ fontSize: '16px' }}>
-          {currenUser.displayname}
-        </li>
+        <Link to={`/profile/${currenUser.displayname}`}>
+          <li className="cursor" style={{ fontSize: '16px' }}>
+            {currenUser.displayname}
+          </li>
+        </Link>
       </Menu.Item>
       <Menu.Item>
         <li onClick={Logout} className="cursor" style={{ fontSize: '16px' }}>
@@ -79,9 +83,11 @@ function Navbar() {
           <div className="nav-links">
             <ul>
               <span className=" reponsive-logo ">
-                <li className="cursor " style={{ color: 'white', fontWeight: '700' }}>
-                  LOGO
-                </li>
+                <Link className="link" to="/">
+                  <li className="cursor ">
+                    <img src={logo} alt="" />
+                  </li>
+                </Link>
               </span>
               {
                 <span className={showNavLinks ? 'nav-link-mobile' : 'nav-links-reponsive'}>
@@ -94,7 +100,9 @@ function Navbar() {
                   <Link className="link" to="/blog/slug">
                     <li className="cursor">News</li>
                   </Link>
-                  <li className="cursor">About us</li>
+                  <Link className="link" to="/aboutus">
+                    <li className="cursor">About us</li>
+                  </Link>
                 </span>
               }
             </ul>
@@ -116,9 +124,14 @@ function Navbar() {
                 </li>
               </span>
               {!currenUser ? (
-                <li className="cursor" type="primary" onClick={showModal}>
-                  <UserOutlined style={style} />
-                </li>
+                <span>
+                  <li className="cursor" type="primary" onClick={showModal}>
+                    <UserOutlined style={style} />
+                  </li>
+                  <li className="cursor" onClick={blockclick}>
+                    <ShoppingCartOutlined style={style} />
+                  </li>
+                </span>
               ) : (
                 <span>
                   <Dropdown overlay={menu} placement="bottomCenter" arrow>
@@ -137,11 +150,13 @@ function Navbar() {
                       />
                     </li>
                   </Dropdown>
+                  <Link className="link" to="/cart">
+                    <li className="cursor">
+                      <ShoppingCartOutlined style={style} />
+                    </li>
+                  </Link>
                 </span>
               )}
-              <li className="cursor">
-                <ShoppingCartOutlined style={style} />
-              </li>
               {showNavLinks ? (
                 <span className=" show-nav-links" onClick={() => setShowNavLinks(false)}>
                   <li className="cursor ">

@@ -15,20 +15,33 @@ const tokenPlugin = req => {
   return req
 }
 instance.interceptors.request.use(tokenPlugin)
+const pageSize = 5
 const Auth = {
   login: values => instance.post('/auth/login', { user: values }),
   register: values => instance.post('/auth/register', { user: values }),
   current: () => instance.get('/auth/current')
 }
 const News = {
-  getAll: (limit = 10, page = 0) =>
+  getAll: (page = 0) =>
     instance.get(`/news`, {
-      params: { limit, offset: page * limit || 0 }
+      params: {
+        limit: pageSize,
+        offset: page * pageSize || 0
+      }
     }),
   getBySlug: slug => instance.get(`/news/${slug}`)
 }
+const Products = {
+  getAll: (page = 0, filter = {}) =>
+    instance.get(`/products`, {
+      params: { limit: pageSize, offset: page * pageSize || 0, ...filter }
+    }),
+  getBySlug: slug => instance.get(`/products/${slug}`)
+}
 const agent = {
   Auth,
-  News
+  News,
+  Products,
+  pageSize
 }
 export default agent

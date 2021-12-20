@@ -1,9 +1,12 @@
 import React from 'react'
 import Slider from 'react-slick'
+import { Spin } from 'antd'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import Img from '../../../assets/imgbg.jpg'
+// import Img from '../../../assets/imgbg.jpg'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import './TopSlider.css'
 function SampleNextArrow(props) {
   const { onClick } = props
@@ -36,28 +39,26 @@ const settings = {
 }
 
 function TopSlider() {
+  const listProductSlider = useSelector(state => state.products.listProductsTopSlider)
+
   return (
     <div className="container-TopSlider">
-      <Slider {...settings}>
-        <div className="container-bg">
-          <img src={Img} alt="" />
-        </div>
-        <div className="container-bg">
-          <img src={Img} alt="" />
-        </div>
-        <div className="container-bg">
-          <img src={Img} alt="" />
-        </div>
-        <div className="container-bg">
-          <img src={Img} alt="" />
-        </div>
-        <div className="container-bg">
-          <img src={Img} alt="" />
-        </div>
-        <div className="container-bg">
-          <img src={Img} alt="" />
-        </div>
-      </Slider>
+      {listProductSlider ? (
+        <Slider {...settings}>
+          {listProductSlider.map(item => (
+            <Link to={`/products/${item.slug}`}>
+              <div className="container-bg" key={item.slug}>
+                <img src={item.thumbnail} alt="" />
+              </div>
+            </Link>
+          ))}
+        </Slider>
+      ) : (
+        <Spin
+          style={{ display: 'flex', justifyContent: 'center', height: '70vh', alignItems: 'center' }}
+          size="large"
+        />
+      )}
     </div>
   )
 }

@@ -10,8 +10,7 @@ function BottomContainer() {
         className="container-imgbg "
         style={{
           backgroundImage: `url(${Img})`,
-          backgroundSize: 'cover',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)'
+          backgroundSize: 'cover'
         }}
       >
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>

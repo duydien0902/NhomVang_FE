@@ -36,6 +36,6 @@ export default function News() {
       </div>
     </article>
   ) : (
-    <Spin style={{ display: 'flex', justifyContent: 'center', paddingTop: '160px' }} />
+    <Spin style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }} size="large" />
   )
 }
