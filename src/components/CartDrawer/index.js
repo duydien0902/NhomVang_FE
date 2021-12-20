@@ -17,6 +17,7 @@ import {
 import './CartDrawer.css'
 import { toLocaleStringCurrency } from '../../utils'
 import agent from '../../agent'
+import { useHistory } from 'react-router-dom'
 
 const { Text } = Typography
 
@@ -40,6 +41,7 @@ function renderPrice(item) {
 }
 
 export default function CartDrawer() {
+  const history = useHistory()
   const dispatch = useDispatch()
   const { isLoading, cartVisible, items, checkoutItems, total, discountTotal } = useSelector(state => state.cart)
 
@@ -89,7 +91,7 @@ export default function CartDrawer() {
     })
   }
 
-  const onCheckout = () => {
+  const onCheckout = async () => {
     try {
       const products = checkoutItems.map(item => ({
         _id: item._id,
