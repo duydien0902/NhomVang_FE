@@ -41,6 +41,7 @@ export default function CheckoutPayment({ paymentMethod, total, discountTotal })
             <Button
               className={`payment-btn ${paymentMethod === method.name ? 'active' : ''}`}
               key={method.name}
+              size="large"
               onClick={() => onPaymentBtnClick(method.name)}
             >
               {method.name}
