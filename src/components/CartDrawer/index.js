@@ -17,6 +17,7 @@ import {
 import './CartDrawer.css'
 import { toLocaleStringCurrency } from '../../utils'
 import agent from '../../agent'
+import { useHistory } from 'react-router-dom'
 
 const { Text } = Typography
 
@@ -40,6 +41,7 @@ function renderPrice(item) {
 }
 
 export default function CartDrawer() {
+  const history = useHistory()
   const dispatch = useDispatch()
   const { isLoading, cartVisible, items, checkoutItems, total, discountTotal } = useSelector(state => state.cart)
 
@@ -87,6 +89,23 @@ export default function CartDrawer() {
     dispatch({
       type: e.target.checked ? ADD_ALL_TO_CHECKOUT : REMOVE_ALL_FROM_CHECKOUT
     })
+  }
+
+  const onCheckout = async () => {
+    try {
+      const products = checkoutItems.map(item => ({
+        _id: item._id,
+        name: item.name,
+        listedPrice: item.listedPrice,
+        discountPrice: item.discountPrice,
+        quantity: item.quantity
+      }))
+      const res = await agent.Invoice.createInvoice(products)
+      const invoiceId = res.data.invoice._id
+      history.push(`/checkout/${invoiceId}`)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -181,8 +200,14 @@ export default function CartDrawer() {
                   Select all
                 </Checkbox>
               </div>
-              <Button style={{ width: '100%', marginTop: 8 }} size="large" type="primary">
-                Purchase
+              <Button
+                disabled={checkoutItems.length === 0}
+                style={{ width: '100%', marginTop: 8 }}
+                size="large"
+                type="primary"
+                onClick={onCheckout}
+              >
+                Checkout
               </Button>
             </div>
           </Space>

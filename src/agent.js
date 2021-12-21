@@ -1,8 +1,11 @@
 import axios from 'axios'
 import queryString from 'query-string'
 
+// const LOCAL_API_URL = 'http://localhost:5543'
+
 const instance = axios.create({
   baseURL: 'https://nhomvang-be.herokuapp.com',
+  // baseURL: LOCAL_API_URL,
   timeout: 20000,
   headers: {
     'content-type': 'application/json'
@@ -33,9 +36,18 @@ const Cart = {
   removeItem: _id => instance.post('/cart/remove', { _id }),
   updateItem: (_id, quantity) => instance.post('/cart/update', { item: { _id, quantity } })
 }
+const Invoice = {
+  getAllInvoices: () => instance.get('/invoices'),
+  getInvoice: id => instance.get(`/invoices/${id}`),
+  createInvoice: products => instance.post('/invoices', { products }),
+  cancelInvoice: id => instance.post(`/invoices/cancel/${id}`),
+  payWithPaypal: invoiceId => instance.post(`/invoices/paypal/${invoiceId}`),
+  payWithStripe: invoiceId => instance.post(`/invoices/stripe/${invoiceId}`)
+}
 const agent = {
   Auth,
   News,
-  Cart
+  Cart,
+  Invoice
 }
 export default agent
