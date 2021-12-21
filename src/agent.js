@@ -1,11 +1,11 @@
 import axios from 'axios'
 import queryString from 'query-string'
 
-const LOCAL_API_URL = 'http://localhost:5543'
+// const LOCAL_API_URL = 'http://localhost:5543'
 
 const instance = axios.create({
-  // baseURL: 'https://nhomvang-be.herokuapp.com',
-  baseURL: LOCAL_API_URL,
+  baseURL: 'https://nhomvang-be.herokuapp.com',
+  // baseURL: LOCAL_API_URL,
   timeout: 20000,
   headers: {
     'content-type': 'application/json'

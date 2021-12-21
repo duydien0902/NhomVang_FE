@@ -5,9 +5,17 @@
   min-width: 100%;
 }
 
+.checkout-page > *:not(:last-child) {
+  margin-bottom: 3rem;
+}
+
 @media (max-width: 1440px) {
   .checkout-page {
     padding: 120px 60px 80px;
+  }
+
+  .checkout-page > *:not(:last-child) {
+    margin-bottom: 2rem;
   }
 }
 
@@ -17,7 +25,7 @@
   }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 600px) {
   .checkout-page {
     padding: 100px 16px 20px;
   }

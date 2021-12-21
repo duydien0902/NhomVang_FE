@@ -18,7 +18,7 @@ function Pages() {
         <Route path="/blog/:slug" component={NewsDetail} />
         <Route path="/cart" component={CartPage} />
         <Route path="/products/slug" component={ProductPage} />
-        <Route path="/checkout" component={CheckoutPage} />
+        <Route path="/checkout/:invoiceId" component={CheckoutPage} />
       </Switch>
       <Footer />
     </div>

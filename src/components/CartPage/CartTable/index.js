@@ -230,7 +230,7 @@ export default function CartTable() {
           return (
             <List.Item key={item._id} className="item">
               <div className="row">
-                <Image className="item-thumbnail" src={item.thumbnail} fallback={defaultProductImage} />
+                <Image className="item-thumbnail" src={item.thumbnail} preview={false} fallback={defaultProductImage} />
               </div>
               <div className="row">
                 <div>
