@@ -3,7 +3,7 @@ import { CHANGE_PAYMENT_METHOD, INVOICE_LOADED, INVOICE_LOADING } from '../const
 const initialState = {
   isLoading: true,
   invoice: null,
-  paymentMethod: 'PayPal'
+  paymentMethod: 'paypal'
 }
 
 export default function checkoutReducer(state = initialState, action) {
