@@ -56,6 +56,7 @@ export default function CartDrawer() {
       dispatch({ type: UPDATE_CART, subtype: REMOVE_ITEM, cart, item })
     } catch (error) {
       console.log(error)
+    } finally {
       dispatch({ type: CART_LOADED })
     }
   }
@@ -73,7 +74,8 @@ export default function CartDrawer() {
         dispatch({ type: UPDATE_CART, subtype: UPDATE_QUANTITY, cart, item, value })
       }
     } catch (error) {
-      console.log(result)
+      console.log(error)
+    } finally {
       dispatch({ type: CART_LOADED })
     }
   }
@@ -91,11 +93,25 @@ export default function CartDrawer() {
     })
   }
 
+  const fetchCurrentCart = async () => {
+    let cart
+    try {
+      dispatch({ type: CART_LOADING })
+      const result = await agent.Cart.current()
+      cart = result.data.cart
+    } catch (error) {
+      console.log(error)
+    } finally {
+      dispatch({ type: CART_LOADED, cart })
+    }
+  }
+
   const onCheckout = async () => {
     try {
       const products = checkoutItems.map(item => ({
         _id: item._id,
         name: item.name,
+        thumbnail: item.thumbnail,
         listedPrice: item.listedPrice,
         discountPrice: item.discountPrice,
         quantity: item.quantity
@@ -105,6 +121,9 @@ export default function CartDrawer() {
       history.push(`/checkout/${invoiceId}`)
     } catch (error) {
       console.log(error)
+    } finally {
+      await fetchCurrentCart()
+      onCartDrawerClose()
     }
   }
 

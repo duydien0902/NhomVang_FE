@@ -4,7 +4,13 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import agent from '../../../agent'
-import { ADD_ALL_TO_CHECKOUT, REMOVE_ALL_FROM_CHECKOUT } from '../../../constants/ActionType'
+import {
+  ADD_ALL_TO_CHECKOUT,
+  CART_LOADED,
+  CART_LOADING,
+  CLOSE_CART_DRAWER,
+  REMOVE_ALL_FROM_CHECKOUT
+} from '../../../constants/ActionType'
 import { toLocaleStringCurrency } from '../../../utils'
 import './CartTotal.css'
 
@@ -19,6 +25,19 @@ export default function CartTotal() {
     dispatch({
       type: e.target.checked ? ADD_ALL_TO_CHECKOUT : REMOVE_ALL_FROM_CHECKOUT
     })
+  }
+
+  const fetchCurrentCart = async () => {
+    let cart
+    try {
+      dispatch({ type: CART_LOADING })
+      const result = await agent.Cart.current()
+      cart = result.data.cart
+    } catch (error) {
+      console.log(error)
+    } finally {
+      dispatch({ type: CART_LOADED, cart })
+    }
   }
 
   const onCheckout = async () => {
@@ -36,6 +55,9 @@ export default function CartTotal() {
       history.push(`/checkout/${invoiceId}`)
     } catch (error) {
       console.log(error)
+    } finally {
+      await fetchCurrentCart()
+      dispatch({ type: CLOSE_CART_DRAWER })
     }
   }
 
