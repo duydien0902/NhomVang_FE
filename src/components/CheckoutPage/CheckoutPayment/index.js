@@ -6,14 +6,14 @@ import './CheckoutPayment.css'
 
 const { Title } = Typography
 
-const allMethods = [
-  {
-    name: 'PayPal'
+const methods = {
+  paypal: {
+    title: 'PayPal'
   },
-  {
-    name: 'Stripe'
+  stripe: {
+    title: 'Stripe'
   }
-]
+}
 
 function renderPrice(price, quantity = 1) {
   return toLocaleStringCurrency(price * quantity)
@@ -36,18 +36,15 @@ export default function CheckoutPayment({ paymentMethod, total, discountTotal })
     <div className="checkout-payment-container">
       <Title level={4}>Payment methods</Title>
       <div className="payment-btns">
-        {allMethods.map(method => {
-          return (
-            <Button
-              className={`payment-btn ${paymentMethod === method.name ? 'active' : ''}`}
-              key={method.name}
-              size="large"
-              onClick={() => onPaymentBtnClick(method.name)}
-            >
-              {method.name}
-            </Button>
-          )
-        })}
+        {Object.keys(methods).map(key => (
+          <Button
+            className={`payment-btn ${paymentMethod === key ? 'active' : ''}`}
+            key={key}
+            onClick={() => onPaymentBtnClick(key)}
+          >
+            {methods[key].title}
+          </Button>
+        ))}
       </div>
       <div className="payment-total">
         <div className="payment-total-price">
