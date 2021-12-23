@@ -19,7 +19,7 @@ const { Text, Title } = Typography
 export default function CartTotal() {
   const history = useHistory()
   const dispatch = useDispatch()
-  const { items, checkoutItems, total, discountTotal } = useSelector(state => state.cart)
+  const { items, checkoutItems, total, discountTotal, isLoading } = useSelector(state => state.cart)
 
   const onItemAllCheck = e => {
     dispatch({
@@ -42,6 +42,7 @@ export default function CartTotal() {
 
   const onCheckout = async () => {
     try {
+      dispatch({ type: CART_LOADING })
       const products = checkoutItems.map(item => ({
         _id: item._id,
         name: item.name,
@@ -95,6 +96,7 @@ export default function CartTotal() {
       content: (
         <Button
           disabled={checkoutItems.length === 0}
+          loading={isLoading}
           className="checkout-btn"
           type="primary"
           size="large"

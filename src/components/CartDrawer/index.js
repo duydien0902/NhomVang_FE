@@ -108,6 +108,7 @@ export default function CartDrawer() {
 
   const onCheckout = async () => {
     try {
+      dispatch({ type: CART_LOADING })
       const products = checkoutItems.map(item => ({
         _id: item._id,
         name: item.name,
@@ -221,6 +222,7 @@ export default function CartDrawer() {
               </div>
               <Button
                 disabled={checkoutItems.length === 0}
+                loading={isLoading}
                 style={{ width: '100%', marginTop: 8 }}
                 size="large"
                 type="primary"
