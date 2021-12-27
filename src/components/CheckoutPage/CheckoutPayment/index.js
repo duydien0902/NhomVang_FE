@@ -19,17 +19,13 @@ function renderPrice(price, quantity = 1) {
   return toLocaleStringCurrency(price * quantity)
 }
 
-export default function CheckoutPayment({ paymentMethod, total, discountTotal }) {
+export default function CheckoutPayment({ isLoading, paymentMethod, total, discountTotal, onOrder }) {
   const dispatch = useDispatch()
   const onPaymentBtnClick = method => {
     dispatch({
       type: CHANGE_PAYMENT_METHOD,
       method
     })
-  }
-
-  const onOrderBtnClick = () => {
-    console.log('Order')
   }
 
   return (
@@ -51,7 +47,7 @@ export default function CheckoutPayment({ paymentMethod, total, discountTotal })
           <span>Total:</span>
           <span className="price">{renderPrice(discountTotal || total)}</span>
         </div>
-        <Button type="primary" size="large" className="order-btn" onClick={onOrderBtnClick}>
+        <Button loading={isLoading} type="primary" size="large" className="order-btn" onClick={onOrder}>
           Order
         </Button>
       </div>

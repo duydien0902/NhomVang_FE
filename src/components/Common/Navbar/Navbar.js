@@ -16,7 +16,7 @@ import Register from '../../Register/Register'
 import { useSelector } from 'react-redux'
 import agent from '../../../agent'
 import { store } from '../../../store'
-import { CART_LOADED, CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
+import { CART_LOADED, CART_LOADING, CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
 import CartDrawer from '../../CartDrawer'
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
@@ -49,6 +49,7 @@ function Navbar() {
     async function fetchCurrentCart() {
       let cart
       try {
+        store.dispatch({ type: CART_LOADING })
         const result = await agent.Cart.current()
         cart = result.data.cart
       } catch (error) {

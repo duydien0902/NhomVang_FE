@@ -15,6 +15,19 @@ export default function CheckoutPage() {
   const { invoiceId } = useParams()
   const { invoice, paymentMethod, isLoading } = useSelector(state => state.invoice)
 
+  const onOrder = async () => {
+    try {
+      store.dispatch({ type: INVOICE_LOADING })
+      const res = await agent.Invoice.payInvoice(invoiceId, paymentMethod)
+      const url = res.data.url
+      window.location.href = url
+    } catch (error) {
+      console.log(error)
+    } finally {
+      store.dispatch({ type: INVOICE_LOADED })
+    }
+  }
+
   useEffect(() => {
     const fetchInvoice = async invoiceId => {
       let invoice = null
@@ -42,7 +55,13 @@ export default function CheckoutPage() {
       {invoice && (
         <>
           <CheckoutItems items={invoice.products} />
-          <CheckoutPayment paymentMethod={paymentMethod} total={invoice.total} discountTotal={invoice.discountTotal} />
+          <CheckoutPayment
+            isLoading={isLoading}
+            paymentMethod={paymentMethod}
+            total={invoice.total}
+            discountTotal={invoice.discountTotal}
+            onOrder={onOrder}
+          />
         </>
       )}
     </div>

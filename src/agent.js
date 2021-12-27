@@ -1,7 +1,7 @@
 import axios from 'axios'
 import queryString from 'query-string'
 
-// const LOCAL_API_URL = 'http://localhost:5543'
+export const LOCAL_API_URL = 'http://localhost:5543'
 
 const instance = axios.create({
   baseURL: 'https://nhomvang-be.herokuapp.com',
@@ -41,8 +41,17 @@ const Invoice = {
   getInvoice: id => instance.get(`/invoices/${id}`),
   createInvoice: products => instance.post('/invoices', { products }),
   cancelInvoice: id => instance.post(`/invoices/cancel/${id}`),
-  payWithPaypal: invoiceId => instance.post(`/invoices/paypal/${invoiceId}`),
-  payWithStripe: invoiceId => instance.post(`/invoices/stripe/${invoiceId}`)
+  payInvoice: (invoiceId, paymentMethod) =>
+    instance.post(
+      `/invoices/pay`,
+      {},
+      {
+        params: {
+          invoice: invoiceId,
+          method: paymentMethod
+        }
+      }
+    )
 }
 const agent = {
   Auth,
