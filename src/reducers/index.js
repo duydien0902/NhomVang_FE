@@ -5,11 +5,13 @@ import news from './news'
 import newsdetail from './selectedNews'
 import products from './products'
 import productdetail from './selectedProduct'
+import updateavatar from './updateAvatar'
 export default combineReducers({
   auth,
   cart,
   news,
   newsdetail,
   products,
-  productdetail
+  productdetail,
+  updateavatar
 })

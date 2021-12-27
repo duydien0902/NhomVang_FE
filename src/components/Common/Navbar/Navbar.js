@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Avatar from '../../../assets/avatar.jpg'
 import './Navbar.css'
 import 'antd/dist/antd.css'
 import {
@@ -16,17 +15,23 @@ import Register from '../../Register/Register'
 import { useSelector } from 'react-redux'
 import agent from '../../../agent'
 import { store } from '../../../store'
-import { CURRENT_USER } from '../../../constants/ActionType'
-import logo from '../../../assets/logo.png'
+import { CART_LOADED, CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
+import CartDrawer from '../../CartDrawer'
+import defaultavatarImage from '../../../assets/avatar.jpg'
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
   const style = { fontSize: 22 }
-  const currenUser = useSelector(state => state.auth.current)
+  const currentUser = useSelector(state => state.auth.current)
+  const { data } = useSelector(state => state.updateavatar)
+  const avatar = data.thumbnail
   const history = useHistory()
   const Logout = () => {
     localStorage.removeItem('token')
     history.push('/')
     window.location.reload()
+  }
+  const toggleCartDrawer = () => {
+    store.dispatch({ type: TOGGLE_CART_DRAWER })
   }
   useEffect(() => {
     async function fetchCurrentUser() {
@@ -43,12 +48,30 @@ function Navbar() {
   const blockclick = () => {
     message.info('xin hãy đăng nhập')
   }
-  const menu = currenUser ? (
+
+  useEffect(() => {
+    async function fetchCurrentCart() {
+      let cart
+      try {
+        const result = await agent.Cart.current()
+        cart = result.data.cart
+      } catch (error) {
+        console.log(error)
+      } finally {
+        store.dispatch({ type: CART_LOADED, cart })
+      }
+    }
+    if (currentUser) {
+      fetchCurrentCart()
+    }
+  }, [currentUser])
+
+  const menu = currentUser ? (
     <Menu>
       <Menu.Item style={{ width: '200px' }}>
-        <Link to={`/profile/${currenUser.displayname}`}>
+        <Link to={`/profile/${currentUser.displayname}`}>
           <li className="cursor" style={{ fontSize: '16px' }}>
-            {currenUser.displayname}
+            {currentUser.displayname}
           </li>
         </Link>
       </Menu.Item>
@@ -84,8 +107,8 @@ function Navbar() {
             <ul>
               <span className=" reponsive-logo ">
                 <Link className="link" to="/">
-                  <li className="cursor ">
-                    <img src={logo} alt="" />
+                  <li className="cursor " style={{ color: 'white' }}>
+                    Vocher hunter
                   </li>
                 </Link>
               </span>
@@ -123,7 +146,7 @@ function Navbar() {
                   />
                 </li>
               </span>
-              {!currenUser ? (
+              {!currentUser ? (
                 <span>
                   <li className="cursor" type="primary" onClick={showModal}>
                     <UserOutlined style={style} />
@@ -137,7 +160,7 @@ function Navbar() {
                   <Dropdown overlay={menu} placement="bottomCenter" arrow>
                     <li>
                       <img
-                        src={Avatar}
+                        src={avatar || defaultavatarImage}
                         alt=""
                         style={{
                           width: '30px',
@@ -151,7 +174,7 @@ function Navbar() {
                     </li>
                   </Dropdown>
                   <Link className="link" to="/cart">
-                    <li className="cursor">
+                    <li className="cursor" onClick={toggleCartDrawer}>
                       <ShoppingCartOutlined style={style} />
                     </li>
                   </Link>
@@ -180,6 +203,7 @@ function Navbar() {
       <Modal visible={isModalRegister} onOk={handleOkRegister} onCancel={handleCancelRegister} footer={null}>
         <Register visibleRegister={setIsModalRegister} visibleLogin={setIsModalLogin} />
       </Modal>
+      <CartDrawer />
     </div>
   )
 }

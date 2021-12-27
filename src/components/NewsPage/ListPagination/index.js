@@ -3,7 +3,7 @@ import './ListPagination.css'
 import defaultNewsImage from '../../../assets/defaultNewsImage.png'
 import { Link } from 'react-router-dom'
 import { store } from '../../../store'
-import { SET_LIST_NEWS } from '../../../constants/ActionType'
+import { SET_LIST_NEWS, SETSTATE_LIST_NEWS } from '../../../constants/ActionType'
 import { Button, Image, Space, Spin, Pagination } from 'antd'
 const NewsImage = ({ className, src, hidden }) => {
   return (
@@ -21,12 +21,22 @@ const NewsImage = ({ className, src, hidden }) => {
 }
 function ListPagination(props) {
   const listnews = props.newslist
+  console.log(listnews)
   const changePage = async pageNumber => {
     const result = await props.pager(pageNumber - 1)
     store.dispatch({
       type: SET_LIST_NEWS,
       page: pageNumber - 1,
       payload: result
+    })
+  }
+  const Tag = tag => {
+    const key = 'tags'
+    const value = tag
+    store.dispatch({
+      type: SETSTATE_LIST_NEWS,
+      key,
+      value
     })
   }
   return (
@@ -49,6 +59,13 @@ function ListPagination(props) {
                     {listnews.title}
                   </Link>
                 </h2>
+                {listnews.tags.map(item => (
+                  <div className="product-tags" key={item} onClick={() => Tag(item)}>
+                    <ul>
+                      <li># {item}</li>
+                    </ul>
+                  </div>
+                ))}
                 <div className="news-description leading-7">{listnews.description}</div>
                 <Space className="news-footer mt-6" size="middle">
                   <Button className="px-6" type="primary" size="large">

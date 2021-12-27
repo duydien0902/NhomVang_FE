@@ -1,132 +1,132 @@
-import { ADD_ITEM, CART_PAGE_LOADED, CART_PAGE_UNLOADED, REMOVE_ITEM, UPDATE_QUANTITY } from '../constants/ActionType'
+import {
+  ADD_ALL_TO_CHECKOUT,
+  ADD_TO_CHECKOUT,
+  CART_LOADED,
+  CART_LOADING,
+  CLOSE_CART_DRAWER,
+  REMOVE_ALL_FROM_CHECKOUT,
+  REMOVE_FROM_CHECKOUT,
+  REMOVE_ITEM,
+  TOGGLE_CART_DRAWER,
+  UPDATE_CART,
+  UPDATE_QUANTITY
+} from '../constants/ActionType'
 
 const initialState = {
-  itemList: [
-    {
-      name: 'Vé tháng hăng say công việc',
-      supplier: 'Bamboo',
-      slug: 've-thang-hang-say-cong-viec',
-      thumbnail: 'https://assets.digilink.vn/uploads/2021/11/HANG-SAY-CV-1-560x225.jpg',
-      listedPrice: 2950000,
-      discountPrice: 0,
-      quantity: 2,
-      inStock: 100
-    },
-    {
-      name: 'FLC Membership IRIS',
-      supplier: 'FLC Hotels & Resorts',
-      slug: 'flc-membership-iris',
-      thumbnail: 'https://assets.digilink.vn/uploads/2021/11/560x225_1636517340.png',
-      listedPrice: 93990000,
-      discountPrice: 75192000,
-      quantity: 1,
-      inStock: 100
-    },
-    {
-      name: 'Thẻ Mini Golf Card',
-      supplier: 'FLC Biscom',
-      slug: 'the-mini-golf-card',
-      thumbnail:
-        'https://assets.digilink.vn/uploads/2021/09/0-02-06-776d393ae0cfe37aff2f59a242b8cc52b0b0832d89e9cced5965629532f3f536_a56d9a70c90a71a.jpg',
-      listedPrice: 16299000,
-      discountPrice: 0,
-      quantity: 1,
-      inStock: 100
-    },
-    {
-      name: 'Thẻ hội viên CLUB 365',
-      supplier: 'FLC Hotels & Resorts',
-      slug: 'the-hoi-vien-club-365',
-      thumbnail: 'https://assets.digilink.vn/uploads/2021/09/RCI-CLUB-365.jpg',
-      listedPrice: 69000000,
-      discountPrice: 56000000,
-      quantity: 1,
-      inStock: 100
-    }
-  ],
-  listedSubtotal: 0,
-  discountSubtotal: 0,
-  vat: 0,
-  total: 0
+  items: [],
+  checkoutItems: [],
+  total: 0,
+  discountTotal: 0,
+  isLoading: true,
+  cartVisible: false
 }
 
 export default function CartReducer(state = initialState, action) {
   switch (action.type) {
-    case CART_PAGE_LOADED: {
-      const listedSubtotal = state.itemList.reduce((total, item) => (total += item.listedPrice * item.quantity), 0)
-      const discountSubtotal = state.itemList.reduce((total, item) => {
-        const amount = item.discountPrice || item.listedPrice
-        return total + amount * item.quantity
-      }, 0)
-      const total = discountSubtotal
-        ? discountSubtotal + discountSubtotal * state.vat
-        : listedSubtotal + listedSubtotal * state.vat
+    case CART_LOADING: {
+      return { ...state, isLoading: true }
+    }
+    case CART_LOADED:
+    case UPDATE_CART: {
+      if (action.subtype === REMOVE_ITEM) {
+        const inCheckoutItems = state.checkoutItems.some(item => item._id === action.item._id)
+        return {
+          ...state,
+          isLoading: false,
+          items: action.cart ? action.cart.items : state.items,
+          checkoutItems: !inCheckoutItems
+            ? state.checkoutItems
+            : state.checkoutItems.filter(item => item._id !== action.item._id),
+          total: !inCheckoutItems ? state.total : state.total - action.item.listedPrice * action.item.quantity,
+          discountTotal: !inCheckoutItems
+            ? state.discountTotal
+            : state.discountTotal - (action.item.discountPrice || action.item.listedPrice) * action.item.quantity
+        }
+      }
+
+      if (action.subtype === UPDATE_QUANTITY) {
+        const updatedItemIndex = state.checkoutItems.findIndex(item => item._id === action.item._id)
+        let total = 0
+        let discountTotal = 0
+        let checkoutItems = [...state.checkoutItems]
+        if (updatedItemIndex >= 0) {
+          checkoutItems[updatedItemIndex].quantity = action.value
+          checkoutItems.forEach(item => {
+            total += item.listedPrice * item.quantity
+            discountTotal += (item.discountPrice || item.listedPrice) * item.quantity
+          })
+        } else {
+          total = state.total
+          discountTotal = state.discountTotal
+        }
+        return {
+          ...state,
+          isLoading: false,
+          items: action.cart ? action.cart.items : state.items,
+          checkoutItems,
+          total,
+          discountTotal
+        }
+      }
+
       return {
         ...state,
-        listedSubtotal,
-        discountSubtotal,
-        total
+        isLoading: false,
+        items: action.cart ? action.cart.items : state.items
       }
     }
 
-    case CART_PAGE_UNLOADED:
-      return initialState
-
-    case UPDATE_QUANTITY: {
-      state.itemList[state.itemList.findIndex(item => item.slug === action.slug)].quantity = action.value
-      const listedSubtotal = state.itemList.reduce((total, item) => (total += item.listedPrice * item.quantity), 0)
-      const discountSubtotal = state.itemList.reduce((total, item) => {
-        const amount = item.discountPrice || item.listedPrice
-        return total + amount * item.quantity
-      }, 0)
-      const total = discountSubtotal
-        ? discountSubtotal + discountSubtotal * state.vat
-        : listedSubtotal + listedSubtotal * state.vat
+    case ADD_TO_CHECKOUT:
       return {
         ...state,
-        listedSubtotal,
-        discountSubtotal,
-        total
+        checkoutItems: [...state.checkoutItems, action.item],
+        total: state.total + action.item.listedPrice * action.item.quantity,
+        discountTotal: state.total + (action.item.discountPrice || action.item.listedPrice) * action.item.quantity
       }
-    }
 
-    case ADD_ITEM: {
-      const itemList = state.itemList.push(action.item)
-      const listedSubtotal = itemList.reduce((total, item) => (total += item.listedPrice * item.quantity), 0)
-      const discountSubtotal = itemList.reduce((total, item) => {
-        const amount = item.discountPrice || item.listedPrice
-        return total + amount * item.quantity
-      }, 0)
-      const total = discountSubtotal
-        ? discountSubtotal + discountSubtotal * state.vat
-        : listedSubtotal + listedSubtotal * state.vat
+    case REMOVE_FROM_CHECKOUT:
       return {
         ...state,
-        itemList,
-        listedSubtotal,
-        discountSubtotal,
-        total
+        checkoutItems: state.checkoutItems.filter(item => item._id !== action.item._id),
+        total: state.total - action.item.listedPrice * action.item.quantity,
+        discountTotal:
+          state.discountTotal - (action.item.discountPrice || action.item.listedPrice) * action.item.quantity
       }
-    }
 
-    case REMOVE_ITEM: {
-      const itemList = state.itemList.filter(item => item.slug !== action.slug)
-      const listedSubtotal = itemList.reduce((total, item) => (total += item.listedPrice * item.quantity), 0)
-      const discountSubtotal = itemList.reduce((total, item) => {
-        const amount = item.discountPrice || item.listedPrice
-        return total + amount * item.quantity
-      }, 0)
-      const total = discountSubtotal
-        ? discountSubtotal + discountSubtotal * state.vat
-        : listedSubtotal + listedSubtotal * state.vat
+    case ADD_ALL_TO_CHECKOUT:
+      let total = 0
+      let discountTotal = 0
+      let checkoutItems = [...state.items]
+      checkoutItems.forEach(item => {
+        total += item.listedPrice * item.quantity
+        discountTotal += (item.discountPrice || item.listedPrice) * item.quantity
+      })
       return {
         ...state,
-        itemList,
-        listedSubtotal,
-        discountSubtotal,
-        total
+        checkoutItems,
+        total,
+        discountTotal
       }
-    }
+
+    case REMOVE_ALL_FROM_CHECKOUT:
+      return {
+        ...state,
+        checkoutItems: [],
+        total: 0,
+        discountTotal: 0
+      }
+
+    case TOGGLE_CART_DRAWER:
+      return {
+        ...state,
+        cartVisible: !state.cartVisible
+      }
+
+    case CLOSE_CART_DRAWER:
+      return {
+        ...state,
+        cartVisible: false
+      }
 
     default:
       return state

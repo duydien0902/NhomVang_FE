@@ -4,9 +4,17 @@ import defaultNewsImage from '../../../assets/defaultNewsImage.png'
 import 'antd/dist/antd.css'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+import agent from '../../../agent'
 function TopProducts() {
   const listProductHot = useSelector(state => state.products.listProductHot)
+  const addCart = async values => {
+    try {
+      const aa = await agent.Cart.addItem(values, 1)
+      console.log(aa)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return listProductHot ? (
     <div className="container">
       <h1>SẢN PHẨM NỔI BẬT</h1>
@@ -28,11 +36,11 @@ function TopProducts() {
                 {item.discountPrice ? (
                   <p>
                     Giá:
-                    <span style={{ textDecorationLine: 'line-through' }}> {item.listedPrice} VNĐ</span>
-                    <span style={{ marginLeft: '10px', color: 'red' }}> {item.discountPrice} VNĐ</span>
+                    <span style={{ textDecorationLine: 'line-through' }}> {item.listedPrice} $</span>
+                    <span style={{ marginLeft: '10px', color: 'red' }}> {item.discountPrice} $</span>
                   </p>
                 ) : (
-                  <p>Giá: {item.listedPrice} VNĐ</p>
+                  <p>Giá: {item.listedPrice} $</p>
                 )}
                 <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '10px' }}>
                   <Link to={`/products/${item.slug}`}>
@@ -48,6 +56,7 @@ function TopProducts() {
                     </Button>
                   </Link>
                   <Button
+                    onClick={() => addCart(item._id)}
                     type="primary"
                     htmlType="submit"
                     style={{

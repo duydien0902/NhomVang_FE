@@ -1,18 +1,34 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import agent from '../../../agent'
 import { useSelector } from 'react-redux'
 import { store } from '../../../store'
 import { SELECTED_PRODUCT } from '../../../constants/ActionType'
 import { decodeHTMLContent } from '../../../utils'
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons'
+import { SETSTATE_LIST_PRODUCTS, LIST_PRODUCTS_TAGS } from '../../../constants/ActionType'
 // import img from '../../../assets/defaultNewsImage.png'
 import './ProductDetail.css'
 import { InputNumber, Button, Spin } from 'antd'
+import ProductsTagsSlider from '../ProductsTagsSlider'
 function ProductDetail() {
   const { slug } = useParams()
   const productdetail = useSelector(state => state.productdetail.productdetail)
-  console.log(productdetail)
+  const { listproducts } = useSelector(state => state.products)
+
+  useEffect(() => {
+    const fetchProductTas = async () => {
+      try {
+        const tags = await productdetail.tags.toString()
+        const payload = await agent.Products.getAll(0, { tags })
+        store.dispatch({ type: LIST_PRODUCTS_TAGS, payload })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchProductTas()
+  }, [productdetail])
+
   useEffect(() => {
     const fetchdata = async () => {
       const payload = await agent.Products.getBySlug(slug)
@@ -20,44 +36,85 @@ function ProductDetail() {
     }
     fetchdata()
   }, [slug])
+
   function onChange(value) {
     console.log('changed', value)
   }
-  return productdetail ? (
+  const addCart = async values => {
+    try {
+      const aa = await agent.Cart.addItem(values, 1)
+      console.log(aa)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const Tag = tag => {
+    const value = tag
+    let arrkey = ['tags', 'title']
+    for (let i = 0; i < arrkey.length; i++) {
+      const key = arrkey[i]
+      store.dispatch({
+        type: SETSTATE_LIST_PRODUCTS,
+        key,
+        value
+      })
+    }
+  }
+  return (
     <div style={{ paddingTop: '80px' }}>
-      <div className="ProductDetail-container">
-        <div className="ProductDetail-wapper">
-          <div className="ProductDetail-container-img">
-            <img src={productdetail.thumbnail} alt="" />
-          </div>
-          <div className="ProductDetail-container-title">
-            <h1>{productdetail.name}</h1>
+      {productdetail ? (
+        <div className="ProductDetail-container">
+          <div className="ProductDetail-wapper">
+            <div className="ProductDetail-container-img">
+              <img src={productdetail.thumbnail} alt="" />
+            </div>
+            <div className="ProductDetail-container-title">
+              <h1>{productdetail.name}</h1>
+              {productdetail.tags.map(item => (
+                <Link to="/products/slug">
+                  <div className="product-tags" key={item} onClick={() => Tag(item)}>
+                    <ul>
+                      <li># {item}</li>
+                    </ul>
+                  </div>
+                </Link>
+              ))}
+              {productdetail.discountPrice ? (
+                <p>
+                  <span style={{ textDecorationLine: 'line-through' }}>{productdetail.listedPrice} $</span>
+                  <span style={{ marginLeft: '10px', color: 'red' }}>{productdetail.discountPrice} $</span>
+                </p>
+              ) : (
+                <p>Giá: {productdetail.listedPrice} $</p>
+              )}
+              <Button className="input-number-control-btn plus-btn" type="primary" icon={<PlusOutlined />} />
+              <InputNumber
+                style={{ width: '70px' }}
+                min={1}
+                max={productdetail.inStock}
+                defaultValue={1}
+                onChange={onChange}
+              />
+              <Button className="input-number-control-btn minus-btn" type="primary" icon={<MinusOutlined />} />
 
-            {productdetail.discountPrice ? (
-              <p>
-                <span style={{ textDecorationLine: 'line-through' }}>{productdetail.listedPrice} VNĐ</span>
-                <span style={{ marginLeft: '10px', color: 'red' }}>{productdetail.discountPrice} VNĐ</span>
-              </p>
-            ) : (
-              <p>Giá: {productdetail.listedPrice} VNĐ</p>
-            )}
-            {/* <div> */}
-            <Button className="input-number-control-btn plus-btn" type="primary" icon={<PlusOutlined />} />
-            <InputNumber style={{ width: '70px' }} value={0} min={1} max={10} defaultValue={1} onChange={onChange} />
-            <Button className="input-number-control-btn minus-btn" type="primary" icon={<MinusOutlined />} />
-
-            <Button style={{ marginLeft: '15px' }} type="primary">
-              Thêm Vào Giỏ
-            </Button>
-            {/* </div> */}
+              <Button style={{ marginLeft: '15px' }} type="primary" onClick={() => addCart(productdetail._id)}>
+                Thêm Vào Giỏ
+              </Button>
+            </div>
           </div>
+          <h3 style={{ paddingTop: '15px' }}>Mô tả</h3>
+          <p dangerouslySetInnerHTML={{ __html: decodeHTMLContent(productdetail.description) }}></p>
         </div>
-        <h3 style={{ paddingTop: '15px' }}>Mô tả</h3>
-        <p dangerouslySetInnerHTML={{ __html: decodeHTMLContent(productdetail.description) }}></p>
+      ) : (
+        <Spin
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}
+          size="large"
+        />
+      )}
+      <div>
+        <ProductsTagsSlider listproducts={listproducts} />
       </div>
     </div>
-  ) : (
-    <Spin style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }} size="large" />
   )
 }
 

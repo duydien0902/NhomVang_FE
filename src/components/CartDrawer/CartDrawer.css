@@ -1,0 +1,86 @@
+.cart-drawer .cart-content {
+  width: 100%;
+  height: 100%;
+}
+
+.cart-drawer .cart-content div:first-child {
+  flex: 1 1 auto;
+}
+
+.cart-drawer .cart-content .item {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-drawer .cart-content .item .item-name {
+  padding-left: 8px;
+}
+
+.cart-drawer .cart-content .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.cart-drawer .cart-content .row .title {
+  font-weight: bold;
+}
+
+.cart-drawer .input-number {
+  display: flex;
+  flex-direction: row;
+}
+
+.cart-drawer .input-number-control-btn {
+  border: none;
+  box-shadow: none;
+  background: gray;
+}
+
+.cart-drawer .input-number-control-btn:hover {
+  background: rgb(150, 150, 150);
+}
+
+.cart-drawer .input-number-control-btn:active {
+  background: rgb(95, 95, 95);
+}
+
+.cart-drawer .input-number-control-btn.plus-btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.cart-drawer .input-number-control-btn.minus-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.cart-drawer .ant-input-number {
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+.cart-drawer .ant-input-number:hover {
+  border-color: gray !important;
+}
+
+.cart-drawer .ant-input-number-focused {
+  border-color: gray !important;
+  box-shadow: none !important;
+}
+
+.cart-drawer .ant-input-number-input-wrap {
+  border: none;
+  width: auto;
+}
+
+.cart-drawer .ant-input-number-input-wrap input {
+  text-align: center;
+  padding: 0 8px;
+}
+
+.cart-drawer .ant-input-number-handler-wrap {
+  display: none;
+}

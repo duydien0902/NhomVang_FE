@@ -1,45 +1,79 @@
 import { InputNumber, Input } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { store } from '../../store'
-import { LIST_PRODUCTS, FILTER_PRODUCTLIST } from '../../constants/ActionType'
+import {
+  LIST_PRODUCTS,
+  FILTER_PRODUCTLIST,
+  SETSTATE_LIST_PRODUCTS,
+  PRODUCT_PAGE_UNLOADED
+} from '../../constants/ActionType'
 import { useSelector } from 'react-redux'
 import agent from '../../agent'
 import '../../pages/ProductPage/ProductPage.css'
 import ProductPreview from './ProductPreview'
 const { Search } = Input
 function ProductPage() {
-  const [filter, setFilter] = useState({
-    name: '',
-    supplier: '',
-    minPrice: undefined,
-    maxPrice: undefined,
-    hot: false,
-    inSlider: false
-  })
-  const { pager, page, total, listproducts } = useSelector(state => state.products)
+  const onUnload = () => {
+    store.dispatch({ type: PRODUCT_PAGE_UNLOADED })
+  }
+
+  const { pager, page, total, listproducts, setState, reload } = useSelector(state => state.products)
+  console.log(setState)
+  const onLoad = async () => {
+    const pager = (page, filter) => agent.Products.getAll(page, filter)
+    const result = await agent.Products.getAll(0, setState)
+    store.dispatch({
+      type: LIST_PRODUCTS,
+      pager,
+      payload: result
+    })
+  }
   useEffect(() => {
-    const Load = async () => {
-      const pager = (page, filter) => agent.Products.getAll(page, filter)
-      const result = await agent.Products.getAll()
-      store.dispatch({
-        type: LIST_PRODUCTS,
-        pager,
-        payload: result
-      })
+    onLoad()
+    return () => {
+      onUnload()
     }
-    Load()
+    // eslint-disable-next-line
   }, [])
+  useEffect(() => {
+    if (reload) {
+      onLoad()
+    }
+    // eslint-disable-next-line
+  }, [reload])
   const onFilter = async () => {
-    const result = await pager(0, filter)
+    const result = await pager(0, setState)
     store.dispatch({
       type: FILTER_PRODUCTLIST,
       payload: result
     })
   }
-
-  const ChangeName = e => setFilter({ ...filter, name: e.target.value })
-  const changeMinPrice = value => setFilter({ ...filter, minPrice: value })
-  const changeMaxPrice = value => setFilter({ ...filter, maxPrice: value })
+  const ChangeName = e => {
+    const key = 'name'
+    const value = e.target.value
+    store.dispatch({
+      type: SETSTATE_LIST_PRODUCTS,
+      key,
+      value
+    })
+  }
+  const changeMinPrice = value => {
+    console.log({ value })
+    const key = 'minPrice'
+    store.dispatch({
+      type: SETSTATE_LIST_PRODUCTS,
+      key,
+      value
+    })
+  }
+  const changeMaxPrice = value => {
+    const key = 'maxPrice'
+    store.dispatch({
+      type: SETSTATE_LIST_PRODUCTS,
+      key,
+      value
+    })
+  }
   return (
     <div style={{ paddingTop: '80px' }}>
       <div className="ProductPage-container">
@@ -63,7 +97,7 @@ function ProductPage() {
                     onChange={changeMinPrice}
                     onPressEnter={onFilter}
                     placeholder="Tối thiểu"
-                    addonAfter="VND"
+                    addonAfter="$"
                   />
                 </div>
                 <div style={{ width: '250px' }}>
@@ -75,7 +109,7 @@ function ProductPage() {
                     onChange={changeMaxPrice}
                     onPressEnter={onFilter}
                     placeholder="Tối đa"
-                    addonAfter="VND"
+                    addonAfter="$"
                   />
                 </div>
               </div>
@@ -88,7 +122,7 @@ function ProductPage() {
         <div className="right-container">
           <ProductPreview
             productList={listproducts}
-            pageSize={agent.pageSize}
+            pageSize={agent.pageSizeProducts}
             total={total}
             currentPage={page + 1}
             pager={pager}
