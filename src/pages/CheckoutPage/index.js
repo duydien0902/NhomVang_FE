@@ -19,8 +19,19 @@ export default function CheckoutPage() {
     try {
       store.dispatch({ type: INVOICE_LOADING })
       const res = await agent.Invoice.payInvoice(invoiceId, paymentMethod)
-      const url = res.data.url
-      window.location.href = url
+      switch (paymentMethod) {
+        case 'paypal': {
+          const url = res.data.url
+          window.location.href = url
+          break
+        }
+        case 'stripe': {
+          console.log(res)
+          break
+        }
+        default:
+          break
+      }
     } catch (error) {
       console.log(error)
     } finally {
