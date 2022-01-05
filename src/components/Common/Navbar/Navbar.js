@@ -8,17 +8,16 @@ import {
   UnorderedListOutlined,
   CloseOutlined
 } from '@ant-design/icons'
-import { Input, Dropdown, Menu, Modal, message } from 'antd'
+import { Input, Dropdown, Menu, Modal } from 'antd'
 import { Link, useHistory } from 'react-router-dom'
 import Login from '../../Login/Login'
+import defaultavatarImage from '../../../assets/avatar.jpg'
 import Register from '../../Register/Register'
 import { useSelector } from 'react-redux'
 import agent from '../../../agent'
 import { store } from '../../../store'
-import { CART_LOADED, CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
+import { CART_LOADED, CART_LOADING, CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
 import CartDrawer from '../../CartDrawer'
-import defaultavatarImage from '../../../assets/avatar.jpg'
-
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
   // const [datasearch, setdataSearch] = useState(undefined)
@@ -65,14 +64,11 @@ function Navbar() {
     }
     fetchCurrentUser()
   }, [])
-  const blockclick = () => {
-    message.info('xin hãy đăng nhập')
-  }
-
   useEffect(() => {
     async function fetchCurrentCart() {
       let cart
       try {
+        store.dispatch({ type: CART_LOADING })
         const result = await agent.Cart.current()
         cart = result.data.cart
       } catch (error) {
@@ -176,9 +172,6 @@ function Navbar() {
                 <span>
                   <li className="cursor" type="primary" onClick={showModal}>
                     <UserOutlined style={style} />
-                  </li>
-                  <li className="cursor" onClick={blockclick}>
-                    <ShoppingCartOutlined style={style} />
                   </li>
                 </span>
               ) : (

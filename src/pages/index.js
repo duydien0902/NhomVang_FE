@@ -10,6 +10,7 @@ import ProductPage from './ProductPage'
 import ProductDetail from '../components/ProductPage/ProductDetail'
 import ProfilePage from '../pages/ProfilePage'
 import AboutusPage from '../pages/AboutusPage'
+import CheckoutPage from './CheckoutPage'
 function Pages() {
   return (
     <div>
@@ -23,6 +24,7 @@ function Pages() {
         <Route path="/products/:slug" component={ProductDetail} />
         <Route path="/profile" component={ProfilePage} />
         <Route path="/aboutus" component={AboutusPage} />
+        <Route path="/checkout/:invoiceId" component={CheckoutPage} />
       </Switch>
       <Footer />
     </div>

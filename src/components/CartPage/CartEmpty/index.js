@@ -13,7 +13,7 @@ export default function CartEmpty() {
         Your Cart is Empty
       </Title>
       <Button type="primary" size="large">
-        <Link to="#">Continue Shopping</Link>
+        <Link to="/products">Continue Shopping</Link>
       </Button>
     </div>
   )

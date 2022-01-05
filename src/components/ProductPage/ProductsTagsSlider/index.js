@@ -3,6 +3,7 @@ import { Spin, Row, Button, Col } from 'antd'
 import '../../NewsPage/NewsTagsSlider/NewsTagsSlider.css'
 import { Link } from 'react-router-dom'
 import defaultNewsImage from '../../../assets/defaultNewsImage.png'
+import { addCart } from '../../../utils'
 
 function ProductsTagsSlider(props) {
   const listproductstags = props.listproducts
@@ -57,8 +58,7 @@ function ProductsTagsSlider(props) {
                           </Button>
                         </Link>
                         <Button
-                          // key={item.slug}
-                          // onClick={() => addCart(item._id)}
+                          onClick={() => addCart(item._id)}
                           type="primary"
                           htmlType="submit"
                           style={{

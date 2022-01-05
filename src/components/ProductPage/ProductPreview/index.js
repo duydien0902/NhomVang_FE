@@ -6,9 +6,8 @@ import { SET_LIST_PRODUCTS } from '../../../constants/ActionType'
 import { Link } from 'react-router-dom'
 import './ProductPreview.css'
 import { Spin } from 'antd'
-import agent from '../../../agent'
 import { useSelector } from 'react-redux'
-
+import { addCart } from '../../../utils'
 function ProductPreview(props) {
   const data = props.productList
   const { setState } = useSelector(state => state.products)
@@ -19,14 +18,6 @@ function ProductPreview(props) {
       page: pageNumber - 1,
       payload: result
     })
-  }
-  const addCart = async values => {
-    try {
-      await agent.Cart.addItem(values, 1)
-      // window.location.reload()
-    } catch (error) {
-      console.log(error)
-    }
   }
   return (
     <div style={{ width: '80%', margin: '60px auto' }} loading={{ indicator: <Spin size="large" /> }}>
@@ -70,7 +61,6 @@ function ProductPreview(props) {
                       </Button>
                     </Link>
                     <Button
-                      // key={item.slug}
                       onClick={() => addCart(item._id)}
                       type="primary"
                       htmlType="submit"

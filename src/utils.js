@@ -36,3 +36,11 @@ export const beforeUploadImage = (file, callback, statusCallback) => {
   }
   return false
 }
+
+export const addCart = async values => {
+  try {
+    await agent.Cart.addItem(values, 1)
+  } catch (error) {
+    console.log(error)
+  }
+}

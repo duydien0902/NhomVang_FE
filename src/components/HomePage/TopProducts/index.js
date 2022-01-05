@@ -4,16 +4,9 @@ import defaultNewsImage from '../../../assets/defaultNewsImage.png'
 import 'antd/dist/antd.css'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import agent from '../../../agent'
+import { addCart } from '../../../utils'
 function TopProducts() {
   const listProductHot = useSelector(state => state.products.listProductHot)
-  const addCart = async values => {
-    try {
-      await agent.Cart.addItem(values, 1)
-    } catch (error) {
-      console.log(error)
-    }
-  }
   return listProductHot ? (
     <div className="container">
       <h1>HOT PRODUCTS</h1>
