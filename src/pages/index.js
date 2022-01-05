@@ -20,7 +20,7 @@ function Pages() {
         <Route path="/blog/slug" component={NewsPage} />
         <Route path="/blog/:slug" component={NewsDetail} />
         <Route path="/cart" component={CartPage} />
-        <Route path="/products/slug" component={ProductPage} />
+        <Route path="/products" component={ProductPage} />
         <Route path="/products/:slug" component={ProductDetail} />
         <Route path="/profile" component={ProfilePage} />
         <Route path="/aboutus" component={AboutusPage} />

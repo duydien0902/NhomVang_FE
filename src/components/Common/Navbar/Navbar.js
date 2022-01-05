@@ -82,6 +82,24 @@ function Navbar() {
     }
   }, [currentUser])
 
+  useEffect(() => {
+    async function fetchCurrentCart() {
+      let cart
+      try {
+        store.dispatch({ type: CART_LOADING })
+        const result = await agent.Cart.current()
+        cart = result.data.cart
+      } catch (error) {
+        console.log(error)
+      } finally {
+        store.dispatch({ type: CART_LOADED, cart })
+      }
+    }
+    if (currentUser) {
+      fetchCurrentCart()
+    }
+  }, [currentUser])
+
   const menu = currentUser ? (
     <Menu>
       <Menu.Item style={{ width: '200px' }}>
@@ -131,7 +149,7 @@ function Navbar() {
                   <Link className="link" to="/">
                     <li className="cursor">Home</li>
                   </Link>
-                  <Link className="link" to="/products/slug">
+                  <Link className="link" to="/products">
                     <li className="cursor">Products</li>
                   </Link>
                   <Link className="link" to="/blog/slug">

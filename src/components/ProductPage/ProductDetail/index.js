@@ -46,7 +46,7 @@ function ProductDetail() {
       if (token) {
         await agent.Cart.addItem(values, quantity)
       } else {
-        message.info('xin hãy đăng nhập')
+        message.warning('xin hãy đăng nhập')
       }
     } catch (error) {
       console.log(error)

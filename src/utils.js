@@ -44,7 +44,7 @@ export const addCart = async values => {
     if (token) {
       await agent.Cart.addItem(values, 1)
     } else {
-      message.info('xin hãy đăng nhập')
+      message.error('xin hãy đăng nhập')
     }
   } catch (error) {
     console.log(error)

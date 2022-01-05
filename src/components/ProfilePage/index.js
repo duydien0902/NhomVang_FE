@@ -53,10 +53,10 @@ function Profile(props) {
         }
       }
       await agent.Auth.updateUser(user)
-      message.info('lưu thành công')
+      message.success('lưu thành công')
       window.location.reload()
     } catch (error) {
-      message.info('lưu thất bại')
+      message.error('lưu thất bại')
     }
   }
 
@@ -67,13 +67,13 @@ function Profile(props) {
         const oldPassword = result.oldPassword
         const values = { oldPassword, password }
         await agent.Auth.updateUser(values)
-        message.info('lưu thành công')
+        message.success('lưu thành công')
         window.location.reload()
       } else {
-        message.info('mật khẩu không khớp')
+        message.error('mật khẩu không khớp')
       }
     } catch (error) {
-      message.info('mật khẩu cũ không đúng')
+      message.error('mật khẩu cũ không đúng')
     }
   }
   const onUpdateField = (key, value) => {
