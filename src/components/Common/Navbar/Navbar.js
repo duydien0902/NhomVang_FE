@@ -81,14 +81,13 @@ function Navbar() {
       fetchCurrentCart()
     }
   }, [currentUser])
+
   const menu = currentUser ? (
     <Menu>
       <Menu.Item style={{ width: '200px' }}>
-        <Link to={`/profile/${currentUser.displayname}`}>
-          <li className="cursor" style={{ fontSize: '16px' }}>
-            {currentUser.displayname}
-          </li>
-        </Link>
+        <li className="cursor" style={{ fontSize: '16px' }}>
+          {currentUser.displayname}
+        </li>
       </Menu.Item>
       <Menu.Item>
         <li onClick={Logout} className="cursor" style={{ fontSize: '16px' }}>

@@ -76,8 +76,8 @@ const agent = {
   Products,
   pageSizeNews,
   pageSizeProducts,
-  Cart,
   Image,
+  Cart,
   Invoice
 }
 export default agent

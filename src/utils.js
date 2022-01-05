@@ -1,4 +1,5 @@
 import agent from './agent'
+import { message } from 'antd'
 export const decodeHTMLContent = input => {
   if (!input) return ''
   const doc = new DOMParser().parseFromString(input, 'text/html')
@@ -38,8 +39,13 @@ export const beforeUploadImage = (file, callback, statusCallback) => {
 }
 
 export const addCart = async values => {
+  const token = localStorage.getItem('token')
   try {
-    await agent.Cart.addItem(values, 1)
+    if (token) {
+      await agent.Cart.addItem(values, 1)
+    } else {
+      message.info('xin hãy đăng nhập')
+    }
   } catch (error) {
     console.log(error)
   }

@@ -9,7 +9,7 @@ import { PlusOutlined, MinusOutlined } from '@ant-design/icons'
 import { SETSTATE_LIST_PRODUCTS, LIST_PRODUCTS_TAGS } from '../../../constants/ActionType'
 // import img from '../../../assets/defaultNewsImage.png'
 import './ProductDetail.css'
-import { InputNumber, Button, Spin } from 'antd'
+import { InputNumber, Button, Spin, message } from 'antd'
 import ProductsTagsSlider from '../ProductsTagsSlider'
 function ProductDetail() {
   const { slug } = useParams()
@@ -41,9 +41,13 @@ function ProductDetail() {
     console.log('changed', value)
   }
   const addCart = async values => {
+    const token = localStorage.getItem('token')
     try {
-      const aa = await agent.Cart.addItem(values, quantity)
-      console.log(aa)
+      if (token) {
+        await agent.Cart.addItem(values, quantity)
+      } else {
+        message.info('xin hãy đăng nhập')
+      }
     } catch (error) {
       console.log(error)
     }
