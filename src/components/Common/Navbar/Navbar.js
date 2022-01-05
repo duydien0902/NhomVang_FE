@@ -149,7 +149,7 @@ function Navbar() {
                   <Link className="link" to="/">
                     <li className="cursor">Home</li>
                   </Link>
-                  <Link className="link" to="/products">
+                  <Link className="link" to="/products/slug">
                     <li className="cursor">Products</li>
                   </Link>
                   <Link className="link" to="/blog/slug">
