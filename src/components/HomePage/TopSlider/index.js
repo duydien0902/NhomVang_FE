@@ -46,8 +46,8 @@ function TopSlider() {
       {listProductSlider ? (
         <Slider {...settings}>
           {listProductSlider.map(item => (
-            <Link to={`/products/${item.slug}`}>
-              <div className="container-bg" key={item.slug}>
+            <Link to={`/products/${item.slug}`} key={item.slug}>
+              <div className="container-bg">
                 <img src={item.thumbnail} alt="" />
               </div>
             </Link>

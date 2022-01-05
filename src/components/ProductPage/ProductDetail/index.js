@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import agent from '../../../agent'
 import { useSelector } from 'react-redux'
@@ -15,7 +15,7 @@ function ProductDetail() {
   const { slug } = useParams()
   const productdetail = useSelector(state => state.productdetail.productdetail)
   const { listproducts } = useSelector(state => state.products)
-
+  const [quantity, setquantity] = useState(1)
   useEffect(() => {
     const fetchProductTas = async () => {
       try {
@@ -42,7 +42,7 @@ function ProductDetail() {
   }
   const addCart = async values => {
     try {
-      const aa = await agent.Cart.addItem(values, 1)
+      const aa = await agent.Cart.addItem(values, quantity)
       console.log(aa)
     } catch (error) {
       console.log(error)
@@ -60,6 +60,21 @@ function ProductDetail() {
       })
     }
   }
+  const PlusOutlinedd = () => {
+    if (quantity > productdetail.inStock) {
+      setquantity(1)
+    } else {
+      setquantity(quantity + 1)
+    }
+  }
+  console.log(quantity)
+  const MinusOutlinedd = () => {
+    if (quantity <= 1) {
+      setquantity(1)
+    } else {
+      setquantity(quantity - 1)
+    }
+  }
   return (
     <div style={{ paddingTop: '80px' }}>
       {productdetail ? (
@@ -70,15 +85,15 @@ function ProductDetail() {
             </div>
             <div className="ProductDetail-container-title">
               <h1>{productdetail.name}</h1>
-              {productdetail.tags.map(item => (
-                <Link to="/products/slug">
-                  <div className="product-tags" key={item} onClick={() => Tag(item)}>
-                    <ul>
-                      <li># {item}</li>
-                    </ul>
-                  </div>
-                </Link>
-              ))}
+              <div className="product-tags">
+                <ul>
+                  {productdetail.tags.map(item => (
+                    <li key={item} onClick={() => Tag(item)}>
+                      <Link to="/products/slug"># {item}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               {productdetail.discountPrice ? (
                 <p>
                   <span style={{ textDecorationLine: 'line-through' }}>{productdetail.listedPrice} $</span>
@@ -87,15 +102,26 @@ function ProductDetail() {
               ) : (
                 <p>Giá: {productdetail.listedPrice} $</p>
               )}
-              <Button className="input-number-control-btn plus-btn" type="primary" icon={<PlusOutlined />} />
+              <Button
+                onClick={PlusOutlinedd}
+                className="input-number-control-btn plus-btn"
+                type="primary"
+                icon={<PlusOutlined />}
+              />
               <InputNumber
                 style={{ width: '70px' }}
                 min={1}
                 max={productdetail.inStock}
-                defaultValue={1}
+                // defaultValue={1}
+                value={quantity}
                 onChange={onChange}
               />
-              <Button className="input-number-control-btn minus-btn" type="primary" icon={<MinusOutlined />} />
+              <Button
+                onClick={MinusOutlinedd}
+                className="input-number-control-btn minus-btn"
+                type="primary"
+                icon={<MinusOutlined />}
+              />
 
               <Button style={{ marginLeft: '15px' }} type="primary" onClick={() => addCart(productdetail._id)}>
                 Thêm Vào Giỏ

@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
-import LayoutPagination from './index'
+import LayoutNewsList from './index'
 import agent from '../../../agent'
 import { useSelector } from 'react-redux'
 import { LIST_NEWS, NEWS_PAGE_UNLOADED } from '../../../constants/ActionType'
 import { store } from '../../../store'
-function ListPagination() {
+function NewsList() {
   const { pager, listnews, total, page, reload, setState } = useSelector(state => state.news)
-  console.log(setState)
   useEffect(() => {
     const onLoad = async () => {
       const pager = page => agent.News.getAll(page)
@@ -38,8 +37,8 @@ function ListPagination() {
   }, [reload])
 
   return (
-    <div style={{ paddingTop: '150px', width: '100%', backgroundColor: '#DCDCDC' }}>
-      <LayoutPagination
+    <div style={{ padding: '100px 100px 100px 100px', width: '100%', backgroundColor: '#DCDCDC' }}>
+      <LayoutNewsList
         newslist={listnews}
         pageSize={agent.pageSizeNews}
         total={total}
@@ -50,4 +49,4 @@ function ListPagination() {
   )
 }
 
-export default ListPagination
+export default NewsList

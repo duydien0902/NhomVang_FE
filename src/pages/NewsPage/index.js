@@ -1,9 +1,9 @@
 import React from 'react'
-import ListPagination from '../../components/NewsPage/ListPagination/ ListPagination'
+import NewsList from '../../components/NewsPage/NewsList/NewsList'
 function NewsPage() {
   return (
     <div>
-      <ListPagination />
+      <NewsList />
     </div>
   )
 }

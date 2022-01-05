@@ -7,22 +7,25 @@ import './ProfilePage.css'
 import { beforeUploadImage } from '../../utils'
 import { UPDATE_AVATAR } from '../../constants/ActionType'
 import { store } from '../../store'
+import { Checkbox } from 'antd'
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 6 }
+    sm: { span: 7 }
   },
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 16 }
   }
 }
+
 function Profile(props) {
   const [isModalUpdataInfo, setIsModalUpdataInfo] = useState(false)
   const [isModalChangePassword, setIsModalChangePassword] = useState(false)
   const [isUploadingAvatar, setUploadingAvatar] = useState(false)
+
   const currenUser = props.currenUser
-  const avatar = props.avatar
+  const avatar = currenUser?.photourl
   const showModalUpdataInfo = () => {
     setIsModalUpdataInfo(true)
   }
@@ -41,22 +44,28 @@ function Profile(props) {
   }
   const onFinish = async values => {
     try {
-      await agent.Auth.updateUser(values)
+      const user = {
+        ...values,
+        address: {
+          city: values.city,
+          district: values.district,
+          detail: values.detail
+        }
+      }
+      await agent.Auth.updateUser(user)
       message.info('lưu thành công')
       window.location.reload()
     } catch (error) {
-      // message.info('lưu thất bại')
-      console.log(error.response)
+      message.info('lưu thất bại')
     }
   }
+
   const ChangePassword = async result => {
-    console.log(result)
     try {
       if (result.password === result.ComfimPassword) {
         const password = result.password
         const oldPassword = result.oldPassword
         const values = { oldPassword, password }
-        console.log(values)
         await agent.Auth.updateUser(values)
         message.info('lưu thành công')
         window.location.reload()
@@ -65,16 +74,30 @@ function Profile(props) {
       }
     } catch (error) {
       message.info('mật khẩu cũ không đúng')
-      // console.log(error.response)
     }
   }
   const onUpdateField = (key, value) => {
-    console.log(value)
     store.dispatch({ type: UPDATE_AVATAR, key, value })
   }
-
-  const addAvatar = value => onUpdateField('thumbnail', value)
-  const removeAvatar = file => onUpdateField('thumbnail', '')
+  const addAvatar = async value => {
+    if (!value) return
+    try {
+      await agent.Auth.updateUser({ photourl: value })
+      onUpdateField('photourl', value)
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const removeAvatar = async file => {
+    try {
+      await agent.Auth.updateUser({ photourl: '' })
+      onUpdateField('photourl', '')
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return currenUser ? (
     <div style={{ paddingTop: '80px', paddingBottom: '20px', backgroundColor: '#E8E8E8' }}>
       <div className="container-info">
@@ -107,82 +130,90 @@ function Profile(props) {
                 Upload Avatar
               </Button>
             </Upload>
-            {/* <div>
-              <Button>Save</Button>
-            </div> */}
           </div>
           <div>
             <Button onClick={showModalChangePassword} icon={<LockOutlined />}>
               Change Password
             </Button>
             <Modal
-              title="Thay đổi mật khẩu"
+              title="Change the password"
               visible={isModalChangePassword}
-              footer={false}
+              onOk={ChangePassword}
               onCancel={handleCancelChangePassword}
+              footer={[
+                <Button key="cancel" onClick={handleCancelChangePassword}>
+                  Cancel
+                </Button>,
+                <Button key="submit" form="changePassword" type="primary" htmlType="submit">
+                  Save
+                </Button>
+              ]}
             >
               <Form
                 {...formItemLayout}
                 onFinish={ChangePassword}
                 onFinishFailed={onFinishFailed}
-                name="basic"
+                name="changePassword"
                 initialValues={{ remember: true }}
+                labelAlign="left"
+                colon={false}
+                style={{ display: 'flex', flexDirection: 'column' }}
               >
                 <Form.Item
-                  label="Mật khẩu hiện tại"
+                  label="Current Password"
                   name="oldPassword"
                   rules={[{ required: true, message: 'Please input your password!' }]}
                   className="field"
-                  style={{ marginTop: '10px' }}
                 >
                   <Input.Password />
                 </Form.Item>
                 <Form.Item
-                  label="Mật khẩu mới"
+                  label="Password"
                   name="password"
                   rules={[{ required: true, message: 'Please input your password!' }]}
                   className="field"
-                  style={{ marginTop: '10px' }}
                 >
                   <Input.Password />
                 </Form.Item>
                 <Form.Item
-                  label="Nhập lại mật khẩu mới"
+                  label="Comfim Password"
                   name="ComfimPassword"
                   rules={[{ required: true, message: 'Please input your password!' }]}
                   className="field"
-                  style={{ marginTop: '10px' }}
                 >
                   <Input.Password />
-                </Form.Item>
-                <Form.Item wrapperCol={{ offset: 7, span: 16 }}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    style={{ width: '200px', background: '#FFA500', border: 'none', marginTop: '10px' }}
-                  >
-                    SAVE
-                  </Button>
                 </Form.Item>
               </Form>
             </Modal>
           </div>
         </div>
         <div className="container-info-left">
-          <p>Thông tin cá nhân</p>
+          <p>Personal Information</p>
           <ul style={{ padding: '0px 20px 20px 50px' }}>
             <li>
-              Họ và tên:<span> {currenUser.displayname}</span>
+              Full name: <span> {currenUser.displayname}</span>
             </li>
             <br />
+
             <li>
-              Email:<span> {currenUser.email}</span>
+              Email: <span> {currenUser.email}</span>
             </li>
+
             <br />
+
             <li>
-              Địa chỉ: <span> {currenUser.address}</span>
+              Address:{' '}
+              <span>
+                {Object.values(currenUser.address)
+                  .reverse()
+                  .map((item, index) => {
+                    return item + (Object.values(currenUser.address).length === index + 1 ? ' ' : ', ')
+                  })}
+              </span>
             </li>
             <br />
+
+            <li>Follow: {currenUser.isSubscribing ? 'yes' : 'no'}</li>
           </ul>
           <Button
             style={{ marginLeft: '30px', marginBottom: '50px' }}
@@ -193,54 +224,47 @@ function Profile(props) {
             Chỉnh sửa chi tiết
           </Button>
           <Modal
-            title="Chỉnh sửa thông tin"
+            title="Edit information"
             destroyOnClose
             visible={isModalUpdataInfo}
-            footer={false}
             onCancel={handleCancelUpdataInfo}
+            onOk={onFinish}
+            footer={[
+              <Button key="cancel" onClick={handleCancelUpdataInfo}>
+                Cancel
+              </Button>,
+              <Button key="submit" form="userForm" type="primary" htmlType="submit">
+                Save
+              </Button>
+            ]}
           >
             <Form
               {...formItemLayout}
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
-              name="basic"
+              name="userForm"
               initialValues={{ remember: true }}
+              labelAlign="left"
+              colon={false}
+              style={{ display: 'flex', flexDirection: 'column' }}
             >
-              <Form.Item
-                label="Tên hiển thị"
-                name="displayname"
-                rules={[{ required: true, message: 'Xin nhập tên hiển thị' }]}
-                className="field"
-              >
+              <Form.Item label="Display name" name="displayname" className="field">
                 <Input />
               </Form.Item>
-              <Form.Item
-                name="email"
-                label="E-mail"
-                rules={[
-                  {
-                    type: 'email',
-                    message: 'Đầu vào không hợp lệ E-mail!'
-                  },
-                  {
-                    required: true,
-                    message: 'xin nhập E-mail!'
-                  }
-                ]}
-              >
+              <Form.Item name="email" label="E-mail">
                 <Input />
               </Form.Item>
-              <Form.Item label="address" name="address" rules={[{ required: true, message: 'xin nhập địa chỉ' }]}>
+              <Form.Item label="City" name="city">
                 <Input />
               </Form.Item>
-              <Form.Item wrapperCol={{ offset: 7, span: 16 }}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ width: '200px', background: '#FFA500', border: 'none', marginTop: '10px' }}
-                >
-                  SAVE
-                </Button>
+              <Form.Item label="District" name="district">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Street" name="detail">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Subscribe" name="isSubscribing" valuePropName="checked">
+                <Checkbox />
               </Form.Item>
             </Form>
           </Modal>

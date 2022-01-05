@@ -14,7 +14,6 @@ function ProductPreview(props) {
   const { setState } = useSelector(state => state.products)
   const changePage = async pageNumber => {
     const result = await props.pager(pageNumber - 1, props.filter)
-    console.log(result)
     store.dispatch({
       type: SET_LIST_PRODUCTS,
       page: pageNumber - 1,
@@ -23,8 +22,7 @@ function ProductPreview(props) {
   }
   const addCart = async values => {
     try {
-      const aa = await agent.Cart.addItem(values, 1)
-      console.log(aa)
+      await agent.Cart.addItem(values, 1)
       // window.location.reload()
     } catch (error) {
       console.log(error)

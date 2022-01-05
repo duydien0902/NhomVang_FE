@@ -18,12 +18,14 @@ import { store } from '../../../store'
 import { CART_LOADED, CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
 import CartDrawer from '../../CartDrawer'
 import defaultavatarImage from '../../../assets/avatar.jpg'
+
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
+  // const [datasearch, setdataSearch] = useState(undefined)
+  // const [searchInput, setsearchInput] = useState('')
   const style = { fontSize: 22 }
   const currentUser = useSelector(state => state.auth.current)
-  const { data } = useSelector(state => state.updateavatar)
-  const avatar = data.thumbnail
+  const photourl = currentUser?.photourl
   const history = useHistory()
   const Logout = () => {
     localStorage.removeItem('token')
@@ -32,6 +34,24 @@ function Navbar() {
   }
   const toggleCartDrawer = () => {
     store.dispatch({ type: TOGGLE_CART_DRAWER })
+  }
+
+  const onChange = async e => {
+    // const values = { name: e.target.value }
+    // console.log( e.target.value );
+    // setsearchInput(e.target.value)
+    // try {
+    //   if (searchInput !== '') {
+    //     const values = { name: e.target.value }
+    //     const result = await agent.Products.getAll(0, values)
+    //     const aa = await result.data.productList
+    //     setdataSearch(aa)
+    //     console.log(aa)
+    //     // console.log('khác rỗng thì vào');
+    //   } else {
+    //     setdataSearch(undefined)
+    //   }
+    // } catch (error) {}
   }
   useEffect(() => {
     async function fetchCurrentUser() {
@@ -65,7 +85,6 @@ function Navbar() {
       fetchCurrentCart()
     }
   }, [currentUser])
-
   const menu = currentUser ? (
     <Menu>
       <Menu.Item style={{ width: '200px' }}>
@@ -108,7 +127,7 @@ function Navbar() {
               <span className=" reponsive-logo ">
                 <Link className="link" to="/">
                   <li className="cursor " style={{ color: 'white' }}>
-                    Vocher hunter
+                    Voucher hunter
                   </li>
                 </Link>
               </span>
@@ -141,9 +160,16 @@ function Navbar() {
                       fontSize: '20px',
                       maxWidth: '400px'
                     }}
+                    allowClear
+                    onChange={onChange}
                     placeholder="Search Logo..."
                     prefix={<SearchOutlined />}
                   />
+                  {/* {datasearch ? (
+                    <div
+                      style={{ maxWidth: '400px', backgroundColor: 'red', height: '400px', marginTop: '10px' }}
+                    ></div>
+                  ) : null} */}
                 </li>
               </span>
               {!currentUser ? (
@@ -160,7 +186,7 @@ function Navbar() {
                   <Dropdown overlay={menu} placement="bottomCenter" arrow>
                     <li>
                       <img
-                        src={avatar || defaultavatarImage}
+                        src={photourl || defaultavatarImage}
                         alt=""
                         style={{
                           width: '30px',

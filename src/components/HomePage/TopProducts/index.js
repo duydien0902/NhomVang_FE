@@ -9,18 +9,17 @@ function TopProducts() {
   const listProductHot = useSelector(state => state.products.listProductHot)
   const addCart = async values => {
     try {
-      const aa = await agent.Cart.addItem(values, 1)
-      console.log(aa)
+      await agent.Cart.addItem(values, 1)
     } catch (error) {
       console.log(error)
     }
   }
   return listProductHot ? (
     <div className="container">
-      <h1>SẢN PHẨM NỔI BẬT</h1>
+      <h1>HOT PRODUCTS</h1>
       <Row gutter={[50, 50]}>
         {listProductHot.map(item => (
-          <Col xs={24} sm={24} md={12} lg={8} xl={8} key={item.title}>
+          <Col xs={24} sm={24} md={12} lg={8} xl={8} key={item.slug}>
             <div
               className="container-item-topproducts"
               style={{

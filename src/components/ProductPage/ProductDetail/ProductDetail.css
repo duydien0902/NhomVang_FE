@@ -38,14 +38,13 @@
 .input-number-control-btn:active {
   background: rgb(95, 95, 95);
 }
-.product-tags {
-  display: inline-block;
-  margin-left: 30px;
-  margin-bottom: 30px;
-}
 .product-tags ul li {
+  display: inline-block;
   list-style-type: none;
   background-color: greenyellow;
   padding: 3px 10px 3px 10px;
   cursor: pointer;
+}
+.product-tags ul li:nth-child(n + 2) {
+  margin-left: 10px;
 }

@@ -17,9 +17,9 @@
   text-align: center;
 }
 .container-info-left ul li {
-  font-weight: 700;
+  font-weight: 900;
   font-size: 25px;
-  font-family: Comic Sans MS;
+  /* font-family: Comic Sans MS; */
 }
 .container-info-left ul li span {
   font-size: 20px;

@@ -18,7 +18,6 @@ function ProductPage() {
   }
 
   const { pager, page, total, listproducts, setState, reload } = useSelector(state => state.products)
-  console.log(setState)
   const onLoad = async () => {
     const pager = (page, filter) => agent.Products.getAll(page, filter)
     const result = await agent.Products.getAll(0, setState)

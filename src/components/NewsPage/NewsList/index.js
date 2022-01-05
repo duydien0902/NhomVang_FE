@@ -1,5 +1,5 @@
 import React from 'react'
-import './ListPagination.css'
+import './NewsList.css'
 import defaultNewsImage from '../../../assets/defaultNewsImage.png'
 import { Link } from 'react-router-dom'
 import { store } from '../../../store'
@@ -21,7 +21,6 @@ const NewsImage = ({ className, src, hidden }) => {
 }
 function ListPagination(props) {
   const listnews = props.newslist
-  console.log(listnews)
   const changePage = async pageNumber => {
     const result = await props.pager(pageNumber - 1)
     store.dispatch({
@@ -41,7 +40,7 @@ function ListPagination(props) {
   }
   return (
     <div>
-      <h1 style={{ fontSize: '40px', paddingLeft: '10px', paddingBottom: '20px', textAlign: 'center' }}>TIN TỨC</h1>
+      <h1 style={{ fontSize: '40px', paddingLeft: '10px', paddingBottom: '0px' }}>NEWS</h1>
       {listnews ? (
         listnews.map(listnews => (
           <div className="news-preview px-10 py-8 bg-white">
@@ -59,17 +58,19 @@ function ListPagination(props) {
                     {listnews.title}
                   </Link>
                 </h2>
-                {listnews.tags.map(item => (
-                  <div className="product-tags" key={item} onClick={() => Tag(item)}>
-                    <ul>
-                      <li># {item}</li>
-                    </ul>
-                  </div>
-                ))}
+                <div className="product-tags">
+                  <ul>
+                    {listnews.tags.map(item => (
+                      <li key={item} onClick={() => Tag(item)}>
+                        # {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 <div className="news-description leading-7">{listnews.description}</div>
                 <Space className="news-footer mt-6" size="middle">
                   <Button className="px-6" type="primary" size="large">
-                    <Link to={`/blog/${listnews.slug}`}>Đọc tiếp</Link>
+                    <Link to={`/blog/${listnews.slug}`}>Read more</Link>
                   </Button>
                 </Space>
               </div>

@@ -43,3 +43,19 @@
 .aboutus-content-bottom {
   margin-left: 20px;
 }
+@media only screen and (max-width: 746px) {
+  .aboutus-top {
+    flex-direction: column-reverse;
+  }
+  .aboutus-bottom {
+    flex-direction: column-reverse;
+  }
+  .aboutus-avatar {
+    width: 90%;
+    padding-bottom: 5%;
+  }
+  .aboutus-content {
+    width: 90%;
+    margin-top: 5%;
+  }
+}
