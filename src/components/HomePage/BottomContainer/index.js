@@ -1,7 +1,5 @@
 import React from 'react'
-import HotDeals from '../HotDeals'
 import NewsBar from '../NewsBar'
-import NewsLetter from '../NewsLetter'
 import Img from '../../../assets/imgbg.jpg'
 function BottomContainer() {
   return (
@@ -10,15 +8,12 @@ function BottomContainer() {
         className="container-imgbg "
         style={{
           backgroundImage: `url(${Img})`,
-          backgroundSize: 'cover',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)'
+          backgroundSize: 'cover'
         }}
       >
         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
-          <HotDeals />
-          <div>
+          <div style={{ paddingTop: '100px' }}>
             <NewsBar />
-            <NewsLetter />
           </div>
         </div>
       </div>

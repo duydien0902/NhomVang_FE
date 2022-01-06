@@ -1,8 +1,10 @@
 import React from 'react'
-import './ListPagination.css'
+import './NewsList.css'
 import defaultNewsImage from '../../../assets/defaultNewsImage.png'
 import { Link } from 'react-router-dom'
-import { Button, Image, Space } from 'antd'
+import { store } from '../../../store'
+import { SET_LIST_NEWS, SETSTATE_LIST_NEWS } from '../../../constants/ActionType'
+import { Button, Image, Space, Spin, Pagination } from 'antd'
 const NewsImage = ({ className, src, hidden }) => {
   return (
     <div className={className} hidden={hidden}>
@@ -17,38 +19,34 @@ const NewsImage = ({ className, src, hidden }) => {
     </div>
   )
 }
-export default function ListPagination(props) {
-  const listnews = props.Newslist
-  console.log(listnews)
+function ListPagination(props) {
+  const listnews = props.newslist
+  const changePage = async pageNumber => {
+    const result = await props.pager(pageNumber - 1)
+    store.dispatch({
+      type: SET_LIST_NEWS,
+      page: pageNumber - 1,
+      payload: result
+    })
+  }
+  const Tag = tag => {
+    const key = 'tags'
+    const value = tag
+    store.dispatch({
+      type: SETSTATE_LIST_NEWS,
+      key,
+      value
+    })
+  }
   return (
-    //   <div style={{ paddingTop: '150px' }}>
-    //     <div className="ListPagination">
-    //       {listnews ? (
-    //         listnews.map(item => (
-    //           <Link className="link" to={`/blog/${item.slug}`}>
-    //             <div key={item.slug} className="container-ListPagination">
-    //               <div> {<img src={item.thumbnail || defaultNewsImage} alt="news" />}</div>
-    //               <div>
-    //                 <h3 style={{ color: 'red', fontSize: '20px' }}>{item.title}</h3>
-    //                 <span style={{ fontSize: '17px' }}>{item.description}</span>
-    //               </div>
-    //             </div>
-    //           </Link>
-    //         ))
-    //       ) : (
-    //         <p>loading....</p>
-    //       )}
-    //     </div>
-    //   </div>
-
-    // )
     <div>
+      <h1 style={{ fontSize: '40px', paddingLeft: '10px', paddingBottom: '0px' }}>NEWS</h1>
       {listnews ? (
         listnews.map(listnews => (
           <div className="news-preview px-10 py-8 bg-white">
             <Space size={0}>
               <NewsImage className="mr-8" src={listnews.thumbnail} />
-              <div className="news-body" style={{ marginLeft: '30px' }}>
+              <div className="news-body">
                 <div className="news-date mb-3 text-gray-500">
                   {new Date(listnews.modifiedDate).toLocaleDateString()}
                 </div>
@@ -60,10 +58,19 @@ export default function ListPagination(props) {
                     {listnews.title}
                   </Link>
                 </h2>
+                <div className="product-tags">
+                  <ul>
+                    {listnews.tags.map(item => (
+                      <li key={item} onClick={() => Tag(item)}>
+                        # {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 <div className="news-description leading-7">{listnews.description}</div>
                 <Space className="news-footer mt-6" size="middle">
                   <Button className="px-6" type="primary" size="large">
-                    <Link to={`/blog/${listnews.slug}`}>Đọc tiếp</Link>
+                    <Link to={`/blog/${listnews.slug}`}>Read more</Link>
                   </Button>
                 </Space>
               </div>
@@ -71,8 +78,20 @@ export default function ListPagination(props) {
           </div>
         ))
       ) : (
-        <p>loading....</p>
+        <Spin
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '70vh' }}
+          size="large"
+        />
       )}
+      <Pagination
+        style={{ display: 'flex', justifyContent: 'center', paddingTop: '40px', paddingBottom: '50px' }}
+        defaultCurrent={1}
+        pageSize={props.pageSize}
+        total={props.total}
+        currentPage={props.currentPage}
+        onChange={changePage}
+      />
     </div>
   )
 }
+export default ListPagination

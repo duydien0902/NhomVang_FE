@@ -24,11 +24,11 @@ function Register({ visibleLogin, visibleRegister }) {
       const payload = await result.data.user
       store.dispatch({ type: REGISTER, payload })
       localStorage.setItem('token', result.data.token)
-      message.info('đăng ký thành công')
+      message.success('đăng ký thành công')
       window.location.reload()
     } catch (error) {
       console.log(error)
-      message.info('tài khoản đã được sử dụng')
+      message.error('tài khoản đã được sử dụng')
     }
   }
 

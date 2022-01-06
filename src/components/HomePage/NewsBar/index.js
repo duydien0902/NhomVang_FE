@@ -10,16 +10,16 @@ function NewsSlider() {
   const newsList = useSelector(state => state.news.listnews)
   useEffect(() => {
     async function fetchNewsList() {
-      const payload = await agent.News.getAll(5)
+      const payload = await agent.News.getAll(0)
       store.dispatch({ type: LIST_NEWS, payload })
     }
     fetchNewsList()
   }, [])
   return (
     <div style={{ width: '100%', paddingBottom: '80px' }}>
-      <div className="title-news" style={{ marginTop: '120px' }}>
+      <div className="title-news" style={{ marginTop: '120px', width: '90%', margin: '0 auto' }}>
         <h1>
-          <span>TIN TỨC</span>
+          <span>NEWS</span>
         </h1>
       </div>
       <div style={{ width: '90%', margin: '0 auto' }}>
@@ -42,8 +42,10 @@ function NewsSlider() {
               ))
             : null}
         </div>
-        <Link to="/blog/slug">
-          <span style={{ float: 'right', fontSize: '20px', fontWeight: '700', cursor: 'pointer' }}>Xem thêm...</span>
+        <Link className="link" to="/blog/slug">
+          <span style={{ float: 'right', fontSize: '20px', fontWeight: '700', cursor: 'pointer', color: 'white' }}>
+            See more...
+          </span>
         </Link>
       </div>
     </div>

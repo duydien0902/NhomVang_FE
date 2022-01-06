@@ -7,6 +7,9 @@ import NewsDetail from '../components/NewsPage/News'
 import CartPage from './CartPage'
 import NewsPage from './NewsPage'
 import ProductPage from './ProductPage'
+import ProductDetail from '../components/ProductPage/ProductDetail'
+import ProfilePage from '../pages/ProfilePage'
+import AboutusPage from '../pages/AboutusPage'
 import CheckoutPage from './CheckoutPage'
 function Pages() {
   return (
@@ -17,7 +20,10 @@ function Pages() {
         <Route path="/blog/slug" component={NewsPage} />
         <Route path="/blog/:slug" component={NewsDetail} />
         <Route path="/cart" component={CartPage} />
-        <Route path="/products" component={ProductPage} />
+        <Route path="/products/slug" component={ProductPage} />
+        <Route path="/products/:slug" component={ProductDetail} />
+        <Route path="/profile" component={ProfilePage} />
+        <Route path="/aboutus" component={AboutusPage} />
         <Route path="/checkout/:invoiceId" component={CheckoutPage} />
       </Switch>
       <Footer />

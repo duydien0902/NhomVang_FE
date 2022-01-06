@@ -24,11 +24,11 @@ function Login({ visibleLogin, visibleRegister }) {
       const payload = await result.data.user
       store.dispatch({ type: LOGIN, payload })
       localStorage.setItem('token', result.data.token)
-      message.info('đăng nhập thành công')
+      message.success('đăng nhập thành công')
       window.location.reload()
     } catch (error) {
       console.log(error.response)
-      message.info('đăng nhập thất bại')
+      message.error('đăng nhập thất bại')
     }
   }
   const onFinishFailed = errorInfo => {

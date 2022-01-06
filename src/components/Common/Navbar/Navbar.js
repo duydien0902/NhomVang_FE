@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Avatar from '../../../assets/avatar.jpg'
 import './Navbar.css'
 import 'antd/dist/antd.css'
 import {
@@ -12,6 +11,7 @@ import {
 import { Input, Dropdown, Menu, Modal } from 'antd'
 import { Link, useHistory } from 'react-router-dom'
 import Login from '../../Login/Login'
+import defaultavatarImage from '../../../assets/avatar.jpg'
 import Register from '../../Register/Register'
 import { useSelector } from 'react-redux'
 import agent from '../../../agent'
@@ -20,9 +20,11 @@ import { CART_LOADED, CART_LOADING, CURRENT_USER, TOGGLE_CART_DRAWER } from '../
 import CartDrawer from '../../CartDrawer'
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
+  // const [datasearch, setdataSearch] = useState(undefined)
+  // const [searchInput, setsearchInput] = useState('')
   const style = { fontSize: 22 }
   const currentUser = useSelector(state => state.auth.current)
-
+  const photourl = currentUser?.photourl
   const history = useHistory()
   const Logout = () => {
     localStorage.removeItem('token')
@@ -31,6 +33,24 @@ function Navbar() {
   }
   const toggleCartDrawer = () => {
     store.dispatch({ type: TOGGLE_CART_DRAWER })
+  }
+
+  const onChange = async e => {
+    // const values = { name: e.target.value }
+    // console.log( e.target.value );
+    // setsearchInput(e.target.value)
+    // try {
+    //   if (searchInput !== '') {
+    //     const values = { name: e.target.value }
+    //     const result = await agent.Products.getAll(0, values)
+    //     const aa = await result.data.productList
+    //     setdataSearch(aa)
+    //     console.log(aa)
+    //     // console.log('khác rỗng thì vào');
+    //   } else {
+    //     setdataSearch(undefined)
+    //   }
+    // } catch (error) {}
   }
   useEffect(() => {
     async function fetchCurrentUser() {
@@ -44,6 +64,23 @@ function Navbar() {
     }
     fetchCurrentUser()
   }, [])
+  useEffect(() => {
+    async function fetchCurrentCart() {
+      let cart
+      try {
+        store.dispatch({ type: CART_LOADING })
+        const result = await agent.Cart.current()
+        cart = result.data.cart
+      } catch (error) {
+        console.log(error)
+      } finally {
+        store.dispatch({ type: CART_LOADED, cart })
+      }
+    }
+    if (currentUser) {
+      fetchCurrentCart()
+    }
+  }, [currentUser])
 
   useEffect(() => {
     async function fetchCurrentCart() {
@@ -101,9 +138,11 @@ function Navbar() {
           <div className="nav-links">
             <ul>
               <span className=" reponsive-logo ">
-                <li className="cursor " style={{ color: 'white', fontWeight: '700' }}>
-                  LOGO
-                </li>
+                <Link className="link" to="/">
+                  <li className="cursor " style={{ color: 'white' }}>
+                    Voucher hunter
+                  </li>
+                </Link>
               </span>
               {
                 <span className={showNavLinks ? 'nav-link-mobile' : 'nav-links-reponsive'}>
@@ -116,7 +155,9 @@ function Navbar() {
                   <Link className="link" to="/blog/slug">
                     <li className="cursor">News</li>
                   </Link>
-                  <li className="cursor">About us</li>
+                  <Link className="link" to="/aboutus">
+                    <li className="cursor">About us</li>
+                  </Link>
                 </span>
               }
             </ul>
@@ -132,21 +173,30 @@ function Navbar() {
                       fontSize: '20px',
                       maxWidth: '400px'
                     }}
+                    allowClear
+                    onChange={onChange}
                     placeholder="Search Logo..."
                     prefix={<SearchOutlined />}
                   />
+                  {/* {datasearch ? (
+                    <div
+                      style={{ maxWidth: '400px', backgroundColor: 'red', height: '400px', marginTop: '10px' }}
+                    ></div>
+                  ) : null} */}
                 </li>
               </span>
               {!currentUser ? (
-                <li className="cursor" type="primary" onClick={showModal}>
-                  <UserOutlined style={style} />
-                </li>
+                <span>
+                  <li className="cursor" type="primary" onClick={showModal}>
+                    <UserOutlined style={style} />
+                  </li>
+                </span>
               ) : (
                 <span>
                   <Dropdown overlay={menu} placement="bottomCenter" arrow>
                     <li>
                       <img
-                        src={Avatar}
+                        src={photourl || defaultavatarImage}
                         alt=""
                         style={{
                           width: '30px',
@@ -159,11 +209,13 @@ function Navbar() {
                       />
                     </li>
                   </Dropdown>
+                  <Link className="link" to="/cart">
+                    <li className="cursor" onClick={toggleCartDrawer}>
+                      <ShoppingCartOutlined style={style} />
+                    </li>
+                  </Link>
                 </span>
               )}
-              <li className="cursor" onClick={toggleCartDrawer}>
-                <ShoppingCartOutlined style={style} />
-              </li>
               {showNavLinks ? (
                 <span className=" show-nav-links" onClick={() => setShowNavLinks(false)}>
                   <li className="cursor ">

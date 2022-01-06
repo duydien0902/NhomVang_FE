@@ -18,17 +18,34 @@ const tokenPlugin = req => {
   return req
 }
 instance.interceptors.request.use(tokenPlugin)
+const pageSizeNews = 5
+const pageSizeProducts = 10
 const Auth = {
   login: values => instance.post('/auth/login', { user: values }),
   register: values => instance.post('/auth/register', { user: values }),
-  current: () => instance.get('/auth/current')
+  current: () => instance.get('/auth/current'),
+  updateUser: values => instance.put('/auth/update', { user: values })
+}
+const Image = {
+  upload: image => instance.post('image/upload', { image })
 }
 const News = {
-  getAll: (limit = 10, page = 0) =>
+  getAll: (page = 0, filter = {}) =>
     instance.get(`/news`, {
-      params: { limit, offset: page * limit || 0 }
+      params: {
+        limit: pageSizeNews,
+        offset: page * pageSizeNews || 0,
+        ...filter
+      }
     }),
   getBySlug: slug => instance.get(`/news/${slug}`)
+}
+const Products = {
+  getAll: (page = 0, filter = {}) =>
+    instance.get(`/products`, {
+      params: { limit: pageSizeProducts, offset: page * pageSizeProducts || 0, ...filter }
+    }),
+  getBySlug: slug => instance.get(`/products/${slug}`)
 }
 const Cart = {
   current: () => instance.get('/cart'),
@@ -56,6 +73,10 @@ const Invoice = {
 const agent = {
   Auth,
   News,
+  Products,
+  pageSizeNews,
+  pageSizeProducts,
+  Image,
   Cart,
   Invoice
 }
