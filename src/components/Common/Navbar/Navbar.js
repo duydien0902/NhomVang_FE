@@ -209,11 +209,11 @@ function Navbar() {
                       />
                     </li>
                   </Dropdown>
-                  <Link className="link" to="/cart">
-                    <li className="cursor" onClick={toggleCartDrawer}>
-                      <ShoppingCartOutlined style={style} />
-                    </li>
-                  </Link>
+                  {/* <Link className="link" to="/cart"> */}
+                  <li className="cursor" onClick={toggleCartDrawer}>
+                    <ShoppingCartOutlined style={style} />
+                  </li>
+                  {/* </Link> */}
                 </span>
               )}
               {showNavLinks ? (
