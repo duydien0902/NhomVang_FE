@@ -128,11 +128,11 @@ function ProductDetail() {
               />
 
               <Button style={{ marginLeft: '15px' }} type="primary" onClick={() => addCart(productdetail._id)}>
-                Thêm Vào Giỏ
+                Add To Cart
               </Button>
             </div>
           </div>
-          <h3 style={{ paddingTop: '15px' }}>Mô tả</h3>
+          <h3 style={{ paddingTop: '15px' }}>Description</h3>
           <p dangerouslySetInnerHTML={{ __html: decodeHTMLContent(productdetail.description) }}></p>
         </div>
       ) : (
