@@ -17,17 +17,18 @@ function ProductDetail() {
   const { listproducts } = useSelector(state => state.products)
   const [quantity, setquantity] = useState(1)
   useEffect(() => {
-    const fetchProductTas = async () => {
+    const fetchProductTags = async () => {
       try {
         const tags = await productdetail.tags.toString()
         const payload = await agent.Products.getAll(0, { tags })
+        payload.data.productList = payload.data.productList.filter(product => product.slug !== slug)
         store.dispatch({ type: LIST_PRODUCTS_TAGS, payload })
       } catch (error) {
         console.log(error)
       }
     }
-    fetchProductTas()
-  }, [productdetail])
+    fetchProductTags()
+  }, [productdetail, slug])
 
   useEffect(() => {
     const fetchdata = async () => {

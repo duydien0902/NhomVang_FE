@@ -11,7 +11,7 @@ function ProductsTagsSlider(props) {
   return (
     <div className="container-NewsSlider" x>
       <div className="wrapper-NewsSlider">
-        <h1>SẢN PHẨM LIÊN QUAN </h1>
+        <h1>RELATED PRODUCTS</h1>
         <div style={{ width: '80%', margin: '0 auto' }}>
           <Row gutter={[24, 24]}>
             {listproductstags ? (
