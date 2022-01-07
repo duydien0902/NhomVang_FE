@@ -13,7 +13,7 @@ const { Title } = Typography
 
 export default function CheckoutPage() {
   const { invoiceId } = useParams()
-  const { invoice, paymentMethod, isLoading } = useSelector(state => state.invoice)
+  const { invoice, paymentMethod, paymentStatus, isLoading } = useSelector(state => state.invoice)
 
   const onOrder = async () => {
     try {
@@ -69,6 +69,7 @@ export default function CheckoutPage() {
           <CheckoutPayment
             isLoading={isLoading}
             paymentMethod={paymentMethod}
+            paymentStatus={paymentStatus}
             total={invoice.total}
             discountTotal={invoice.discountTotal}
             onOrder={onOrder}

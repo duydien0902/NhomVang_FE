@@ -19,7 +19,7 @@ function renderPrice(price, quantity = 1) {
   return toLocaleStringCurrency(price * quantity)
 }
 
-export default function CheckoutPayment({ isLoading, paymentMethod, total, discountTotal, onOrder }) {
+export default function CheckoutPayment({ isLoading, paymentMethod, paymentStatus, total, discountTotal, onOrder }) {
   const dispatch = useDispatch()
   const onPaymentBtnClick = method => {
     dispatch({
@@ -34,6 +34,7 @@ export default function CheckoutPayment({ isLoading, paymentMethod, total, disco
       <div className="payment-btns">
         {Object.keys(methods).map(key => (
           <Button
+            disabled={paymentStatus !== 'pending'}
             className={`payment-btn ${paymentMethod === key ? 'active' : ''}`}
             key={key}
             onClick={() => onPaymentBtnClick(key)}
@@ -47,7 +48,15 @@ export default function CheckoutPayment({ isLoading, paymentMethod, total, disco
           <span>Total:</span>
           <span className="price">{renderPrice(discountTotal || total)}</span>
         </div>
-        <Button loading={isLoading} type="primary" size="large" className="order-btn" onClick={onOrder}>
+        {paymentStatus !== 'pending' && <div className="payment-message">This order has been paid.</div>}
+        <Button
+          disabled={paymentStatus !== 'pending'}
+          loading={isLoading}
+          type="primary"
+          size="large"
+          className="order-btn"
+          onClick={onOrder}
+        >
           Order
         </Button>
       </div>

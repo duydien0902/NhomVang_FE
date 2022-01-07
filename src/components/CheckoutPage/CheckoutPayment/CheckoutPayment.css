@@ -30,6 +30,11 @@
   margin-bottom: 1rem;
 }
 
+.checkout-payment-container .payment-total .payment-message {
+  color: rgb(33, 191, 115);
+  text-align: right;
+}
+
 .checkout-payment-container .payment-total-price {
   color: rgba(0, 0, 0, 0.54);
   font-size: 1rem;
