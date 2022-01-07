@@ -48,7 +48,7 @@ export default function CheckoutPayment({ isLoading, paymentMethod, paymentStatu
           <span>Total:</span>
           <span className="price">{renderPrice(discountTotal || total)}</span>
         </div>
-        {paymentStatus !== 'pending' && <div className="payment-message">This order has been paid.</div>}
+        {paymentStatus !== 'pending' && <div className="payment-message">This order has been paid or cancelled.</div>}
         <Button
           disabled={paymentStatus !== 'pending'}
           loading={isLoading}
