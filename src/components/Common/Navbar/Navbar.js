@@ -133,9 +133,9 @@ function Navbar() {
         <div className="header" style={{ position: 'relative' }}>
           <div className="nav-links">
             <ul>
-              <span className=" reponsive-logo ">
+              <span className=" reponsive-logo">
                 <Link className="link" to="/">
-                  <li className="cursor " style={{ color: 'white' }}>
+                  <li className="cursor " style={{ color: 'white', display: 'inline-block' }}>
                     Voucher hunter
                   </li>
                 </Link>
