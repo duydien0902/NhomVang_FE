@@ -22,9 +22,10 @@ function Pages() {
         <Route path="/cart" component={CartPage} />
         <Route path="/products/slug" component={ProductPage} />
         <Route path="/products/:slug" component={ProductDetail} />
-        <Route path="/profile" component={ProfilePage} />
+        {/* <Route path="/profile" component={ProfilePage} /> */}
         <Route path="/aboutus" component={AboutusPage} />
         <Route path="/checkout/:invoiceId" component={CheckoutPage} />
+        <Route path="/me" component={ProfilePage} />
       </Switch>
       <Footer />
     </div>

@@ -102,15 +102,11 @@ function Navbar() {
 
   const menu = currentUser ? (
     <Menu>
-      <Menu.Item style={{ width: '200px' }}>
-        <li className="cursor" style={{ fontSize: '16px' }}>
-          {currentUser.displayname}
-        </li>
+      <Menu.Item key="profile" style={{ width: '200px' }}>
+        <Link to="/me/profile">{currentUser.displayname}</Link>
       </Menu.Item>
-      <Menu.Item>
-        <li onClick={Logout} className="cursor" style={{ fontSize: '16px' }}>
-          Logout
-        </li>
+      <Menu.Item key="logout" onClick={Logout}>
+        Logout
       </Menu.Item>
     </Menu>
   ) : null

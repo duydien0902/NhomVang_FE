@@ -1,0 +1,38 @@
+.profile__container {
+  padding: 100px;
+}
+
+.profile__user-info {
+  display: flex;
+  align-items: center;
+}
+
+.profile__menu-container {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile__menu-item {
+  display: flex;
+  align-items: center;
+  color: #000000;
+  font-size: 1.1rem;
+  padding: 5px 0px;
+}
+
+.profile__menu-item > .profile__menu-item--icon {
+  margin-right: 10px;
+}
+
+.profile__menu-item:hover {
+  color: orange;
+}
+
+.user-info__avatar {
+  margin-right: 20px;
+}
+
+.user-info__display-name {
+  font-size: 1.5rem;
+}
