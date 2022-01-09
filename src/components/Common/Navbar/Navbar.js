@@ -350,22 +350,20 @@ function Navbar() {
                       />
                     </Dropdown>
                   </li>
-                  <Link className="link" to="/cart">
-                    <li className={hightlightTab === '/cart' ? 'cursor' : 'cursor'} onClick={toggleCartDrawer}>
-                      <ShoppingCartOutlined style={(style, { color: 'white' })} />
-                      <span className="cartQuantity">
-                        {isLoading ? (
-                          <span style={{ padding: '0px 5px 5px 5px', backgroundColor: 'white', borderRadius: '10px' }}>
-                            <Spin indicator={antIcon} />
-                          </span>
-                        ) : (
-                          <span style={{ padding: '2px 5px 2px 5px', backgroundColor: 'white', borderRadius: '10px' }}>
-                            <span style={{ color: ' #aa0000' }}>{cartQuantity}</span>
-                          </span>
-                        )}
-                      </span>
-                    </li>
-                  </Link>
+                  <li className={hightlightTab === 'cart' ? 'cursor' : 'cursor'} onClick={toggleCartDrawer}>
+                    <ShoppingCartOutlined style={(style, { color: 'white' })} />
+                    <span className="cartQuantity">
+                      {isLoading ? (
+                        <span style={{ padding: '0px 5px 5px 5px', backgroundColor: 'white', borderRadius: '10px' }}>
+                          <Spin indicator={antIcon} />
+                        </span>
+                      ) : (
+                        <span style={{ padding: '2px 5px 2px 5px', backgroundColor: 'white', borderRadius: '10px' }}>
+                          <span style={{ color: ' #aa0000' }}>{cartQuantity}</span>
+                        </span>
+                      )}
+                    </span>
+                  </li>
                 </span>
               )}
               {showNavLinks ? (
