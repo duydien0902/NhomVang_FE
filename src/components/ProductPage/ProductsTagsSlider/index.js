@@ -4,15 +4,23 @@ import '../../NewsPage/NewsTagsSlider/NewsTagsSlider.css'
 import { Link } from 'react-router-dom'
 import defaultNewsImage from '../../../assets/defaultNewsImage.png'
 import { addCart } from '../../../utils'
+import { useSelector } from 'react-redux'
+import { useState } from 'react'
 
 function ProductsTagsSlider(props) {
   const listproductstags = props.listproducts
-
+  const { isLoading } = useSelector(state => state.cart)
+  const [loadingItem, setLoadingItem] = useState('')
+  const handleClickAddtocart = async itemId => {
+    setLoadingItem(itemId)
+    await addCart(itemId)
+    setLoadingItem('')
+  }
   return (
     <div className="container-NewsSlider" x>
-      <div className="wrapper-NewsSlider">
-        <h1>RELATED PRODUCTS</h1>
-        <div style={{ width: '80%', margin: '0 auto' }}>
+      <div className="wrapper-NewsSlider" style={{ width: '90%', margin: '0 auto', paddingBottom: '60px' }}>
+        <h1>RELATED PRODUCTS </h1>
+        <div style={{ width: '100%' }}>
           <Row gutter={[24, 24]}>
             {listproductstags ? (
               listproductstags.map(item => (
@@ -37,15 +45,15 @@ function ProductsTagsSlider(props) {
                       <h3>{item.name}</h3>
                       {item.discountPrice ? (
                         <p>
-                          Giá:
+                          Price:
                           <span style={{ textDecorationLine: 'line-through' }}> {item.listedPrice} $</span>
                           <span style={{ marginLeft: '10px', color: 'red' }}> {item.discountPrice} $</span>
                         </p>
                       ) : (
-                        <p>Giá: {item.listedPrice} $</p>
+                        <p>Price: {item.listedPrice} $</p>
                       )}
                       <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '10px' }}>
-                        <Link to={`/products/${item.slug}`}>
+                        <Link to={`/product/${item.slug}`}>
                           <Button
                             type="primary"
                             htmlType="submit"
@@ -58,7 +66,8 @@ function ProductsTagsSlider(props) {
                           </Button>
                         </Link>
                         <Button
-                          onClick={() => addCart(item._id)}
+                          loading={isLoading && loadingItem === item._id}
+                          onClick={() => handleClickAddtocart(item._id)}
                           type="primary"
                           htmlType="submit"
                           style={{
@@ -66,7 +75,7 @@ function ProductsTagsSlider(props) {
                             border: 'none'
                           }}
                         >
-                          Add to card
+                          Add to cart
                         </Button>
                       </div>
                     </div>
@@ -74,13 +83,9 @@ function ProductsTagsSlider(props) {
                 </Col>
               ))
             ) : (
-              <Spin
-                style={{ display: 'flex', justifyItems: 'center', paddingTop: '20px', height: '45vh' }}
-                size="large"
-              />
+              <Spin style={{ margin: '0 auto', paddingBottom: '30px' }} size="large" />
             )}
           </Row>
-          {/* </Slider> */}
         </div>
       </div>
     </div>

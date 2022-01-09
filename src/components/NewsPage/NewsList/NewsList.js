@@ -37,7 +37,7 @@ function NewsList() {
   }, [reload])
 
   return (
-    <div style={{ padding: '100px 100px 100px 100px', width: '100%', backgroundColor: '#DCDCDC' }}>
+    <div className="container-NewsList">
       <LayoutNewsList
         newslist={listnews}
         pageSize={agent.pageSizeNews}

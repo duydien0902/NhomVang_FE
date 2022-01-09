@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 import { Spin, Upload, Button, Modal, Form, Input, message } from 'antd'
-import { UploadOutlined, LockOutlined, LoadingOutlined } from '@ant-design/icons'
+import {
+  UploadOutlined,
+  LockOutlined,
+  LoadingOutlined,
+  CheckCircleTwoTone,
+  CloseCircleOutlined
+} from '@ant-design/icons'
 import defaultavatarImage from '../../assets/avatar.jpg'
 import agent from '../../agent'
 import './ProfilePage.css'
@@ -32,7 +38,6 @@ function UserProfile(props) {
   const handleCancelUpdataInfo = () => {
     setIsModalUpdataInfo(false)
   }
-
   const showModalChangePassword = () => {
     setIsModalChangePassword(true)
   }
@@ -52,6 +57,7 @@ function UserProfile(props) {
           detail: values.detail
         }
       }
+      console.log(user)
       await agent.Auth.updateUser(user)
       message.success('profile saved!')
       window.location.reload()
@@ -216,7 +222,14 @@ function UserProfile(props) {
           <br />
 
           <li>
-            Follow: <span>{currenUser.isSubscribing ? 'yes' : 'no'}</span>
+            Follow:{' '}
+            <span>
+              {currenUser.isSubscribing ? (
+                <CheckCircleTwoTone twoToneColor="#52c41a" />
+              ) : (
+                <CloseCircleOutlined style={{ color: 'red' }} />
+              )}
+            </span>
           </li>
         </ul>
         <Button

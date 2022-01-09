@@ -3,11 +3,10 @@ import { useParams, Link } from 'react-router-dom'
 import agent from '../../../agent'
 import { useSelector } from 'react-redux'
 import { store } from '../../../store'
-import { SELECTED_PRODUCT } from '../../../constants/ActionType'
+import { SELECTED_PRODUCT, CART_LOADING, CART_LOADED } from '../../../constants/ActionType'
 import { decodeHTMLContent } from '../../../utils'
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons'
 import { SETSTATE_LIST_PRODUCTS, LIST_PRODUCTS_TAGS } from '../../../constants/ActionType'
-// import img from '../../../assets/defaultNewsImage.png'
 import './ProductDetail.css'
 import { InputNumber, Button, Spin, message } from 'antd'
 import ProductsTagsSlider from '../ProductsTagsSlider'
@@ -15,6 +14,8 @@ function ProductDetail() {
   const { slug } = useParams()
   const productdetail = useSelector(state => state.productdetail.productdetail)
   const { listproducts } = useSelector(state => state.products)
+  const { isLoading } = useSelector(state => state.cart)
+  const [loadingItem, setLoadingItem] = useState('')
   const [quantity, setquantity] = useState(1)
   useEffect(() => {
     const fetchProductTags = async () => {
@@ -45,9 +46,15 @@ function ProductDetail() {
     const token = localStorage.getItem('token')
     try {
       if (token) {
+        setLoadingItem(values)
         await agent.Cart.addItem(values, quantity)
+        store.dispatch({ type: CART_LOADING })
+        const result = await agent.Cart.current()
+        let cart = result.data.cart
+        store.dispatch({ type: CART_LOADED, cart })
+        setLoadingItem('')
       } else {
-        message.warning('xin hãy đăng nhập')
+        message.warning('Please login')
       }
     } catch (error) {
       console.log(error)
@@ -105,7 +112,7 @@ function ProductDetail() {
                   <span style={{ marginLeft: '10px', color: 'red' }}>{productdetail.discountPrice} $</span>
                 </p>
               ) : (
-                <p>Giá: {productdetail.listedPrice} $</p>
+                <p>Price: {productdetail.listedPrice} $</p>
               )}
               <Button
                 onClick={PlusOutlinedd}
@@ -114,10 +121,10 @@ function ProductDetail() {
                 icon={<PlusOutlined />}
               />
               <InputNumber
-                style={{ width: '70px' }}
                 min={1}
+                style={{ width: 70, paddingLeft: '18px' }}
+                controls={false}
                 max={productdetail.inStock}
-                // defaultValue={1}
                 value={quantity}
                 onChange={onChange}
               />
@@ -127,8 +134,12 @@ function ProductDetail() {
                 type="primary"
                 icon={<MinusOutlined />}
               />
-
-              <Button style={{ marginLeft: '15px' }} type="primary" onClick={() => addCart(productdetail._id)}>
+              <Button
+                loading={isLoading && loadingItem === productdetail._id}
+                style={{ marginLeft: '15px' }}
+                type="primary"
+                onClick={() => addCart(productdetail._id)}
+              >
                 Add To Cart
               </Button>
             </div>

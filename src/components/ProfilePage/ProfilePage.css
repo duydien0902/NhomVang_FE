@@ -1,5 +1,7 @@
 .container {
   background-color: #e8e8e8;
+  width: 90%;
+  margin: 100px auto;
 }
 .container-info {
   width: 85%;

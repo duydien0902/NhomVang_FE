@@ -7,7 +7,7 @@ const { Title } = Typography
 
 export default function CartEmpty() {
   return (
-    <div className="cart-table cart-empty">
+    <div style={{ height: '45vh' }} className="cart-table cart-empty">
       <ShoppingTwoTone className="cart-icon" />
       <Title className="cart-empty-text" level={2}>
         Your Cart is Empty

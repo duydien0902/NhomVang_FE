@@ -12,3 +12,8 @@
   width: inherit;
   height: inherit;
 }
+@media only screen and (max-width: 284px) {
+  .App {
+    display: none;
+  }
+}

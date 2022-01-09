@@ -6,10 +6,11 @@ import {
   UserOutlined,
   ShoppingCartOutlined,
   UnorderedListOutlined,
-  CloseOutlined
+  CloseOutlined,
+  LoadingOutlined
 } from '@ant-design/icons'
-import { Input, Dropdown, Menu, Modal } from 'antd'
-import { Link, useHistory } from 'react-router-dom'
+import { Input, Dropdown, Menu, Modal, Spin } from 'antd'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import Login from '../../Login/Login'
 import defaultavatarImage from '../../../assets/avatar.jpg'
 import Register from '../../Register/Register'
@@ -18,14 +19,38 @@ import agent from '../../../agent'
 import { store } from '../../../store'
 import { CART_LOADED, CART_LOADING, CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
 import CartDrawer from '../../CartDrawer'
+const antIcon = <LoadingOutlined style={{ fontSize: 10 }} spin />
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
-  // const [datasearch, setdataSearch] = useState(undefined)
-  // const [searchInput, setsearchInput] = useState('')
+  const [dataProductSearch, setdataProductSearch] = useState('')
+  const [dataNewsSearch, setdataNewsSearch] = useState('')
+  const [inputSearch, setInputSearch] = useState('')
+  const [dataProduct, setdataProduct] = useState([])
+  const [dataNews, setdataNews] = useState([])
+  const [hightlightTab, setHightlightTab] = useState()
   const style = { fontSize: 22 }
   const currentUser = useSelector(state => state.auth.current)
   const photourl = currentUser?.photourl
   const history = useHistory()
+  const location = useLocation()
+  const pathname = ['products', 'product', '', 'blogs', 'blog', 'home', 'aboutus', 'cart', 'me']
+  const { items, isLoading } = useSelector(state => state.cart)
+  const cartQuantity = items.length
+
+  useEffect(() => {
+    const path = location.pathname
+    const splitPath = path.split('/')
+    for (let i = 0; i < pathname.length; i++) {
+      const result = splitPath[1] === pathname[i]
+      console.log(result)
+      if (result === true) {
+        setHightlightTab(pathname[i])
+        break
+      } else {
+        setHightlightTab(null)
+      }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname])
   const Logout = () => {
     localStorage.removeItem('token')
     history.push('/')
@@ -34,23 +59,49 @@ function Navbar() {
   const toggleCartDrawer = () => {
     store.dispatch({ type: TOGGLE_CART_DRAWER })
   }
-
+  useEffect(() => {
+    async function fetchdataProductNews() {
+      try {
+        const ProductsList = await agent.Products.getAll()
+        const NewsList = await agent.News.getAll()
+        const dataproduct = ProductsList.data.productList
+        const datanews = NewsList.data.newsList
+        const arrNewsProducts = []
+        const arrNewsNews = []
+        for (let i = 0; i < dataproduct.length; i++) {
+          const result = dataproduct[i]['name'].toLowerCase()
+          const payload = { ...dataproduct[i], search: result }
+          arrNewsProducts.push(payload)
+        }
+        for (let i = 0; i < datanews.length; i++) {
+          const result = datanews[i]['title'].toLowerCase()
+          const payload = { ...datanews[i], search: result }
+          arrNewsNews.push(payload)
+        }
+        setdataProduct(arrNewsProducts)
+        setdataNews(arrNewsNews)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchdataProductNews()
+  }, [])
   const onChange = async e => {
-    // const values = { name: e.target.value }
-    // console.log( e.target.value );
-    // setsearchInput(e.target.value)
-    // try {
-    //   if (searchInput !== '') {
-    //     const values = { name: e.target.value }
-    //     const result = await agent.Products.getAll(0, values)
-    //     const aa = await result.data.productList
-    //     setdataSearch(aa)
-    //     console.log(aa)
-    //     // console.log('khác rỗng thì vào');
-    //   } else {
-    //     setdataSearch(undefined)
-    //   }
-    // } catch (error) {}
+    const searchWord = e.target.value
+    setInputSearch(searchWord)
+    const newFilterProduct = dataProduct.filter(value => {
+      return value.search.includes(searchWord.toLowerCase())
+    })
+    const newFilterNews = dataNews.filter(value => {
+      return value.search.includes(searchWord.toLowerCase())
+    })
+    if (searchWord === ' ') {
+      setdataProductSearch('')
+      setdataNewsSearch('')
+    } else {
+      setdataProductSearch(newFilterProduct)
+      setdataNewsSearch(newFilterNews)
+    }
   }
   useEffect(() => {
     async function fetchCurrentUser() {
@@ -102,8 +153,12 @@ function Navbar() {
 
   const menu = currentUser ? (
     <Menu>
-      <Menu.Item key="profile" style={{ width: '200px' }}>
-        <Link to="/me/profile">{currentUser.displayname}</Link>
+      <Menu.Item style={{ width: '200px' }}>
+        <Link to={`/me/profile/${currentUser.displayname}`}>
+          <li className={hightlightTab === 'me' ? 'cursor' : 'cursor'} style={{ fontSize: '16px' }}>
+            {currentUser.displayname}
+          </li>
+        </Link>
       </Menu.Item>
       <Menu.Item key="logout" onClick={Logout}>
         Logout
@@ -127,33 +182,61 @@ function Navbar() {
   const handleCancelRegister = () => {
     setIsModalRegister(false)
   }
+
   return (
     <div>
       <header>
         <div className="header" style={{ position: 'relative' }}>
           <div className="nav-links">
             <ul>
-              <span className=" reponsive-logo">
-                <Link className="link" to="/">
-                  <li className="cursor " style={{ color: 'white', display: 'inline-block' }}>
+              <span className=" reponsive-logo ">
+                <li className="cursor ">
+                  <Link
+                    className="link"
+                    to="/"
+                    style={{ color: 'white', fontFamily: 'Blippo, fantasy', fontWeight: '900' }}
+                  >
                     Voucher hunter
-                  </li>
-                </Link>
+                  </Link>
+                </li>
               </span>
               {
                 <span className={showNavLinks ? 'nav-link-mobile' : 'nav-links-reponsive'}>
-                  <Link className="link" to="/">
-                    <li className="cursor">Home</li>
-                  </Link>
-                  <Link className="link" to="/products/slug">
-                    <li className="cursor">Products</li>
-                  </Link>
-                  <Link className="link" to="/blog/slug">
-                    <li className="cursor">News</li>
-                  </Link>
-                  <Link className="link" to="/aboutus">
-                    <li className="cursor">About us</li>
-                  </Link>
+                  <li className="cursor">
+                    <Link className={hightlightTab === '' ? 'colormenu-active' : 'link colormenu'} to="/">
+                      Home
+                    </Link>
+                  </li>
+
+                  <li className="cursor">
+                    <Link
+                      className={
+                        hightlightTab === 'products' || hightlightTab === 'product'
+                          ? 'colormenu-active'
+                          : 'link colormenu'
+                      }
+                      to="/products"
+                    >
+                      Products
+                    </Link>
+                  </li>
+
+                  <li className="cursor">
+                    <Link
+                      className={
+                        hightlightTab === 'blogs' || hightlightTab === 'blog' ? 'colormenu-active' : 'link colormenu'
+                      }
+                      to="/blogs"
+                    >
+                      News
+                    </Link>
+                  </li>
+
+                  <li className="cursor">
+                    <Link className={hightlightTab === 'aboutus' ? 'colormenu-active' : 'link colormenu'} to="/aboutus">
+                      About us
+                    </Link>
+                  </li>
                 </span>
               }
             </ul>
@@ -161,36 +244,98 @@ function Navbar() {
 
           <div className="nav-links-icon">
             <ul>
-              <span className="reponsive-input">
-                <li>
-                  <Input
-                    className="input-search"
+              <div className="input-search">
+                <Input
+                  style={{
+                    fontSize: '20px',
+                    maxWidth: '400px',
+                    marginRight: '15px',
+                    position: 'relative'
+                  }}
+                  allowClear
+                  onChange={onChange}
+                  placeholder="Search Logo..."
+                  prefix={<SearchOutlined />}
+                />
+                {inputSearch !== '' && (
+                  <div
                     style={{
-                      fontSize: '20px',
-                      maxWidth: '400px'
+                      width: '100%',
+                      backgroundColor: 'white',
+                      boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+                      marginTop: '10px',
+                      position: 'absolute'
                     }}
-                    allowClear
-                    onChange={onChange}
-                    placeholder="Search Logo..."
-                    prefix={<SearchOutlined />}
-                  />
-                  {/* {datasearch ? (
-                    <div
-                      style={{ maxWidth: '400px', backgroundColor: 'red', height: '400px', marginTop: '10px' }}
-                    ></div>
-                  ) : null} */}
-                </li>
-              </span>
+                  >
+                    <div className="containerResultSearch">
+                      <div className="containerResultProducts">
+                        <div className="containerResultTitle">
+                          <h3>Product</h3>
+                        </div>
+                        <div className="containerResultProducts">
+                          {dataProductSearch.length !== 0 ? (
+                            dataProductSearch.map(item => (
+                              <Link
+                                style={{ color: 'black' }}
+                                to={`/product/${item.slug}`}
+                                key={item.slug}
+                                onClick={() => setInputSearch('')}
+                              >
+                                <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center' }}>
+                                  <div className="containerResultImg">
+                                    <img src={item.thumbnail} alt="" />
+                                  </div>
+                                  <div style={{ marginLeft: '10px' }}>
+                                    <span style={{ fontSize: '13px' }}>{item.name}</span>
+                                  </div>
+                                </div>
+                              </Link>
+                            ))
+                          ) : (
+                            <span>no data </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="containerResultNews">
+                        <div className="containerResultTitle">
+                          <h3>News</h3>
+                        </div>
+                        <div className="containerResultNews">
+                          {dataNewsSearch.length !== 0 ? (
+                            dataNewsSearch.map(item => (
+                              <Link
+                                style={{ color: 'black' }}
+                                to={`/blog/${item.slug}`}
+                                key={item.slug}
+                                onClick={() => setInputSearch('')}
+                              >
+                                <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center' }}>
+                                  <div className="containerResultImg">
+                                    <img src={item.thumbnail} alt="" />
+                                  </div>
+                                  <div style={{ marginLeft: '10px' }}>
+                                    <span style={{ fontSize: '13px' }}>{item.title}</span>
+                                  </div>
+                                </div>
+                              </Link>
+                            ))
+                          ) : (
+                            <span>no data </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
               {!currentUser ? (
-                <span>
-                  <li className="cursor" type="primary" onClick={showModal}>
-                    <UserOutlined style={style} />
-                  </li>
-                </span>
+                <li className="cursor" type="primary" onClick={showModal}>
+                  <UserOutlined style={(style, { color: 'white' })} />
+                </li>
               ) : (
                 <span>
-                  <Dropdown overlay={menu} placement="bottomCenter" arrow>
-                    <li>
+                  <li>
+                    <Dropdown overlay={menu} placement="bottomCenter" arrow>
                       <img
                         src={photourl || defaultavatarImage}
                         alt=""
@@ -203,13 +348,24 @@ function Navbar() {
                           right: '65px'
                         }}
                       />
-                    </li>
-                  </Dropdown>
-                  {/* <Link className="link" to="/cart"> */}
-                  <li className="cursor" onClick={toggleCartDrawer}>
-                    <ShoppingCartOutlined style={style} />
+                    </Dropdown>
                   </li>
-                  {/* </Link> */}
+                  <Link className="link" to="/cart">
+                    <li className={hightlightTab === '/cart' ? 'cursor' : 'cursor'} onClick={toggleCartDrawer}>
+                      <ShoppingCartOutlined style={(style, { color: 'white' })} />
+                      <span className="cartQuantity">
+                        {isLoading ? (
+                          <span style={{ padding: '0px 5px 5px 5px', backgroundColor: 'white', borderRadius: '10px' }}>
+                            <Spin indicator={antIcon} />
+                          </span>
+                        ) : (
+                          <span style={{ padding: '2px 5px 2px 5px', backgroundColor: 'white', borderRadius: '10px' }}>
+                            <span style={{ color: ' #aa0000' }}>{cartQuantity}</span>
+                          </span>
+                        )}
+                      </span>
+                    </li>
+                  </Link>
                 </span>
               )}
               {showNavLinks ? (

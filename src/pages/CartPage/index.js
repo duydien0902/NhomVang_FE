@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import CartEmpty from '../../components/CartPage/CartEmpty'
 import CartTable from '../../components/CartPage/CartTable'
 import CartTotal from '../../components/CartPage/CartTotal'
+import { Link } from 'react-router-dom'
 import './CartPage.css'
 
 export default function CartPage() {
@@ -16,7 +17,7 @@ export default function CartPage() {
             <CartTable />
             <div className="cart-page-bottom">
               <Button className="continue-btn" type="primary" size="large">
-                Continue shopping
+                <Link to="/products">Continue Shopping</Link>
               </Button>
               <CartTotal />
             </div>

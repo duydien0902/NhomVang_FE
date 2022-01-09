@@ -10,7 +10,7 @@ import {
 } from '../constants/ActionType'
 const initialState = {
   setState: {
-    title: 'SẢN PHẨM',
+    title: 'PRODUCT',
     name: '',
     supplier: '',
     minPrice: undefined,
