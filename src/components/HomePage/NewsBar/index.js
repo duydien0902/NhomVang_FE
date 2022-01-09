@@ -42,7 +42,7 @@ function NewsSlider() {
                 ))
               : null}
           </div>
-          <Link className="link" to="/blog/slug">
+          <Link className="link" to="/blogs">
             <span style={{ float: 'right', fontSize: '20px', fontWeight: '700', cursor: 'pointer', color: 'white' }}>
               See more...
             </span>

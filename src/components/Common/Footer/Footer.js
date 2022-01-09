@@ -8,13 +8,18 @@ import logoStripe from '../../../assets/stripe.png'
 function Footer() {
   const [hightlightTab, setHightlightTab] = useState()
   const location = useLocation()
-  const pathname = ['/product', '/blog', '/home', '/aboutus', '/cart', '/profile']
+  const pathname = ['products', 'product', 'blogs', 'blog', '', 'aboutus', 'cart', 'profile']
   useEffect(() => {
     const path = location.pathname
+    const splitPath = path.split('/')
     for (let i = 0; i < pathname.length; i++) {
-      const result = path.includes(pathname[i])
+      const result = splitPath[1] === pathname[i]
+      console.log(result)
       if (result === true) {
         setHightlightTab(pathname[i])
+        break
+      } else {
+        setHightlightTab(null)
       }
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
@@ -24,25 +29,35 @@ function Footer() {
         <div className="Footer-Menu">
           <ul>
             <li className="cursor">
-              <Link className={hightlightTab === '/home' ? 'colormenu-active' : 'link colormenu'} to="/home">
+              <Link className={hightlightTab === '' ? 'colormenu-active' : 'link colormenu'} to="/">
                 Home
               </Link>
             </li>
 
             <li className="cursor">
-              <Link className={hightlightTab === '/product' ? 'colormenu-active' : 'link colormenu'} to="/products">
+              <Link
+                className={
+                  hightlightTab === 'products' || hightlightTab === 'product' ? 'colormenu-active' : 'link colormenu'
+                }
+                to="/products"
+              >
                 Products
               </Link>
             </li>
 
             <li className="cursor">
-              <Link className={hightlightTab === '/blog' ? 'colormenu-active' : 'link colormenu'} to="/blog/slug">
+              <Link
+                className={
+                  hightlightTab === 'blogs' || hightlightTab === 'blog' ? 'colormenu-active' : 'link colormenu'
+                }
+                to="/blogs"
+              >
                 News
               </Link>
             </li>
 
             <li className="cursor">
-              <Link className={hightlightTab === '/aboutus' ? 'colormenu-active' : 'link colormenu'} to="/aboutus">
+              <Link className={hightlightTab === 'aboutus' ? 'colormenu-active' : 'link colormenu'} to="/aboutus">
                 About us
               </Link>
             </li>

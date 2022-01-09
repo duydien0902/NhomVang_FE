@@ -33,22 +33,27 @@ function Navbar() {
   const photourl = currentUser?.photourl
   const history = useHistory()
   const location = useLocation()
-  const pathname = ['/product', '/blog', '/home', '/aboutus', '/cart', '/profile']
+  const pathname = ['products', 'product', '', 'blogs', 'blog', 'home', 'aboutus', 'cart', 'me']
   const { items, isLoading } = useSelector(state => state.cart)
   const cartQuantity = items.length
 
   useEffect(() => {
     const path = location.pathname
+    const splitPath = path.split('/')
     for (let i = 0; i < pathname.length; i++) {
-      const result = path.includes(pathname[i])
+      const result = splitPath[1] === pathname[i]
+      console.log(result)
       if (result === true) {
         setHightlightTab(pathname[i])
+        break
+      } else {
+        setHightlightTab(null)
       }
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
   const Logout = () => {
     localStorage.removeItem('token')
-    history.push('/home')
+    history.push('/')
     window.location.reload()
   }
   const toggleCartDrawer = () => {
@@ -150,7 +155,7 @@ function Navbar() {
     <Menu>
       <Menu.Item style={{ width: '200px' }}>
         <Link to={`/me/profile/${currentUser.displayname}`}>
-          <li className={hightlightTab === '/profile' ? 'cursor' : 'cursor'} style={{ fontSize: '16px' }}>
+          <li className={hightlightTab === 'me' ? 'cursor' : 'cursor'} style={{ fontSize: '16px' }}>
             {currentUser.displayname}
           </li>
         </Link>
@@ -188,7 +193,7 @@ function Navbar() {
                 <li className="cursor ">
                   <Link
                     className="link"
-                    to="/home"
+                    to="/"
                     style={{ color: 'white', fontFamily: 'Blippo, fantasy', fontWeight: '900' }}
                   >
                     Voucher hunter
@@ -198,14 +203,18 @@ function Navbar() {
               {
                 <span className={showNavLinks ? 'nav-link-mobile' : 'nav-links-reponsive'}>
                   <li className="cursor">
-                    <Link className={hightlightTab === '/home' ? 'colormenu-active' : 'link colormenu'} to="/home">
+                    <Link className={hightlightTab === '' ? 'colormenu-active' : 'link colormenu'} to="/">
                       Home
                     </Link>
                   </li>
 
                   <li className="cursor">
                     <Link
-                      className={hightlightTab === '/product' ? 'colormenu-active' : 'link colormenu'}
+                      className={
+                        hightlightTab === 'products' || hightlightTab === 'product'
+                          ? 'colormenu-active'
+                          : 'link colormenu'
+                      }
                       to="/products"
                     >
                       Products
@@ -213,16 +222,18 @@ function Navbar() {
                   </li>
 
                   <li className="cursor">
-                    <Link className={hightlightTab === '/blog' ? 'colormenu-active' : 'link colormenu'} to="/blog/slug">
+                    <Link
+                      className={
+                        hightlightTab === 'blogs' || hightlightTab === 'blog' ? 'colormenu-active' : 'link colormenu'
+                      }
+                      to="/blogs"
+                    >
                       News
                     </Link>
                   </li>
 
                   <li className="cursor">
-                    <Link
-                      className={hightlightTab === '/aboutus' ? 'colormenu-active' : 'link colormenu'}
-                      to="/aboutus"
-                    >
+                    <Link className={hightlightTab === 'aboutus' ? 'colormenu-active' : 'link colormenu'} to="/aboutus">
                       About us
                     </Link>
                   </li>

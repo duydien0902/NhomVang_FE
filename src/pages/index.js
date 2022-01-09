@@ -16,8 +16,8 @@ function Pages() {
     <div>
       <Navbar />
       <Switch>
-        <Route exact path="/home" component={Homepage} />
-        <Route path="/blog/slug" component={NewsPage} />
+        <Route exact path="/" component={Homepage} />
+        <Route path="/blogs" component={NewsPage} />
         <Route path="/blog/:slug" component={NewsDetail} />
         <Route path="/cart" component={CartPage} />
         <Route path="/products" component={ProductPage} />
