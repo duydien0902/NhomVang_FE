@@ -6,7 +6,6 @@ export default function AuthReducers(state = {}, action) {
     case CURRENT_USER:
       return {
         ...state,
-        user: action.payload,
         current: action.user
       }
     default:

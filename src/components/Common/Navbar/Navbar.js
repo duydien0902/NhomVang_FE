@@ -48,7 +48,7 @@ function Navbar() {
   }, [location.pathname])
   const Logout = () => {
     localStorage.removeItem('token')
-    history.push('/')
+    history.push('/home')
     window.location.reload()
   }
   const toggleCartDrawer = () => {
@@ -149,16 +149,14 @@ function Navbar() {
   const menu = currentUser ? (
     <Menu>
       <Menu.Item style={{ width: '200px' }}>
-        <Link to={`/profile/${currentUser.displayname}`}>
+        <Link to={`/me/profile/${currentUser.displayname}`}>
           <li className={hightlightTab === '/profile' ? 'cursor' : 'cursor'} style={{ fontSize: '16px' }}>
             {currentUser.displayname}
           </li>
         </Link>
       </Menu.Item>
-      <Menu.Item>
-        <li onClick={Logout} className="cursor" style={{ fontSize: '16px' }}>
-          Logout
-        </li>
+      <Menu.Item key="logout" onClick={Logout}>
+        Logout
       </Menu.Item>
     </Menu>
   ) : null
@@ -244,7 +242,6 @@ function Navbar() {
                     position: 'relative'
                   }}
                   allowClear
-                  value={inputSearch}
                   onChange={onChange}
                   placeholder="Search Logo..."
                   prefix={<SearchOutlined />}

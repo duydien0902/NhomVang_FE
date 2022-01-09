@@ -1,5 +1,6 @@
 import { Col, Row, Button } from 'antd'
 import defaultNewsImage from '../../../assets/defaultNewsImage.png'
+import React from 'react'
 import { Pagination } from 'antd'
 import { store } from '../../../store'
 import { SET_LIST_PRODUCTS } from '../../../constants/ActionType'
@@ -8,10 +9,15 @@ import './ProductPreview.css'
 import { Spin } from 'antd'
 import { useSelector } from 'react-redux'
 import { addCart } from '../../../utils'
+import { useState } from 'react'
+
 function ProductPreview(props) {
   const data = props.productList
+  const { isLoading } = useSelector(state => state.cart)
   const { setState } = useSelector(state => state.products)
+  const [loadingItem, setLoadingItem] = useState('')
   const title = setState?.title
+
   const changePage = async pageNumber => {
     const result = await props.pager(pageNumber - 1, props.filter)
     store.dispatch({
@@ -19,6 +25,11 @@ function ProductPreview(props) {
       page: pageNumber - 1,
       payload: result
     })
+  }
+  const handleClickAddtocart = async itemId => {
+    setLoadingItem(itemId)
+    await addCart(itemId)
+    setLoadingItem('')
   }
   return (
     <div style={{ width: '80%', margin: '60px auto' }} loading={{ indicator: <Spin size="large" /> }}>
@@ -63,7 +74,8 @@ function ProductPreview(props) {
                         </Button>
                       </Link>
                       <Button
-                        onClick={() => addCart(item._id)}
+                        loading={isLoading && loadingItem === item._id}
+                        onClick={() => handleClickAddtocart(item._id)}
                         type="primary"
                         htmlType="submit"
                         style={{

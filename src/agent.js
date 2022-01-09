@@ -20,6 +20,7 @@ const tokenPlugin = req => {
 instance.interceptors.request.use(tokenPlugin)
 const pageSizeNews = 5
 const pageSizeProducts = 10
+const pageSizeInvoices = 10
 const Auth = {
   login: values => instance.post('/auth/login', { user: values }),
   register: values => instance.post('/auth/register', { user: values }),
@@ -54,7 +55,15 @@ const Cart = {
   updateItem: (_id, quantity) => instance.post('/cart/update', { item: { _id, quantity } })
 }
 const Invoice = {
-  getAllInvoices: () => instance.get('/invoices'),
+  getAllInvoices: (page = 0, filter = {}) => {
+    return instance.get('/invoices', {
+      params: {
+        limit: pageSizeInvoices,
+        offset: page * pageSizeInvoices,
+        ...filter
+      }
+    })
+  },
   getInvoice: id => instance.get(`/invoices/${id}`),
   createInvoice: products => instance.post('/invoices', { products }),
   cancelInvoice: id => instance.post(`/invoices/cancel/${id}`),

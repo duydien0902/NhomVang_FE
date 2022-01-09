@@ -5,10 +5,18 @@ import 'antd/dist/antd.css'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addCart } from '../../../utils'
+import { useState } from 'react'
 function TopProducts() {
   const listProductHot = useSelector(state => state.products.listProductHot)
+  const { isLoading } = useSelector(state => state.cart)
+  const [loadingItem, setLoadingItem] = useState('')
+  const handleClickAddtocart = async itemId => {
+    setLoadingItem(itemId)
+    await addCart(itemId)
+    setLoadingItem('')
+  }
   return listProductHot ? (
-    <div className="container">
+    <div className="topproduct-container">
       <h1>HOT PRODUCTS</h1>
       <Row gutter={[50, 50]}>
         {listProductHot.map(item => (
@@ -48,7 +56,8 @@ function TopProducts() {
                     </Button>
                   </Link>
                   <Button
-                    onClick={() => addCart(item._id)}
+                    loading={isLoading && loadingItem === item._id}
+                    onClick={() => handleClickAddtocart(item._id)}
                     type="primary"
                     htmlType="submit"
                     style={{

@@ -1,6 +1,11 @@
+.container {
+  background-color: #e8e8e8;
+  width: 90%;
+  margin: 100px auto;
+}
 .container-info {
   width: 85%;
-  margin: 80px auto;
+  margin: auto;
   display: flex;
   flex-direction: row-reverse;
 }
@@ -19,10 +24,10 @@
 .container-info-left ul li {
   font-weight: 900;
   font-size: 25px;
-  /* font-family: Comic Sans MS; */
 }
 .container-info-left ul li span {
   font-size: 20px;
+  font-weight: 100;
 }
 .container-info-right {
   width: 39%;
@@ -43,14 +48,184 @@
 .wapper-avatar img {
   width: 100%;
   height: 100%;
+  object-fit: fill;
   border-radius: 100%;
 }
+
+.user-info__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info__container > .user-info__header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user-info__container > hr {
+  margin: 20px 0px;
+}
+
+.user-info__header > span {
+  font-weight: bold;
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.user-info__navigation {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+}
+
+.user-info__link {
+  color: #3a3a3a;
+  padding: 6px 0;
+}
+
+.user-info__link.active {
+  background-color: #fff;
+  color: #40a9ff;
+}
+
+.user-info__link > span {
+  margin: 0px 12px 12px;
+}
+
+.user-orders__container {
+  width: 80%;
+  margin: 0px auto;
+  min-height: 400px;
+}
+
+.user-orders__empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #3a3a3a;
+  min-height: 400px;
+}
+
+.user-orders__empty-message {
+  font-size: 18px;
+  margin: 10px 0px;
+}
+
+.user-order-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-order-item__container {
+  background-color: white;
+  padding: 20px;
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+  margin: 10px 0px;
+}
+
+.user-order-item__header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #ececec;
+}
+
+.user-order-item__footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 5px;
+  margin-top: 5px;
+  border-top: 1px solid #ececec;
+}
+
+.user-order-item__product-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-product-item__container {
+  display: flex;
+  margin: 5px 0px;
+}
+
+.order-product-item__body {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 20px;
+}
+
+.order-product-item__name {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+.order-product-item__qty {
+  font-size: 14px;
+  font-style: italic;
+  color: #999999;
+  margin-bottom: 3px;
+}
+.order-product-item__price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.order-product-item__listed-price {
+  color: #999999;
+  text-decoration: line-through;
+}
+.order-product-item__discount-price {
+  color: #f50;
+  font-weight: bold;
+  font-size: 18px;
+}
+.user-order-item__price {
+  color: #f50;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.user-order-item__total {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-column-gap: 20px;
+  grid-row-gap: 10px;
+}
+
+.invoice-status-tag {
+  margin: 0 6px 6px 0 !important;
+}
+
+@media only screen and (max-width: 1400px) {
+  .container {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  .container-info {
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .user-orders__container {
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+}
+
 @media only screen and (max-width: 973px) {
   .wapper-avatar {
     width: 200px;
     height: 200px;
   }
 }
+
 @media only screen and (max-width: 676px) {
   .container-info {
     width: 100%;
@@ -59,13 +234,24 @@
     align-items: center;
   }
   .container-info-left {
-    width: 90%;
+    width: 100%;
   }
   .container-info-right {
-    width: 90%;
-    margin: 20px auto;
+    width: 100%;
+    margin: 20px auto 0;
+  }
+
+  .order-product-item__body {
+    margin-left: 8px;
+  }
+
+  .order-product-item__name {
+    font-size: 16px;
+    line-height: 20px;
+    padding-right: 4px;
   }
 }
+
 @media only screen and (max-width: 400px) {
   .container-info-left p {
     font-size: 25px;

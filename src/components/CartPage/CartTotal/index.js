@@ -46,9 +46,10 @@ export default function CartTotal() {
       const products = checkoutItems.map(item => ({
         _id: item._id,
         name: item.name,
+        slug: item.slug,
         thumbnail: item.thumbnail,
         listedPrice: item.listedPrice,
-        discountPrice: item.discountPrice,
+        discountPrice: item?.discountPrice,
         quantity: item.quantity
       }))
       const res = await agent.Invoice.createInvoice(products)

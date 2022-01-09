@@ -69,6 +69,7 @@ export default function CheckoutPage() {
           <CheckoutPayment
             isLoading={isLoading}
             paymentMethod={paymentMethod}
+            paymentStatus={invoice.paymentStatus}
             total={invoice.total}
             discountTotal={invoice.discountTotal}
             onOrder={onOrder}

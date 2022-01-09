@@ -4,10 +4,18 @@ import '../../NewsPage/NewsTagsSlider/NewsTagsSlider.css'
 import { Link } from 'react-router-dom'
 import defaultNewsImage from '../../../assets/defaultNewsImage.png'
 import { addCart } from '../../../utils'
+import { useSelector } from 'react-redux'
+import { useState } from 'react'
 
 function ProductsTagsSlider(props) {
   const listproductstags = props.listproducts
-
+  const { isLoading } = useSelector(state => state.cart)
+  const [loadingItem, setLoadingItem] = useState('')
+  const handleClickAddtocart = async itemId => {
+    setLoadingItem(itemId)
+    await addCart(itemId)
+    setLoadingItem('')
+  }
   return (
     <div className="container-NewsSlider" x>
       <div className="wrapper-NewsSlider" style={{ width: '90%', margin: '0 auto', paddingBottom: '60px' }}>
@@ -58,7 +66,8 @@ function ProductsTagsSlider(props) {
                           </Button>
                         </Link>
                         <Button
-                          onClick={() => addCart(item._id)}
+                          loading={isLoading && loadingItem === item._id}
+                          onClick={() => handleClickAddtocart(item._id)}
                           type="primary"
                           htmlType="submit"
                           style={{

@@ -42,9 +42,7 @@ export const beforeUploadImage = (file, callback, statusCallback) => {
 }
 
 export const addCart = async values => {
-  // const items  = useSelector(state => state.cart)
   const token = localStorage.getItem('token')
-  console.log(values)
   try {
     if (token) {
       await agent.Cart.addItem(values, 1)
@@ -53,7 +51,7 @@ export const addCart = async values => {
       let cart = result.data.cart
       store.dispatch({ type: CART_LOADED, cart })
     } else {
-      message.error('xin hãy đăng nhập')
+      message.error('Please login')
     }
   } catch (error) {
     console.log(error)
