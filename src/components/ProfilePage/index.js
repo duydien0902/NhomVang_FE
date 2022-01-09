@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 import { Spin, Upload, Button, Modal, Form, Input, message } from 'antd'
-import { UploadOutlined, LockOutlined, LoadingOutlined } from '@ant-design/icons'
+import {
+  UploadOutlined,
+  LockOutlined,
+  LoadingOutlined,
+  CheckCircleTwoTone,
+  CloseCircleOutlined
+} from '@ant-design/icons'
 import defaultavatarImage from '../../assets/avatar.jpg'
 import agent from '../../agent'
 import './ProfilePage.css'
@@ -203,17 +209,26 @@ function Profile(props) {
 
             <li>
               Address:{' '}
-              <span>
-                {Object.values(currenUser.address)
-                  .reverse()
-                  .map((item, index) => {
-                    return item + (Object.values(currenUser.address).length === index + 1 ? ' ' : ', ')
-                  })}
-              </span>
+              {currenUser.address ? (
+                <span>
+                  {Object.values(currenUser.address)
+                    .reverse()
+                    .map((item, index) => {
+                      return item + (Object.values(currenUser.address).length === index + 1 ? ' ' : ', ')
+                    })}
+                </span>
+              ) : null}
             </li>
             <br />
 
-            <li>Follow: {currenUser.isSubscribing ? 'yes' : 'no'}</li>
+            <li>
+              Follow:{' '}
+              {currenUser.isSubscribing ? (
+                <CheckCircleTwoTone twoToneColor="#52c41a" />
+              ) : (
+                <CloseCircleOutlined style={{ color: 'red' }} />
+              )}
+            </li>
           </ul>
           <Button
             style={{ marginLeft: '30px', marginBottom: '50px' }}
@@ -248,10 +263,15 @@ function Profile(props) {
               colon={false}
               style={{ display: 'flex', flexDirection: 'column' }}
             >
-              <Form.Item label="Display name" name="displayname" className="field">
+              <Form.Item
+                label="Display name"
+                name="displayname"
+                className="field"
+                rules={[{ required: true, message: 'xin nhập tên đầy đủ!' }]}
+              >
                 <Input />
               </Form.Item>
-              <Form.Item name="email" label="E-mail">
+              <Form.Item name="email" label="E-mail" rules={[{ required: true, message: 'xin nhập địa chỉ email!' }]}>
                 <Input />
               </Form.Item>
               <Form.Item label="City" name="city">

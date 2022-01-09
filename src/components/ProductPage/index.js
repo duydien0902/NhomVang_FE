@@ -79,7 +79,7 @@ function ProductPage() {
         <div className="left-container" style={{ border: '1px solid #DCDCDC' }}>
           <div>
             <div>
-              <h3 style={{ fontSize: '20px', paddingLeft: '30px', paddingTop: '20px' }}>Giá</h3>
+              <h3 style={{ fontSize: '20px', paddingLeft: '30px', paddingTop: '20px' }}>Price</h3>
               <div
                 style={{
                   width: '250px',
@@ -113,7 +113,7 @@ function ProductPage() {
                 </div>
               </div>
               <div style={{ width: '250px', margin: '20px auto' }}>
-                <Search placeholder="Tìm kiếm sản phẩm..." onSearch={onFilter} onChange={ChangeName} enterButton />
+                <Search placeholder="Search product..." onSearch={onFilter} onChange={ChangeName} enterButton />
               </div>
             </div>
           </div>

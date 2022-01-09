@@ -1,5 +1,8 @@
 import agent from './agent'
+import { CART_LOADED, CART_LOADING } from './constants/ActionType'
 import { message } from 'antd'
+import { store } from './store'
+
 export const decodeHTMLContent = input => {
   if (!input) return ''
   const doc = new DOMParser().parseFromString(input, 'text/html')
@@ -39,10 +42,16 @@ export const beforeUploadImage = (file, callback, statusCallback) => {
 }
 
 export const addCart = async values => {
+  // const items  = useSelector(state => state.cart)
   const token = localStorage.getItem('token')
+  console.log(values)
   try {
     if (token) {
       await agent.Cart.addItem(values, 1)
+      store.dispatch({ type: CART_LOADING })
+      const result = await agent.Cart.current()
+      let cart = result.data.cart
+      store.dispatch({ type: CART_LOADED, cart })
     } else {
       message.error('xin hãy đăng nhập')
     }

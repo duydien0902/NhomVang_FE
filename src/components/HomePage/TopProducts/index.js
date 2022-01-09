@@ -27,15 +27,15 @@ function TopProducts() {
                 <h3>{item.name}</h3>
                 {item.discountPrice ? (
                   <p>
-                    Giá:
+                    Price:
                     <span style={{ textDecorationLine: 'line-through' }}> {item.listedPrice} $</span>
                     <span style={{ marginLeft: '10px', color: 'red' }}> {item.discountPrice} $</span>
                   </p>
                 ) : (
-                  <p>Giá: {item.listedPrice} $</p>
+                  <p>Price: {item.listedPrice} $</p>
                 )}
                 <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '10px' }}>
-                  <Link to={`/products/${item.slug}`}>
+                  <Link to={`/product/${item.slug}`}>
                     <Button
                       type="primary"
                       htmlType="submit"
@@ -56,7 +56,7 @@ function TopProducts() {
                       border: 'none'
                     }}
                   >
-                    Add to card
+                    Add to cart
                   </Button>
                 </div>
               </div>

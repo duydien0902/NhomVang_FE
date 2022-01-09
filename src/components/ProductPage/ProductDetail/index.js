@@ -7,7 +7,6 @@ import { SELECTED_PRODUCT } from '../../../constants/ActionType'
 import { decodeHTMLContent } from '../../../utils'
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons'
 import { SETSTATE_LIST_PRODUCTS, LIST_PRODUCTS_TAGS } from '../../../constants/ActionType'
-// import img from '../../../assets/defaultNewsImage.png'
 import './ProductDetail.css'
 import { InputNumber, Button, Spin, message } from 'antd'
 import ProductsTagsSlider from '../ProductsTagsSlider'
@@ -104,7 +103,7 @@ function ProductDetail() {
                   <span style={{ marginLeft: '10px', color: 'red' }}>{productdetail.discountPrice} $</span>
                 </p>
               ) : (
-                <p>Giá: {productdetail.listedPrice} $</p>
+                <p>Price: {productdetail.listedPrice} $</p>
               )}
               <Button
                 onClick={PlusOutlinedd}
@@ -113,10 +112,10 @@ function ProductDetail() {
                 icon={<PlusOutlined />}
               />
               <InputNumber
-                style={{ width: '70px' }}
                 min={1}
+                style={{ width: 70, paddingLeft: '18px' }}
+                controls={false}
                 max={productdetail.inStock}
-                // defaultValue={1}
                 value={quantity}
                 onChange={onChange}
               />
@@ -128,11 +127,11 @@ function ProductDetail() {
               />
 
               <Button style={{ marginLeft: '15px' }} type="primary" onClick={() => addCart(productdetail._id)}>
-                Thêm Vào Giỏ
+                Add to cart
               </Button>
             </div>
           </div>
-          <h3 style={{ paddingTop: '15px' }}>Mô tả</h3>
+          <h3 style={{ paddingTop: '15px' }}>Description</h3>
           <p dangerouslySetInnerHTML={{ __html: decodeHTMLContent(productdetail.description) }}></p>
         </div>
       ) : (

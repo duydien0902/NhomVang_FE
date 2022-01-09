@@ -4,7 +4,7 @@ import defaultNewsImage from '../../../assets/defaultNewsImage.png'
 import { Link } from 'react-router-dom'
 import { store } from '../../../store'
 import { SET_LIST_NEWS, SETSTATE_LIST_NEWS } from '../../../constants/ActionType'
-import { Button, Image, Space, Spin, Pagination } from 'antd'
+import { Image, Space, Spin, Pagination } from 'antd'
 const NewsImage = ({ className, src, hidden }) => {
   return (
     <div className={className} hidden={hidden}>
@@ -39,8 +39,8 @@ function ListPagination(props) {
     })
   }
   return (
-    <div>
-      <h1 style={{ fontSize: '40px', paddingLeft: '10px', paddingBottom: '0px' }}>NEWS</h1>
+    <div className="index-NewsList">
+      <h1 style={{ fontSize: '40px', paddingBottom: '0px' }}>NEWS</h1>
       {listnews ? (
         listnews.map(listnews => (
           <div className="news-preview px-10 py-8 bg-white">
@@ -54,7 +54,7 @@ function ListPagination(props) {
                   By <span className="font-bold">{listnews.author}</span>
                 </div>
                 <h2 className="news-title my-0 mb-4">
-                  <Link className="text-2xl" to={`/blog/${listnews.slug}`}>
+                  <Link className="text-2xl" to={`/blog/${listnews.slug}`} style={{ color: 'black' }}>
                     {listnews.title}
                   </Link>
                 </h2>
@@ -69,9 +69,12 @@ function ListPagination(props) {
                 </div>
                 <div className="news-description leading-7">{listnews.description}</div>
                 <Space className="news-footer mt-6" size="middle">
-                  <Button className="px-6" type="primary" size="large">
-                    <Link to={`/blog/${listnews.slug}`}>Read more</Link>
-                  </Button>
+                  {/* <Button className="px-6" type="primary"style = {{backgroundColor:'red'}} >
+                    <Link to={`/blog/${listnews.slug}`} >Read more</Link>
+                  </Button> */}
+                  <Link className="link" to={`/blog/${listnews.slug}`}>
+                    <button class="ex-tb px-6">Read more</button>
+                  </Link>
                 </Space>
               </div>
             </Space>
