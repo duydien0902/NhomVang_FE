@@ -79,7 +79,6 @@ function ProductDetail() {
       setquantity(quantity + 1)
     }
   }
-  console.log(quantity)
   const MinusOutlinedd = () => {
     if (quantity <= 1) {
       setquantity(1)

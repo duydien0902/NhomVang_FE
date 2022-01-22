@@ -63,7 +63,6 @@ export default function CartTable() {
         dispatch({ type: UPDATE_CART, subtype: UPDATE_QUANTITY, cart, item, value })
       }
     } catch (error) {
-      console.log(result)
       dispatch({ type: CART_LOADED })
     }
   }

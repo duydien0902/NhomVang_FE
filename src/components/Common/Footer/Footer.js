@@ -14,7 +14,6 @@ function Footer() {
     const splitPath = path.split('/')
     for (let i = 0; i < pathname.length; i++) {
       const result = splitPath[1] === pathname[i]
-      console.log(result)
       if (result === true) {
         setHightlightTab(pathname[i])
         break
@@ -70,7 +69,7 @@ function Footer() {
           <Col xs={24} sm={24} md={12} lg={8} xl={8}>
             <div className="Footer-item">
               <Link className="link" to="/">
-                <h4 style={{ fontFamily: 'Blippo, fantasy', fontWeight: '900' }}>Voucher hunter</h4>
+                <h4>Voucher hunter</h4>
               </Link>
               <span>Phí Hoàng Long</span>
               <br />

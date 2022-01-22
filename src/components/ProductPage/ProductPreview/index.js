@@ -19,12 +19,9 @@ function ProductPreview(props) {
   const [loadingItem, setLoadingItem] = useState(undefined)
   const title = setState?.tags
   const price = props.closeFilter
-  const searchName = price?.name
-  console.log('duydien', searchName)
   const maxPrice = price?.maxPrice
   const minPrice = price?.minPrice
   const filter = setState?.open
-  console.log(filter)
   const changePage = async pageNumber => {
     const result = await props.pager(pageNumber - 1, props.filter)
     store.dispatch({

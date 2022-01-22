@@ -95,7 +95,6 @@ export default function CartDrawer() {
 
   const fetchCurrentCart = async () => {
     let cart
-    console.log(cart)
     try {
       dispatch({ type: CART_LOADING })
       const result = await agent.Cart.current()

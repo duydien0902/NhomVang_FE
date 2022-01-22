@@ -42,7 +42,6 @@ function Navbar() {
     const splitPath = path.split('/')
     for (let i = 0; i < pathname.length; i++) {
       const result = splitPath[1] === pathname[i]
-      console.log(result)
       if (result === true) {
         setHightlightTab(pathname[i])
         break
@@ -191,11 +190,7 @@ function Navbar() {
             <ul>
               <span className=" reponsive-logo ">
                 <li className="cursor ">
-                  <Link
-                    className="link"
-                    to="/"
-                    style={{ color: 'white', fontFamily: 'Blippo, fantasy', fontWeight: '900' }}
-                  >
+                  <Link className="link" to="/" style={{ color: 'white' }}>
                     Voucher hunter
                   </Link>
                 </li>
