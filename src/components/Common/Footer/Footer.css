@@ -10,7 +10,6 @@
 }
 .Footer-Menu li {
   font-size: 20px;
-  font-weight: 600;
   list-style-type: none;
   display: inline-block;
 }
@@ -19,9 +18,6 @@
 }
 .colormenu {
   color: #aa0000;
-}
-.colormenu:hover {
-  color: #dd0000;
 }
 .colormenu.active {
   color: aliceblue;

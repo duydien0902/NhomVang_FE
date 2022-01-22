@@ -101,7 +101,9 @@ function ProductDetail() {
                 <ul>
                   {productdetail.tags.map(item => (
                     <li key={item} onClick={() => Tag(item)}>
-                      <Link to="/products/slug"># {item}</Link>
+                      <Link style={{ color: 'black' }} to="/products/slug">
+                        # {item}
+                      </Link>
                     </li>
                   ))}
                 </ul>

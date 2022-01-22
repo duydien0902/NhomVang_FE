@@ -28,7 +28,9 @@ function NewsSlider() {
               ? newsList.map(news => (
                   <div key={news.slug} className="container-NewsBar">
                     <div className="container-NewsBar-img">
-                      {<img src={news.thumbnail || defaultNewsImage} alt="news" />}
+                      <Link className="link" to={`/blog/${news.slug}`}>
+                        {<img src={news.thumbnail || defaultNewsImage} alt="news" />}
+                      </Link>
                     </div>
 
                     <div>

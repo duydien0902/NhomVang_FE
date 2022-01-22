@@ -1,11 +1,12 @@
 import { InputNumber, Input } from 'antd'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { store } from '../../store'
 import {
   LIST_PRODUCTS,
   FILTER_PRODUCTLIST,
   SETSTATE_LIST_PRODUCTS,
-  PRODUCT_PAGE_UNLOADED
+  PRODUCT_PAGE_UNLOADED,
+  SETSTATE_BLOCK_LIST_PRODUCTS
 } from '../../constants/ActionType'
 import { useSelector } from 'react-redux'
 import agent from '../../agent'
@@ -16,8 +17,11 @@ function ProductPage() {
   const onUnload = () => {
     store.dispatch({ type: PRODUCT_PAGE_UNLOADED })
   }
-
+  const [closeFilter, setCloseFilter] = useState('')
+  const [maxPrice, setMaxPrice] = useState('')
+  const [minPrice, setMinPrice] = useState('')
   const { pager, page, total, listproducts, setState, reload } = useSelector(state => state.products)
+
   const onLoad = async () => {
     const pager = (page, filter) => agent.Products.getAll(page, filter)
     const result = await agent.Products.getAll(0, setState)
@@ -27,6 +31,14 @@ function ProductPage() {
       payload: result
     })
   }
+
+  useEffect(() => {
+    onLoad()
+    return () => {
+      onUnload()
+    }
+    // eslint-disable-next-line
+  }, [setState?.close || setState?.tags])
   useEffect(() => {
     onLoad()
     return () => {
@@ -42,10 +54,22 @@ function ProductPage() {
   }, [reload])
   const onFilter = async () => {
     const result = await pager(0, setState)
+    const open = 'open'
+    const value = 'open'
+    setCloseFilter(setState)
+    setMinPrice('')
+    setMaxPrice('')
     store.dispatch({
       type: FILTER_PRODUCTLIST,
       payload: result
     })
+    if (maxPrice !== '') {
+      store.dispatch({
+        type: SETSTATE_BLOCK_LIST_PRODUCTS,
+        open,
+        value
+      })
+    }
   }
   const ChangeName = e => {
     const key = 'name'
@@ -57,7 +81,7 @@ function ProductPage() {
     })
   }
   const changeMinPrice = value => {
-    console.log({ value })
+    setMinPrice(value)
     const key = 'minPrice'
     store.dispatch({
       type: SETSTATE_LIST_PRODUCTS,
@@ -66,6 +90,7 @@ function ProductPage() {
     })
   }
   const changeMaxPrice = value => {
+    setMaxPrice(value)
     const key = 'maxPrice'
     store.dispatch({
       type: SETSTATE_LIST_PRODUCTS,
@@ -73,6 +98,7 @@ function ProductPage() {
       value
     })
   }
+
   return (
     <div style={{ paddingTop: '80px' }}>
       <div className="ProductPage-container">
@@ -95,8 +121,9 @@ function ProductPage() {
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                     onChange={changeMinPrice}
                     onPressEnter={onFilter}
-                    placeholder="Tối thiểu"
+                    placeholder="minPrice"
                     addonAfter="$"
+                    value={minPrice}
                   />
                 </div>
                 <div style={{ width: '250px' }}>
@@ -107,19 +134,21 @@ function ProductPage() {
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                     onChange={changeMaxPrice}
                     onPressEnter={onFilter}
-                    placeholder="Tối đa"
+                    placeholder="maxPrice"
                     addonAfter="$"
+                    value={maxPrice}
                   />
                 </div>
               </div>
               <div style={{ width: '250px', margin: '20px auto' }}>
-                <Search placeholder="Search product..." onSearch={onFilter} onChange={ChangeName} enterButton />
+                <Search placeholder="Search products..." onSearch={onFilter} onChange={ChangeName} enterButton />
               </div>
             </div>
           </div>
         </div>
         <div className="right-container">
           <ProductPreview
+            closeFilter={closeFilter}
             productList={listproducts}
             pageSize={agent.pageSizeProducts}
             total={total}

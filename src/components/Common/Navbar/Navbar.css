@@ -68,6 +68,15 @@ header {
   flex-direction: row;
   flex-wrap: wrap;
 }
+.containerResultSearchScroll {
+  padding: 10px 10px 10px 10px;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 85vh;
+  overflow: scroll;
+}
 .containerResultProducts,
 .containerResultNews {
   width: 100%;
@@ -89,14 +98,14 @@ header {
   color: #aa0000;
 }
 .colormenu:hover {
-  color: red;
+  color: #aa0000;
 }
 .colormenu-active {
-  color: red;
-  border-bottom: 2px solid red;
+  color: #aa0000;
+  border-bottom: 2px solid #aa0000;
 }
 .colormenu-active:hover {
-  color: red;
+  color: #aa0000;
 }
 .cartQuantity {
   position: absolute;

@@ -78,8 +78,8 @@ function Navbar() {
           const payload = { ...datanews[i], search: result }
           arrNewsNews.push(payload)
         }
-        setdataProduct(arrNewsProducts)
-        setdataNews(arrNewsNews)
+        setdataProduct(arrNewsProducts.slice(0, 5))
+        setdataNews(arrNewsNews.slice(0, 5))
       } catch (error) {
         console.log(error)
       }
@@ -254,7 +254,7 @@ function Navbar() {
                   }}
                   allowClear
                   onChange={onChange}
-                  placeholder="Search Logo..."
+                  placeholder="Search Voucher..."
                   prefix={<SearchOutlined />}
                 />
                 {inputSearch !== '' && (
@@ -267,7 +267,13 @@ function Navbar() {
                       position: 'absolute'
                     }}
                   >
-                    <div className="containerResultSearch">
+                    <div
+                      className={
+                        dataNewsSearch.length + dataProductSearch.length !== 10
+                          ? 'containerResultSearch'
+                          : 'containerResultSearchScroll'
+                      }
+                    >
                       <div className="containerResultProducts">
                         <div className="containerResultTitle">
                           <h3>Product</h3>
