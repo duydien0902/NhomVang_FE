@@ -19,7 +19,7 @@ const tokenPlugin = req => {
 }
 instance.interceptors.request.use(tokenPlugin)
 const pageSizeNews = 5
-const pageSizeProducts = 10
+const pageSizeProducts = 9
 const pageSizeInvoices = 10
 const Auth = {
   login: values => instance.post('/auth/login', { user: values }),

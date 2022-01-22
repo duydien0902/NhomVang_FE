@@ -35,7 +35,7 @@ function TopProducts() {
               </Link>
               <div style={{ padding: '20px 15px 20px 20px' }}>
                 <Link to={`/product/${item.slug}`}>
-                  <h3 style={{ fontWeight: '700' }}>{item.name}</h3>
+                  <h3 style={{ fontWeight: '700', minHeight: '60px' }}>{item.name}</h3>
                 </Link>
                 {item.discountPrice ? (
                   <p style={{ fontSize: '16px' }}>

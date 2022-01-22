@@ -134,7 +134,7 @@ function ListPagination(props) {
             <h2>Hot Products</h2>
             <div className="wapper-hotproduct-item">
               {listProductHot ? (
-                listProductHot.slice(0, 5).map(item => (
+                listProductHot.slice(0, 4).map(item => (
                   <Link style={{ color: 'black' }} to={`/product/${item.slug}`}>
                     <div className="hotproduct-item" key={item.slug}>
                       <div className="hotproduct-item-img">

@@ -245,11 +245,12 @@ function Navbar() {
                     fontSize: '20px',
                     maxWidth: '400px',
                     marginRight: '15px',
-                    position: 'relative'
+                    position: 'relative',
+                    borderRadius: '8px'
                   }}
                   allowClear
                   onChange={onChange}
-                  placeholder="Search Voucher..."
+                  placeholder="Search..."
                   prefix={<SearchOutlined />}
                 />
                 {inputSearch !== '' && (
