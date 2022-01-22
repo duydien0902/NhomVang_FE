@@ -10,9 +10,7 @@ import { Space, Spin, Pagination } from 'antd'
 function ListPagination(props) {
   const listnews = props.newslist
   const title = props.title
-  console.log(title)
   const listProductHot = props.listProductHot
-  console.log(listProductHot)
   const changePage = async pageNumber => {
     const result = await props.pager(pageNumber - 1)
     store.dispatch({

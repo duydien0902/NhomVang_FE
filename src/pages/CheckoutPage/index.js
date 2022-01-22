@@ -26,7 +26,6 @@ export default function CheckoutPage() {
           break
         }
         case 'stripe': {
-          console.log(res)
           break
         }
         default:

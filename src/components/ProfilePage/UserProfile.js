@@ -57,7 +57,6 @@ function UserProfile(props) {
           detail: values.detail
         }
       }
-      console.log(user)
       await agent.Auth.updateUser(user)
       message.success('profile saved!')
       window.location.reload()
