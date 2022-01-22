@@ -32,25 +32,35 @@ function ProductsTagsSlider(props) {
                       paddingBottom: '20px'
                     }}
                   >
-                    <div style={{ width: '100%' }}>
-                      {
-                        <img
-                          style={{ width: '100%', height: '180px' }}
-                          src={item.thumbnail || defaultNewsImage}
-                          alt=""
-                        />
-                      }
-                    </div>
+                    <Link to={`/product/${item.slug}`}>
+                      <div style={{ width: '100%' }}>
+                        {
+                          <img
+                            style={{ width: '100%', height: '180px' }}
+                            src={item.thumbnail || defaultNewsImage}
+                            alt=""
+                          />
+                        }
+                      </div>
+                    </Link>
                     <div style={{ padding: '20px 15px 20px 20px' }}>
-                      <h3>{item.name}</h3>
+                      <Link to={`/product/${item.slug}`}>
+                        <h3>{item.name}</h3>
+                      </Link>
                       {item.discountPrice ? (
-                        <p>
-                          Price:
-                          <span style={{ textDecorationLine: 'line-through' }}> {item.listedPrice} $</span>
-                          <span style={{ marginLeft: '10px', color: 'red' }}> {item.discountPrice} $</span>
+                        <p style={{ fontSize: '16px' }}>
+                          Price:{' '}
+                          <span style={{ textDecorationLine: 'line-through', fontSize: '16px' }}>
+                            {' '}
+                            {item.listedPrice} $
+                          </span>
+                          <span style={{ marginLeft: '10px', color: 'red', fontSize: '16px' }}>
+                            {' '}
+                            {item.discountPrice} $
+                          </span>
                         </p>
                       ) : (
-                        <p>Price: {item.listedPrice} $</p>
+                        <p style={{ fontSize: '16px' }}>Price: {item.listedPrice} $</p>
                       )}
                       <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '10px' }}>
                         <Link to={`/product/${item.slug}`}>

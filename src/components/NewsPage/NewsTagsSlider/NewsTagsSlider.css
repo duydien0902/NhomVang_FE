@@ -42,6 +42,22 @@
   margin: 0 auto;
   padding-bottom: 5%;
 }
+
+.item-relatedNews {
+  -webkit-tap-highlight-color: transparent;
+  transform: scale(98%);
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.item-relatedNews:after {
+  content: '';
+  height: 10px;
+  position: absolute;
+  top: 390px;
+  width: 100%;
+}
+.item-relatedNews:hover {
+  transform: scale(100%);
+}
 @media only screen and (max-width: 1000px) {
   .container-relatedNews {
     grid-template-columns: 1fr 1fr 1fr;

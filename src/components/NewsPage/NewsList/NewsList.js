@@ -2,10 +2,11 @@ import React, { useEffect } from 'react'
 import LayoutNewsList from './index'
 import agent from '../../../agent'
 import { useSelector } from 'react-redux'
-import { LIST_NEWS, NEWS_PAGE_UNLOADED } from '../../../constants/ActionType'
+import { LIST_NEWS, NEWS_PAGE_UNLOADED, LIST_PRODUCTS_HOT } from '../../../constants/ActionType'
 import { store } from '../../../store'
 function NewsList() {
   const { pager, listnews, total, page, reload, setState } = useSelector(state => state.news)
+  const listProductHot = useSelector(state => state.products.listProductHot)
   useEffect(() => {
     const onLoad = async () => {
       const pager = page => agent.News.getAll(page)
@@ -14,6 +15,13 @@ function NewsList() {
     }
     onLoad()
   }, [setState])
+  useEffect(() => {
+    const fetchHotproduct = async () => {
+      const payload = await agent.Products.getAll(0, { hot: true })
+      store.dispatch({ type: LIST_PRODUCTS_HOT, payload })
+    }
+    fetchHotproduct()
+  }, [])
   const onLoad = async () => {
     const pager = page => agent.News.getAll(page)
     const result = await agent.News.getAll()
@@ -39,6 +47,8 @@ function NewsList() {
   return (
     <div className="container-NewsList">
       <LayoutNewsList
+        title={setState?.tags}
+        listProductHot={listProductHot}
         newslist={listnews}
         pageSize={agent.pageSizeNews}
         total={total}

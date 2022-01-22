@@ -6,15 +6,15 @@ import {
   LIST_PRODUCTS_HOT,
   SETSTATE_LIST_PRODUCTS,
   PRODUCT_PAGE_UNLOADED,
-  LIST_PRODUCTS_TAGS
+  LIST_PRODUCTS_TAGS,
+  SETSTATE_BLOCK_LIST_PRODUCTS
 } from '../constants/ActionType'
 const initialState = {
   setState: {
-    title: 'PRODUCT',
     name: '',
     supplier: '',
-    minPrice: undefined,
-    maxPrice: undefined,
+    minPrice: '',
+    maxPrice: '',
     hot: false,
     inSlider: false,
     tags: ''
@@ -58,6 +58,19 @@ export default function NewsReducers(state = initialState, action) {
       return {
         ...state,
         setState: { ...state.setState, [action.key]: action.value }
+      }
+    case SETSTATE_BLOCK_LIST_PRODUCTS:
+      return {
+        ...state,
+        setState: {
+          ...state.setState,
+          [action.key]: action.value,
+          [action.minPrice]: action.valueMinPrice,
+          [action.maxPrice]: action.valueMaxPrice,
+          [action.open]: action.value,
+          [action.tags]: action.valueTags,
+          [action.name]: action.valueName
+        }
       }
     case LIST_PRODUCTS_TAGS:
       return {
