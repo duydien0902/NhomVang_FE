@@ -148,6 +148,7 @@ function ProductPage() {
         </div>
         <div className="right-container">
           <ProductPreview
+            filter={setState}
             closeFilter={closeFilter}
             productList={listproducts}
             pageSize={agent.pageSizeProducts}
