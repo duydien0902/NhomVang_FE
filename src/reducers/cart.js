@@ -81,7 +81,8 @@ export default function CartReducer(state = initialState, action) {
         ...state,
         checkoutItems: [...state.checkoutItems, action.item],
         total: state.total + action.item.listedPrice * action.item.quantity,
-        discountTotal: state.total + (action.item.discountPrice || action.item.listedPrice) * action.item.quantity
+        discountTotal:
+          state.discountTotal + (action.item.discountPrice || action.item.listedPrice) * action.item.quantity
       }
 
     case REMOVE_FROM_CHECKOUT:
