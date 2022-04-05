@@ -3,7 +3,7 @@ import './Footer.css'
 import { Row, Col } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 import logoPaypal from '../../../assets/logoPaypal.png'
-import logoStripe from '../../../assets/stripe.png'
+// import logoStripe from '../../../assets/stripe.png'
 
 function Footer() {
   const [hightlightTab, setHightlightTab] = useState()
@@ -99,13 +99,13 @@ function Footer() {
                 <div style={{ width: '100px', height: '50px' }}>
                   <img style={{ width: '100%', height: '100%', objectFit: 'contain' }} src={logoPaypal} alt="" />
                 </div>
-                <div style={{ width: '100px', height: '50px' }}>
+                {/* <div style={{ width: '100px', height: '50px' }}>
                   <img
                     style={{ width: '100%', height: '100%', objectFit: 'contain', marginLeft: '20px' }}
                     src={logoStripe}
                     alt=""
                   />
-                </div>
+                </div> */}
               </div>
             </div>
           </Col>
