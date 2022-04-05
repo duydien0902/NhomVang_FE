@@ -19,6 +19,7 @@ import agent from '../../../agent'
 import { store } from '../../../store'
 import { CART_LOADED, CART_LOADING, CURRENT_USER, TOGGLE_CART_DRAWER } from '../../../constants/ActionType'
 import CartDrawer from '../../CartDrawer'
+import { removeMark } from '../../../utils'
 const antIcon = <LoadingOutlined style={{ fontSize: 10 }} spin />
 function Navbar() {
   const [showNavLinks, setShowNavLinks] = useState(false)
@@ -69,12 +70,12 @@ function Navbar() {
         const arrNewsNews = []
         for (let i = 0; i < dataproduct.length; i++) {
           const result = dataproduct[i]['name'].toLowerCase()
-          const payload = { ...dataproduct[i], search: result }
+          const payload = { ...dataproduct[i], tunsignedSearch: removeMark(result) }
           arrNewsProducts.push(payload)
         }
         for (let i = 0; i < datanews.length; i++) {
           const result = datanews[i]['title'].toLowerCase()
-          const payload = { ...datanews[i], search: result }
+          const payload = { ...datanews[i], tunsignedSearch: removeMark(result) }
           arrNewsNews.push(payload)
         }
         setdataProduct(arrNewsProducts.slice(0, 5))
@@ -86,13 +87,14 @@ function Navbar() {
     fetchdataProductNews()
   }, [])
   const onChange = async e => {
-    const searchWord = e.target.value
+    const searchWords = e.target.value
+    let searchWord = removeMark(searchWords)
     setInputSearch(searchWord)
     const newFilterProduct = dataProduct.filter(value => {
-      return value.search.includes(searchWord.toLowerCase())
+      return value.tunsignedSearch.includes(searchWord.toLowerCase())
     })
     const newFilterNews = dataNews.filter(value => {
-      return value.search.includes(searchWord.toLowerCase())
+      return value.tunsignedSearch.includes(searchWord.toLowerCase())
     })
     if (searchWord === ' ') {
       setdataProductSearch('')
